@@ -3,8 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout";
 
 import SignIn from "./pages/SignIn";
-import Register from "./pages/Register";
 import Home from "./pages/Home";
+import DebtorDetails from "./pages/DebtorDetails";
 // import EditAccount from "./pages/EditAccount";
 // import AdminDashboard from "./pages/AdminDashboard";
 import PageNotFound from "./pages/PageNotFound";
@@ -30,7 +30,6 @@ const App = () => {
   return (
     <Routes>
       <Route path="/sign-in" element={<SignIn />} />
-      <Route path="/register" element={<Register />} />
       <Route path="/" element={<RootLayout />}>
         <Route
           index
@@ -40,6 +39,7 @@ const App = () => {
             // </ProtectedRoute>
           }
         />
+        <Route path="/debtor-details" element={<DebtorDetails />} />
         {/* <Route
           path="/admin-dashboard"
           element={

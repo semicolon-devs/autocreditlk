@@ -5,6 +5,7 @@ import RootLayout from "./layouts/RootLayout";
 import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
 import DebtorDetails from "./pages/DebtorDetails";
+import AddCustomer from "./pages/AddCustomer";
 // import EditAccount from "./pages/EditAccount";
 // import AdminDashboard from "./pages/AdminDashboard";
 import PageNotFound from "./pages/PageNotFound";
@@ -40,6 +41,7 @@ const App = () => {
           }
         />
         <Route path="/debtor-details" element={<DebtorDetails />} />
+        <Route path="/add-customer" element={<AddCustomer />} />
         {/* <Route
           path="/admin-dashboard"
           element={

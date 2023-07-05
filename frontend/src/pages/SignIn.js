@@ -24,17 +24,23 @@ const SignIn = () => {
           }}
         />
         {meta.touched && meta.error ? (
-          <div className={`error -mt-3 mb-3 ms-4 text-red-700 font-bold`}>{meta.error}</div>
+          <div className={`error -mt-3 mb-3 ms-4 text-red-700 font-bold`}>
+            {meta.error}
+          </div>
         ) : null}
       </>
     );
   };
 
   return (
-    <div className=" bg-gradient-to-b from-purple-600 to-purple-700 flex justify-center items-center w-screen h-screen">
-      <div className="bg-purple-100 p-5 rounded-xl border-b-purple-950 border-b-4 w-11/12 max-w-sm">
-        <p className="text-purple-950 uppercase text-center text-4xl font-bold mb-1">sign in</p>
-        <p className="text-purple-950 uppercase text-center text-lg font-bold mb-6">debtor management system</p>
+    <div className=" bg-gradient-to-b from-purple-400 to-purple-500 flex justify-center items-center w-screen h-screen">
+      <div className="bg-purple-100 p-5 rounded-xl border-b-purple-900 border-b-4 w-11/12 max-w-sm">
+        <p className="text-purple-900 uppercase text-center text-4xl font-bold mb-1">
+          sign in
+        </p>
+        <p className="text-purple-900 uppercase text-center font-semibold mb-6">
+          sign in to view and manage clients
+        </p>
         <Formik
           initialValues={{
             email: "",
@@ -70,7 +76,10 @@ const SignIn = () => {
               </div>
             )}
 
-            <button type="submit" className="bg-purple-950 hover:bg-purple-900 rounded-xl px-4 py-2">
+            <button
+              type="submit"
+              className="bg-purple-900 hover:bg-purple-950 rounded-xl px-4 py-2"
+            >
               {loading ? (
                 <ThreeDots
                   height="40"

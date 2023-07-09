@@ -15,7 +15,7 @@ const HomePageCard = ({
 
   return (
     <div
-      className="lg:max-w-sm bg-purple-50 p-3 my-4 rounded-lg cursor-pointer"
+      className="bg-purple-50 p-3 my-4 rounded-lg cursor-pointer"
       onClick={handleCardClick}
     >
       <p className="font-bold mb-2 text-purple-950">{loanId}</p>

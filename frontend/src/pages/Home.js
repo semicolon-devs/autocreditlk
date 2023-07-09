@@ -18,17 +18,17 @@ const Home = () => {
     },
     {
       loanId: "#0600",
-      name: "Saman Bandara",
-      total: "200,000 LKR",
+      name: "Sunil Shantha",
+      total: "400,000 LKR",
       arrears: "80,000 LKR",
       description:
         "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
     },
     {
       loanId: "#0700",
-      name: "Saman Bandara",
-      total: "200,000 LKR",
-      arrears: "80,000 LKR",
+      name: "Lalith Kumara",
+      total: "50,000 LKR",
+      arrears: "10,000 LKR",
       description:
         "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
     },
@@ -64,9 +64,9 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-purple-200">
-      <div className="px-5">
-        <div className="pt-5 flex justify-between">
+    <div className="bg-purple-200 min-w-screen">
+      <div className="p-3">
+        <div className="flex justify-between">
           <div className="flex">
             <div className="w-60 bg-purple-50 rounded-md px-3 py-1 font-semibold">
               Search
@@ -77,16 +77,8 @@ const Home = () => {
               </span>
             </div>
           </div>
-          <button className="bg-purple-800 hover:bg-purple-900 rounded-md px-3 py-1 flex justify-center items-center">
-            <span className="material-symbols-outlined mr-2 text-purple-50">
-              add
-            </span>
-            <p className="text-purple-50 uppercase font-semibold mb-0">
-              add new debtor
-            </p>
-          </button>
         </div>
-        <div className="flex flex-wrap justify-between mt-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
           {debtorArr &&
             debtorArr.map((debtor) => (
               <HomePageCard

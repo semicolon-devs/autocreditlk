@@ -110,10 +110,20 @@ const SidebarComponent = () => {
         </MenuItem>
         <SubMenu label="Admin Dashboard" icon={<AdminDashboardIcon />}>
           <MenuItem icon={<InsightsIcon />}> Insights </MenuItem>
-          <MenuItem icon={<PersonAddIcon />}> Add Customer </MenuItem>
+          <MenuItem
+            icon={<PersonAddIcon />}
+            component={<Link to="/add-customer" className="link" />}
+          >
+            Add Customer
+          </MenuItem>
           <MenuItem icon={<ManageAccountsIcon />}> Manage Users </MenuItem>
         </SubMenu>
-        <MenuItem icon={<SettingsIcon />}> Account Settings </MenuItem>
+        <MenuItem
+          icon={<SettingsIcon />}
+          component={<Link to="/account-settings" className="link" />}
+        >
+          Account Settings
+        </MenuItem>
         <MenuItem icon={<LogoutIcon />}> Log out </MenuItem>
       </Menu>
     </Sidebar>

@@ -5,11 +5,13 @@ import Sidebar from "../components/SidebarComponent";
 
 const RootLayout = () => {
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <Sidebar />
-      <div>
+      <div className="w-screen h-screen ">
         <Navbar />
-        <Outlet />
+        <div className="bg-purple-200 p-5 h-full">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

@@ -65,7 +65,7 @@ const Home = () => {
 
   return (
     <div className="bg-purple-200">
-      <div className="container mx-auto">
+      <div className="px-5">
         <div className="pt-5 flex justify-between">
           <div className="flex">
             <div className="w-60 bg-purple-50 rounded-md px-3 py-1 font-semibold">

@@ -4,57 +4,14 @@ import * as Yup from "yup";
 import SectionTitle from "../components/SectionTitle";
 import SectionSubtitle from "../components/SectionSubtitle";
 
+import { TextInputWithLabel as TextInput } from "../components/FormikElements";
+
 const AccountSettings = () => {
-  const TextInput = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-      <>
-        <label className="font-semibold mb-2" htmlFor={props.id || props.name}>
-          {label}
-        </label>
-        <input
-          className="text-input w-full rounded-lg px-3 py-2 mb-4 outline-none"
-          {...field}
-          {...props}
-          style={{
-            border: meta.touched && meta.error ? "1px solid #b91c1c" : "",
-          }}
-        />
-        {meta.touched && meta.error ? (
-          <div className="error -mt-3 mb-2 ms-2 text-red-700 font-bold">
-            {meta.error}
-          </div>
-        ) : null}
-      </>
-    );
-  };
-
-  const Select = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-      <div>
-        <label className="font-semibold" htmlFor={props.id || props.name}>
-          {label}
-        </label>
-        <select
-          className="text-input w-full rounded-lg px-2 py-2 mt-2 mb-4 outline-none"
-          {...field}
-          {...props}
-        />
-        {meta.touched && meta.error ? (
-          <div className="error -mt-3 mb-2 ms-2 text-red-700 font-bold">
-            {meta.error}
-          </div>
-        ) : null}
-      </div>
-    );
-  };
-
   return (
-    <div className="">
+    <div className="w-full">
       <SectionTitle title="account settings" />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div>
+        <div className="bg-white w-full rounded-lg drop-shadow-lg p-3">
           <SectionSubtitle title="account details" />
           <div className="bg-purple-50 w-full max-w-md p-5 rounded-lg">
             <p className="">Name : Saman Kumara</p>
@@ -63,7 +20,7 @@ const AccountSettings = () => {
             <p className="">Address : Penideniya, Peradeniya, Kandy</p>
           </div>
         </div>
-        <div>
+        <div className="bg-white w-full rounded-lg drop-shadow-lg p-3">
           <SectionSubtitle title="change password" />
           <Formik
             initialValues={{
@@ -114,9 +71,9 @@ const AccountSettings = () => {
 
               <button
                 type="submit"
-                className="bg-purple-900 hover:bg-purple-950 rounded-lg px-4 py-2 mt-2 border-none outline-none"
+                className="bg-maroon rounded-lg px-4 py-2 mt-2 border-none outline-none"
               >
-                <p className="text-purple-50 uppercase font-bold">reset password</p>
+                <p className="text-white uppercase font-bold">reset password</p>
               </button>
             </Form>
           </Formik>

@@ -5,32 +5,13 @@ import * as Yup from "yup";
 import Cookies from "universal-cookie";
 import { ThreeDots } from "react-loader-spinner";
 
+import { TextInput } from "../components/FormikElements";
+
 const cookies = new Cookies();
 
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
-
-  const TextInput = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-      <>
-        <input
-          className="text-input w-full rounded-xl px-4 py-2 mb-4 outline-none text-purple-950"
-          {...field}
-          {...props}
-          style={{
-            border: meta.touched && meta.error ? "1px solid #b91c1c" : "",
-          }}
-        />
-        {meta.touched && meta.error ? (
-          <div className={`error -mt-3 mb-3 ms-4 text-red-700 font-bold`}>
-            {meta.error}
-          </div>
-        ) : null}
-      </>
-    );
-  };
 
   return (
     <div className=" bg-gradient-to-b from-purple-400 to-purple-500 flex justify-center items-center w-screen h-screen">

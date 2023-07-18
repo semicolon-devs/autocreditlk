@@ -7,7 +7,6 @@ import Home from "./pages/Home";
 import DebtorDetails from "./pages/DebtorDetails";
 import AddCustomer from "./pages/AddCustomer";
 import AccountSettings from "./pages/AccountSettings";
-// import AdminDashboard from "./pages/AdminDashboard";
 import PageNotFound from "./pages/PageNotFound";
 // import AccessDeniedPage from "./pages/AccessDeniedPage";
 
@@ -19,6 +18,8 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 const App = () => {
+  // const [toggled, setToggled] = useState(false);
+
   // const cookie = cookies.get("meetingRoomCookie");
   // const isAdmin = () => {
   //   if (cookie && cookie.userData.role === "admin") {
@@ -47,13 +48,12 @@ const App = () => {
           path="/admin-dashboard"
           element={
             <ProtectedRoute>
-              {isAdmin() ? <AdminDashboard /> : <AccessDeniedPage />}
+            {isAdmin() ? <AdminDashboard /> : <AccessDeniedPage />}
             </ProtectedRoute>
           }
         /> */}
-        {/* <Route path="/edit-account" element={<EditAccount />} /> */}
+        <Route path="*" element={<PageNotFound />} />
       </Route>
-      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };

@@ -4,7 +4,7 @@ import * as Icons from "./Icon";
 import { LogoutIcon } from "./Icon";
 import { sidebarItems } from "../data/Data";
 
-const Sidebar = ({ collapsed }) => {
+const Sidebar = ({ collapsed, toggled }) => {
   const renderIconComponent = (icon) => {
     const IconComponent = Icons[icon];
     if (IconComponent) {
@@ -17,7 +17,7 @@ const Sidebar = ({ collapsed }) => {
     <div
       className={`bg-white h-full rounded-lg mr-5 drop-shadow-lg  flex flex-col justify-between ${
         collapsed ? "w-max" : "w-60"
-      } transition-transform duration-1000`}
+      } ${toggled ? "hidden" : "block"} transition-transform duration-1000`}
     >
       <div className="">
         {sidebarItems &&

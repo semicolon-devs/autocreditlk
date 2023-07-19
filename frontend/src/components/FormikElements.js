@@ -3,11 +3,11 @@ import { useField } from "formik";
 const labelClasses = "font-semibold mb-2";
 
 const inputClasses =
-  "text-input w-full rounded-lg px-2 py-2 mt-2 mb-4 outline-none border";
+  "text-input w-full rounded-lg p-2 mb-3 outline-none border border-darkGrey";
 
 const conditionalInputClasses = "border-2 border-maroon";
 
-const errorClasses = "error -mt-3 mb-2 text-maroon font-bold";
+const errorClasses = "error -mt-2 mb-1 text-maroon font-bold";
 
 export const TextInputWithLabel = ({ label, ...props }) => {
   const [field, meta] = useField(props);

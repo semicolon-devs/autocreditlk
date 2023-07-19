@@ -8,6 +8,8 @@ import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
 import InsightsRoundedIcon from "@mui/icons-material/InsightsRounded";
 import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSettingsRounded";
 import ErrorRoundedIcon from "@mui/icons-material/ErrorRounded";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -23,6 +25,8 @@ export {
   InsightsRoundedIcon as InsightsIcon,
   AdminPanelSettingsRoundedIcon as AdminDashboardIcon,
   ErrorRoundedIcon as ErrorIcon,
+  AccountCircleRoundedIcon as AccountIcon,
+  CloseRoundedIcon as CloseIcon,
   ArrowBackIcon,
   ArrowRightOutlinedIcon as ArrowIcon,
 };

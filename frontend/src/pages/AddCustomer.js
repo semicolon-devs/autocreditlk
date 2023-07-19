@@ -62,7 +62,7 @@ const AddCustomer = () => {
         }}
       >
         <div className="bg-white w-full rounded-lg drop-shadow-lg p-3">
-          <Form className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <Form className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <div className="w-full lg:max-w-md">
               <TextInput
                 name="name"

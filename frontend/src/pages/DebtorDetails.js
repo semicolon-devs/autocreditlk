@@ -1,33 +1,8 @@
 import React from "react";
 
-const DebtorDetails = () => {
-  const paymentsArr = [
-    {
-      paymentId: "4525",
-      paymentDate: "15/01/2023",
-      amount: "1000 LKR",
-      collector: "Ruwan Kumara",
-    },
-    {
-      paymentId: "4625",
-      paymentDate: "15/01/2023",
-      amount: "1000 LKR",
-      collector: "Ruwan Kumara",
-    },
-    {
-      paymentId: "4725",
-      paymentDate: "15/01/2023",
-      amount: "1000 LKR",
-      collector: "Ruwan Kumara",
-    },
-    {
-      paymentId: "4825",
-      paymentDate: "15/01/2023",
-      amount: "1000 LKR",
-      collector: "Ruwan Kumara",
-    },
-  ];
+import { paymentsArr } from "../data/SampleData";
 
+const DebtorDetails = () => {
   return (
     <div className="container mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 bg-white p-3 drop-shadow-lg rounded-lg">
@@ -89,7 +64,10 @@ const DebtorDetails = () => {
           <div>
             {paymentsArr &&
               paymentsArr.map((payment) => (
-                <div className="flex bg-lightGrey px-4 py-2 rounded-lg mb-3 max-w-xl justify-between">
+                <div
+                  key={payment.paymentId}
+                  className="flex bg-lightGrey px-4 py-2 rounded-lg mb-3 max-w-xl justify-between"
+                >
                   <div className="">
                     <p className="font-semibold capitalize text-maroon">
                       payment received

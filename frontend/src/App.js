@@ -6,6 +6,7 @@ import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
 import DebtorDetails from "./pages/DebtorDetails";
 import AddCustomer from "./pages/AddCustomer";
+import ManageUsers from "./pages/ManageUsers";
 import AccountSettings from "./pages/AccountSettings";
 import PageNotFound from "./pages/PageNotFound";
 // import AccessDeniedPage from "./pages/AccessDeniedPage";
@@ -41,9 +42,10 @@ const App = () => {
             // </ProtectedRoute>
           }
         />
+        <Route path="/debtor-details" element={<DebtorDetails />} />
         <Route path="/account-settings" element={<AccountSettings />} />
         <Route path="/add-customer" element={<AddCustomer />} />
-        <Route path="/debtor-details" element={<DebtorDetails />} />
+        <Route path="/manage-users" element={<ManageUsers />} />
         {/* <Route
           path="/admin-dashboard"
           element={

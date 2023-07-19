@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+
+import AddPaymentModal from "../modals/AddPaymentModal";
 
 const HomePageCard = ({
   loanId,
@@ -7,8 +9,9 @@ const HomePageCard = ({
   arrears,
   description,
   handleCardClick,
-  setAddPaymentModalShow,
 }) => {
+  let [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
+
   const handleAddPaymentClick = () => {
     setAddPaymentModalShow(true);
   };
@@ -36,6 +39,12 @@ const HomePageCard = ({
           <p className="text-white uppercase font-semibold">view details</p>
         </button>
       </div>
+      {addPaymentModalShow && (
+        <AddPaymentModal
+          modalShow={addPaymentModalShow}
+          setModalShow={setAddPaymentModalShow}
+        />
+      )}
     </div>
   );
 };

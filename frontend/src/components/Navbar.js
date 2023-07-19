@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { MenuIcon, AccountIcon } from "./Icon";
+import { MenuIcon, AccountIcon } from "../Icon/Icon";
 
 const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
   const windowWidth = useRef(window.innerWidth);

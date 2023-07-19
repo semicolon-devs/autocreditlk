@@ -1,5 +1,5 @@
 import React from "react";
-import { ErrorIcon } from "../components/Icon";
+import { ErrorIcon } from "../Icon/Icon";
 
 const PageNotFound = () => {
   return (

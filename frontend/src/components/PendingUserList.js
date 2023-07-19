@@ -3,7 +3,7 @@ import React from "react";
 import SectionSubtitle from "../components/SectionSubtitle";
 
 import { pendingUserArr } from "../data/SampleData";
-import { CloseIcon } from "./Icon";
+import { CloseIcon } from "../Icon/Icon";
 
 const PendingUserList = () => {
   return (

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import * as Icons from "./Icon";
-import { LogoutIcon } from "./Icon";
+import * as Icons from "../Icon/Icon";
+import { LogoutIcon } from "../Icon/Icon";
 import { sidebarItems } from "../data/Data";
 
 const Sidebar = ({ collapsed, toggled }) => {

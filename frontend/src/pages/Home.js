@@ -7,8 +7,6 @@ import HomePageCard from "../components/HomePageCard";
 import { debtorArr } from "../data/SampleData";
 
 const Home = () => {
-  const [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
-
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -38,7 +36,6 @@ const Home = () => {
                   arrears={debtor.arrears}
                   description={debtor.description}
                   handleCardClick={handleCardClick}
-                  setAddPaymentModalShow={setAddPaymentModalShow}
                 />
               ))}
           </div>

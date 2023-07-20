@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import SectionSubtitle from "../components/SectionSubtitle";
 
 import { TextInput } from "../components/FormikElements";
+import { ModalCancelButton } from "../components/Button";
 
 const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
   const [message, setMessage] = useState(null);
@@ -76,22 +77,24 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
                   )}
 
                   <div className="flex">
-                    <button type="submit" className="bg-maroon rounded-lg px-4 py-2">
+                    <button
+                      type="submit"
+                      className="bg-maroon rounded-lg px-4 py-2"
+                    >
                       <p className="text-white capitalize font-bold">
                         add payment
                       </p>
                     </button>
-                    <button
+                    {/* <button
                       onClick={() => setModalShow(false)}
                       className="bg-darkGrey rounded-lg px-4 py-2 ms-3"
                     >
                       <p className="text-white capitalize font-bold">cancel</p>
-                    </button>
+                    </button> */}
+                    <ModalCancelButton setModalShow={setModalShow} />
                   </div>
                 </Form>
               </Formik>
-
-              {/* <button onClick={() => setModalShow(false)}>Deactivate</button> */}
             </Dialog.Panel>
           </Transition.Child>
         </div>

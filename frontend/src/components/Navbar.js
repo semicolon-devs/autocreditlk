@@ -14,7 +14,6 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
         <div className="bg-white hover:bg-orange rounded-lg drop-shadow-lg cursor-pointer me-5">
           <button
             className="border-none outline-none p-3 z-10"
-            // onClick={() => setCollapsed(!collapsed)}
             onClick={handleSidebar}
           >
             <MenuIcon className="text-2xl" />

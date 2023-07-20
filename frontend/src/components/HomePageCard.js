@@ -2,17 +2,14 @@ import React, { useState } from "react";
 
 import AddPaymentModal from "../modals/AddPaymentModal";
 
-const HomePageCard = ({
-  loanId,
-  name,
-  total,
-  arrears,
-  description,
-  handleCardClick,
-}) => {
-  let [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
+const HomePageCard = ({ customer, handleCardClick }) => {
+  const [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
+  const [displayCustomer, setDisplayCustomer] = useState(null);
 
-  const handleAddPaymentClick = () => {
+  const { loanId, name, total, arrears, description } = customer;
+
+  const handleAddPaymentClick = (customer) => {
+    setDisplayCustomer(customer);
     setAddPaymentModalShow(true);
   };
 
@@ -28,7 +25,7 @@ const HomePageCard = ({
       <div className="flex ">
         <button
           className="bg-maroon hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg mr-3"
-          onClick={handleAddPaymentClick}
+          onClick={() => handleAddPaymentClick(customer)}
         >
           <p className="text-white uppercase font-semibold">add payment</p>
         </button>
@@ -39,10 +36,11 @@ const HomePageCard = ({
           <p className="text-white uppercase font-semibold">view details</p>
         </button>
       </div>
-      {addPaymentModalShow && (
+      {displayCustomer && (
         <AddPaymentModal
           modalShow={addPaymentModalShow}
           setModalShow={setAddPaymentModalShow}
+          customer={displayCustomer}
         />
       )}
     </div>

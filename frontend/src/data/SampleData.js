@@ -1,4 +1,4 @@
-export const debtorArr = [
+export const customerArr = [
   {
     loanId: "#0548",
     name: "Saman Bandara",

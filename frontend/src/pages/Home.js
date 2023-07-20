@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import HomePageCard from "../components/HomePageCard";
 // import AddPaymentModal from "../components/AddPaymentModal";
 
-import { debtorArr } from "../data/SampleData";
+import { customerArr } from "../data/SampleData";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -26,15 +26,11 @@ const Home = () => {
         </div>
         <div className="">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
-            {debtorArr &&
-              debtorArr.map((debtor) => (
+            {customerArr &&
+              customerArr.map((customer) => (
                 <HomePageCard
-                  key={debtor.loanId}
-                  loanId={debtor.loanId}
-                  name={debtor.name}
-                  total={debtor.total}
-                  arrears={debtor.arrears}
-                  description={debtor.description}
+                  key={customer.loanId}
+                  customer={customer}
                   handleCardClick={handleCardClick}
                 />
               ))}

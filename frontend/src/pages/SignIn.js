@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Formik, Form, useField } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Cookies from "universal-cookie";
 import { ThreeDots } from "react-loader-spinner";
@@ -59,7 +59,7 @@ const SignIn = () => {
 
             <button
               type="submit"
-              className="bg-purple-900 hover:bg-purple-950 rounded-xl px-4 py-2"
+              className="bg-maroon rounded-lg px-4 py-2 flex items-center justify-center"
             >
               {loading ? (
                 <ThreeDots
@@ -73,7 +73,7 @@ const SignIn = () => {
                   visible={true}
                 />
               ) : (
-                <p className="text-purple-50 uppercase font-bold">sign in</p>
+                <p className="text-white uppercase font-bold">sign in</p>
               )}
             </button>
           </Form>

@@ -9,11 +9,11 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
   };
 
   return (
-    <nav className=" w-full flex items-center justify-center sticky top-5 z-10 mb-5">
+    <nav className="w-full flex items-center justify-center sticky top-5 z-10 mb-5">
       <div className="flex items-center justify-between w-full">
         <div className="bg-white hover:bg-orange rounded-lg drop-shadow-lg cursor-pointer me-5">
           <button
-            className="border-none outline-none p-3  z-10"
+            className="border-none outline-none p-3 z-10"
             // onClick={() => setCollapsed(!collapsed)}
             onClick={handleSidebar}
           >

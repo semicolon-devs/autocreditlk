@@ -32,19 +32,19 @@ const CustomerSchema = new mongoose.Schema(
       required: true,
     },
     loanAmount: {
-      type: String,
+      type: Number,
       required: true,
     },
     paidAmount: {
-      type: String,
+      type: Number,
       required: true,
     },
     noOfInstallments: {
-      type: String,
+      type: Number,
       required: true,
     },
     startDate: {
-      type: String,
+      type: Date,
       required: true,
     },
     billingCycle: {

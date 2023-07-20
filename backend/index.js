@@ -7,6 +7,8 @@ const passportConfig = require("./config/passport.config");
 const dbConnect = require("./config/dbConnect");
 
 const authRouter = require('./routes/auth.route')
+const customerRouter = require('./routes/customer.route')
+const installmentRouter = require('./routes/installment.route')
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -43,6 +45,8 @@ const PORT = process.env.PORT;
 
 // Mount the auth router on the /auth path
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/customers", customerRouter);
+app.use("/api/v1/installment", installmentRouter);
 
 
 // server listening to requests on port on env file

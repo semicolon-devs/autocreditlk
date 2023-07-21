@@ -8,6 +8,8 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
     windowWidth.current > 768 ? setCollapsed(!collapsed) : setToggled(!toggled);
   };
 
+  // logout axio here
+
   return (
     <nav className="w-full flex items-center justify-center sticky top-5 z-10 mb-5">
       <div className="flex items-center justify-between w-full">

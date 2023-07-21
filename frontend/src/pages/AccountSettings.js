@@ -7,6 +7,8 @@ import SectionSubtitle from "../components/SectionSubtitle";
 import { TextInputWithLabel as TextInput } from "../components/FormikElements";
 
 const AccountSettings = () => {
+  // change password axio here
+
   return (
     <div className="w-full">
       <SectionTitle title="account settings" />
@@ -42,11 +44,7 @@ const AccountSettings = () => {
                 .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
             })}
             onSubmit={(values, { setSubmitting }) => {
-              //   resetPassword(
-              //     values.oldPassword,
-              //     values.newPassword,
-              //     values.confirmPassword
-              //   );
+              //   call change password axio here ==> changePassword(values.oldPassword, values.newPassword)
               setSubmitting(false);
             }}
           >

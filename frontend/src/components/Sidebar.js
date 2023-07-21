@@ -5,6 +5,8 @@ import { LogoutIcon } from "../Icon/Icon";
 import { sidebarItems } from "../data/Data";
 
 const Sidebar = ({ collapsed, toggled }) => {
+  // logout axio here
+
   const renderIconComponent = (icon) => {
     const IconComponent = Icons[icon];
     if (IconComponent) {

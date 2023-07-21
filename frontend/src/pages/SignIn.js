@@ -13,6 +13,8 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
+  // sign in axio here
+
   return (
     <div className=" bg-gradient-to-b from-purple-400 to-purple-500 flex justify-center items-center w-screen h-screen">
       <div className="bg-purple-100 p-5 rounded-xl border-b-purple-900 border-b-4 w-11/12 max-w-sm">
@@ -34,7 +36,7 @@ const SignIn = () => {
             password: Yup.string().required("Required"),
           })}
           onSubmit={(values, { setSubmitting }) => {
-            // signIn(values.email, values.password);
+            // call signin axio here ==> signin axio (values.email, values.password)
             setSubmitting(false);
           }}
         >

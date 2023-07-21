@@ -40,11 +40,9 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
             leaveTo="opacity-0 scale-95"
           >
             <Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-3">
-              <Dialog.Title>
-                <SectionSubtitle title="add payment" />
-              </Dialog.Title>
+              <Dialog.Title>Add Payment</Dialog.Title>
               <Dialog.Description>
-                <p className="">Add {customer.name}'s payment</p>
+                Add {customer.name}'s payment
               </Dialog.Description>
 
               <Formik

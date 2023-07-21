@@ -2,9 +2,15 @@ import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
 import SectionSubtitle from "../components/SectionSubtitle";
-import { ModalCancelButton } from "../components/Button";
+import { ModalCancelButton, ModalPrimaryButton } from "../components/Button";
 
-const AlertModal = ({ modalShow, setModalShow, message, primaryBtnText }) => {
+const AlertModal = ({
+  modalShow,
+  setModalShow,
+  message,
+  primaryButtonText,
+  primaryButtonClick,
+}) => {
   return (
     <Transition show={modalShow} as={Fragment}>
       <Dialog
@@ -34,20 +40,14 @@ const AlertModal = ({ modalShow, setModalShow, message, primaryBtnText }) => {
             leaveTo="opacity-0 scale-95"
           >
             <Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-3">
-              <Dialog.Title>
-                <SectionSubtitle title="Alert !" />
-              </Dialog.Title>
-              <Dialog.Description>
-                <p className="mb-3">{message}</p>
+              <Dialog.Title>Alert !</Dialog.Title>
+              <Dialog.Description className="mb-3">
+                {message}
               </Dialog.Description>
-              <button
-                className="rounded-lg px-4 py-2 bg-maroon"
-                onClick={() => setModalShow(false)}
-              >
-                <p className="text-white capitalize font-bold">
-                  {primaryBtnText}
-                </p>
-              </button>
+              <ModalPrimaryButton
+                primaryButtonText={primaryButtonText}
+                primaryButtonClick={primaryButtonClick}
+              />
               <ModalCancelButton setModalShow={setModalShow} />
             </Dialog.Panel>
           </Transition.Child>

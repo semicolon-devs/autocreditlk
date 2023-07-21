@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import HomePageCard from "../components/HomePageCard";
 // import AddPaymentModal from "../components/AddPaymentModal";
@@ -7,12 +6,6 @@ import HomePageCard from "../components/HomePageCard";
 import { customerArr } from "../data/SampleData";
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  const handleCardClick = () => {
-    navigate("/debtor-details");
-  };
-
   return (
     <div className="bg-light">
       <div className="">
@@ -31,7 +24,6 @@ const Home = () => {
                 <HomePageCard
                   key={customer.loanId}
                   customer={customer}
-                  handleCardClick={handleCardClick}
                 />
               ))}
           </div>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AddPaymentModal from "../modals/AddPaymentModal";
 
-const HomePageCard = ({ customer, handleCardClick }) => {
+const HomePageCard = ({ customer }) => {
   const [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
   const [displayCustomer, setDisplayCustomer] = useState(null);
 
@@ -11,6 +12,12 @@ const HomePageCard = ({ customer, handleCardClick }) => {
   const handleAddPaymentClick = (customer) => {
     setDisplayCustomer(customer);
     setAddPaymentModalShow(true);
+  };
+
+  const navigate = useNavigate();
+
+  const handleViewDetailsClick = () => {
+    navigate("/debtor-details");
   };
 
   return (
@@ -31,7 +38,7 @@ const HomePageCard = ({ customer, handleCardClick }) => {
         </button>
         <button
           className="bg-orange hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg"
-          onClick={handleCardClick}
+          onClick={handleViewDetailsClick}
         >
           <p className="text-white uppercase font-semibold">view details</p>
         </button>

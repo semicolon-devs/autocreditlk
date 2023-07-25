@@ -4,7 +4,7 @@ import { paymentsArr } from "../data/SampleData";
 
 const DebtorDetails = () => {
   return (
-    <div className="container mx-auto">
+    <div className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 bg-white p-3 drop-shadow-lg rounded-lg">
         <div>
           <p className="text-2xl font-bold capitalize">saman bandara</p>

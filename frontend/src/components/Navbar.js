@@ -16,30 +16,28 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
   // logout axio here
 
   return (
-    <nav className="w-full flex items-center justify-center sticky top-5 z-10 mb-5">
-      <div className="flex items-center justify-between w-full">
-        <div className="bg-white hover:bg-yellow rounded-lg drop-shadow-lg cursor-pointer me-5">
-          <button
-            className="h-full border-none outline-none p-3 z-10"
-            onClick={handleSidebar}
-          >
-            <MenuIcon />
-          </button>
-        </div>
-        <div className="bg-white rounded-lg drop-shadow-lg p-3 flex-grow flex items-center justify-center me-5">
-          <h1 className="text-maroon font-bold uppercase text-dark text-xl sm:text-2xl text-center">
-            auto credit lk
-          </h1>
-          {/* <h2 className="font-semibold uppercase text-purple-50 text-lg">
+    <nav className="w-full flex items-center justify-between mb-5 sticky top-5 z-10">
+      <div className="bg-white hover:bg-yellow rounded-lg drop-shadow-lg cursor-pointer me-5">
+        <button
+          className="h-full border-none outline-none p-3 z-10"
+          onClick={handleSidebar}
+        >
+          <MenuIcon />
+        </button>
+      </div>
+      <div className="bg-white rounded-lg drop-shadow-lg p-3 flex-grow flex items-center justify-center me-5">
+        <h1 className="text-maroon font-bold uppercase text-dark text-xl sm:text-2xl text-center">
+          auto credit lk
+        </h1>
+        {/* <h2 className="font-semibold uppercase text-purple-50 text-lg">
           debtor management system
         </h2> */}
-        </div>
-        <div className="bg-white rounded-lg p-3 drop-shadow-lg flex items-center justify-center z-20">
-          <AccountIcon />
-          <p className="capitalize leading-8 font-semibold ms-3 hidden sm:block">
-            {cookie ? cookie.userData.name : "Guest User"}
-          </p>
-        </div>
+      </div>
+      <div className="bg-white rounded-lg p-3 drop-shadow-lg flex items-center justify-center z-20">
+        <AccountIcon />
+        <p className="capitalize leading-8 font-semibold ms-3 hidden sm:block">
+          {cookie ? cookie.userData.name : "Guest User"}
+        </p>
       </div>
     </nav>
   );

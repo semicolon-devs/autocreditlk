@@ -24,7 +24,7 @@ const Sidebar = ({ collapsed, toggled }) => {
 
   return (
     <div
-      className={`bg-white h-full rounded-lg mr-5 drop-shadow-lg  flex flex-col justify-between ${
+      className={`bg-white h-full rounded-lg me-5 drop-shadow-lg  flex flex-col justify-between ${
         collapsed ? "w-max" : "w-60"
       } ${toggled ? "hidden" : "block"} transition-transform duration-1000`}
     >

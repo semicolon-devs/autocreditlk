@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -16,13 +17,13 @@ const SignIn = () => {
   // sign in axio here
 
   return (
-    <div className=" bg-gradient-to-b from-purple-400 to-purple-500 flex justify-center items-center w-screen h-screen">
-      <div className="bg-purple-100 p-5 rounded-xl border-b-purple-900 border-b-4 w-11/12 max-w-sm">
-        <p className="text-purple-900 uppercase text-center text-4xl font-bold mb-1">
+    <div className=" bg-light flex justify-center items-center w-screen h-screen p-5">
+      <div className="bg-white p-5 rounded-xl drop-shadow-lg w-full max-w-sm">
+        <h3 className="text-dark uppercase text-center text-4xl font-bold mb-1">
           sign in
-        </p>
-        <p className="text-purple-900 uppercase text-center font-semibold mb-6">
-          sign in to view and manage clients
+        </h3>
+        <p className="text-dark uppercase text-center font-semibold mb-6">
+          sign in to view and manage customers
         </p>
         <Formik
           initialValues={{
@@ -52,6 +53,15 @@ const SignIn = () => {
               type="password"
               placeholder="Enter password"
             />
+
+            <p className="mb-3 italic">
+              Forgot your password ?{" "}
+              <Link to="/recover-account">
+                <span className="text-maroon capitalize underline">
+                  click here
+                </span>
+              </Link>
+            </p>
 
             {message && (
               <div className="">

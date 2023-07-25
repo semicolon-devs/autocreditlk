@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout";
 
 import SignIn from "./pages/SignIn";
+import RecoverAccount from "./pages/RecoverAccount";
+import ResetPassword from "./pages/ResetPassword";
 import Home from "./pages/Home";
 import DebtorDetails from "./pages/DebtorDetails";
 import AddCustomer from "./pages/AddCustomer";
@@ -33,19 +35,16 @@ const App = () => {
   return (
     <Routes>
       <Route path="/sign-in" element={<SignIn />} />
+      <Route path="/recover-account" element={<RecoverAccount />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/" element={<RootLayout />}>
-        <Route
-          index
-          element={
-            // <ProtectedRoute>
-            <Home />
-            // </ProtectedRoute>
-          }
-        />
-        <Route path="/debtor-details" element={<DebtorDetails />} />
-        <Route path="/account-settings" element={<AccountSettings />} />
-        <Route path="/add-customer" element={<AddCustomer />} />
-        <Route path="/manage-users" element={<ManageUsers />} />
+        {/* <ProtectedRoute> */}
+          <Route index element={<Home />} />
+          <Route path="/debtor-details" element={<DebtorDetails />} />
+          <Route path="/account-settings" element={<AccountSettings />} />
+          <Route path="/add-customer" element={<AddCustomer />} />
+          <Route path="/manage-users" element={<ManageUsers />} />
+        {/* </ProtectedRoute> */}
         {/* <Route
           path="/admin-dashboard"
           element={

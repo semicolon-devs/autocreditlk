@@ -11,7 +11,7 @@ export const ModalPrimaryButton = ({
   return (
     <button
       onClick={primaryButtonClick}
-      className={`bg-maroon ${buttonClasses}`}
+      className={`bg-orange ${buttonClasses}`}
     >
       <p className={buttonTextClasses}>{primaryButtonText}</p>
     </button>
@@ -22,7 +22,7 @@ export const ModalCancelButton = ({ setModalShow }) => {
   return (
     <button
       onClick={() => setModalShow(false)}
-      className={`bg-darkGrey ms-3 ${buttonClasses}`}
+      className={`bg-maroon ms-3 ${buttonClasses}`}
     >
       <p className={buttonTextClasses}>cancel</p>
     </button>

@@ -6,10 +6,14 @@ import * as Yup from "yup";
 import SectionSubtitle from "../components/SectionSubtitle";
 
 import { TextInput } from "../components/FormikElements";
-import { ModalCancelButton } from "../components/Button";
+import { ModalPrimaryButton, ModalCancelButton } from "../components/Button";
 
 const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
   const [message, setMessage] = useState(null);
+
+  const addPayment = () => {
+    console.log("add payment");
+  };
 
   return (
     <Transition show={modalShow} as={Fragment}>
@@ -40,9 +44,11 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
             leaveTo="opacity-0 scale-95"
           >
             <Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-3">
-              <Dialog.Title>Add Payment</Dialog.Title>
+              <Dialog.Title className="text-2xl font-semibold mb-3">
+                Add Payment
+              </Dialog.Title>
               <Dialog.Description>
-                Add {customer.name}'s payment
+                Add <span className="font-semibold italic ">{customer.name}'s</span> payment
               </Dialog.Description>
 
               <Formik
@@ -75,20 +81,10 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
                   )}
 
                   <div className="flex">
-                    <button
-                      type="submit"
-                      className="bg-maroon rounded-lg px-4 py-2"
-                    >
-                      <p className="text-white capitalize font-bold">
-                        add payment
-                      </p>
-                    </button>
-                    {/* <button
-                      onClick={() => setModalShow(false)}
-                      className="bg-darkGrey rounded-lg px-4 py-2 ms-3"
-                    >
-                      <p className="text-white capitalize font-bold">cancel</p>
-                    </button> */}
+                    <ModalPrimaryButton
+                      primaryButtonClick={addPayment}
+                      primaryButtonText="add payment"
+                    />
                     <ModalCancelButton setModalShow={setModalShow} />
                   </div>
                 </Form>

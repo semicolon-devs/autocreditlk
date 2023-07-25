@@ -40,7 +40,7 @@ const AlertModal = ({
             leaveTo="opacity-0 scale-95"
           >
             <Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-3">
-              <Dialog.Title>Alert !</Dialog.Title>
+              <Dialog.Title className="text-2xl font-semibold mb-3">Alert !</Dialog.Title>
               <Dialog.Description className="mb-3">
                 {message}
               </Dialog.Description>

@@ -3,7 +3,7 @@ import { useField } from "formik";
 const labelClasses = "font-semibold mb-2";
 
 const inputClasses =
-  "text-input w-full rounded-lg p-2 mb-3 outline-none border border-darkGrey";
+  "text-input w-full rounded-lg p-2 mb-3 outline-none border border-grey";
 
 const conditionalInputClasses = "border-2 border-maroon";
 

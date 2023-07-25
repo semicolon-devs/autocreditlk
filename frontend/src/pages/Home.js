@@ -13,7 +13,7 @@ const Home = () => {
           <div className="bg-white drop-shadow-lg w-80 rounded-md p-3 font-semibold">
             Search by loanID
           </div>
-          <div className="bg-maroon drop-shadow-lg rounded-md p-3 ml-2 flex justify-center items-center">
+          <div className="bg-orange drop-shadow-lg rounded-md p-3 ml-2 flex justify-center items-center">
             <span className="material-symbols-outlined text-white">search</span>
           </div>
         </div>

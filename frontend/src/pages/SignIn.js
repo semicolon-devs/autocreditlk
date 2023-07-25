@@ -8,6 +8,8 @@ import { ThreeDots } from "react-loader-spinner";
 
 import { TextInput } from "../components/FormikElements";
 
+import logo from "../assets/AutoCreditLogo.png";
+
 const cookies = new Cookies();
 
 const SignIn = () => {
@@ -42,7 +44,7 @@ const SignIn = () => {
         }
       })
       .catch((res) => {
-        console.log(res)
+        console.log(res);
         setMessage(
           "Provided email or password does not match. Please try again"
         );
@@ -55,10 +57,13 @@ const SignIn = () => {
   return (
     <div className=" bg-light flex justify-center items-center w-screen h-screen p-5">
       <div className="bg-white p-5 rounded-xl drop-shadow-lg w-full max-w-sm">
-        <h3 className="text-dark uppercase text-center text-4xl font-bold mb-1">
+        <div className="w-full flex items-center justify-center mb-3">
+          <img src={logo} className="w-1/2" alt="Auto Credit LK logo" />
+        </div>
+        {/* <h3 className="text-dark uppercase text-center text-4xl font-bold mb-1">
           sign in
-        </h3>
-        <p className="text-dark uppercase text-center font-semibold mb-6">
+        </h3> */}
+        <p className="text-dark uppercase text-center font-semibold mb-3">
           sign in to view and manage customers
         </p>
         <Formik
@@ -93,15 +98,15 @@ const SignIn = () => {
             <p className="mb-3 italic">
               Forgot your password ?{" "}
               <Link to="/recover-account">
-                <span className="text-maroon capitalize underline">
+                <span className="text-orange capitalize underline">
                   click here
                 </span>
               </Link>
             </p>
 
             {message && (
-              <div className="w-full border border-maroon rounded-lg p-3 mb-3">
-                <p className="text-maroon">{message}</p>
+              <div className="w-full border border-orange rounded-lg p-3 mb-3">
+                <p className="text-orange">{message}</p>
               </div>
             )}
 

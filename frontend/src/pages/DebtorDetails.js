@@ -19,13 +19,13 @@ const DebtorDetails = () => {
             <span className="font-semibold capitalize">address : </span>
             55, Daulagala Road, Penideniya, Peradeniya
           </p>
-          <div className="bg-fadedMaroon w-max px-4 py-1 rounded-md mt-3 cursor-pointer">
+          <div className="bg-pink w-max px-4 py-1 rounded-md mt-3 cursor-pointer">
             <p className="capitalize text-white">view application pdf</p>
           </div>
-          <div className="bg-fadedMaroon hover:bg-purple-600 w-max px-4 py-1 rounded-md mt-2 cursor-pointer">
+          <div className="bg-pink w-max px-4 py-1 rounded-md mt-2 cursor-pointer">
             <p className="capitalize text-white">view document 01</p>
           </div>
-          <div className="bg-fadedMaroon hover:bg-purple-600 w-max px-4 py-1 rounded-md mt-2 cursor-pointer">
+          <div className="bg-pink w-max px-4 py-1 rounded-md mt-2 cursor-pointer">
             <p className="capitalize text-white">view document 02</p>
           </div>
         </div>
@@ -49,7 +49,7 @@ const DebtorDetails = () => {
                   change details
                 </p>
               </button>
-              <button className="bg-maroon px-4 py-1 rounded-lg ms-4">
+              <button className="bg-orange px-4 py-1 rounded-lg ms-4">
                 <p className="text-white capitalize font-semibold">
                   mark as complete
                 </p>
@@ -66,7 +66,7 @@ const DebtorDetails = () => {
               paymentsArr.map((payment) => (
                 <div
                   key={payment.paymentId}
-                  className="flex bg-lightGrey px-4 py-2 rounded-lg mb-3 max-w-xl justify-between"
+                  className="flex bg-yellow px-4 py-2 rounded-lg mb-3 max-w-xl justify-between"
                 >
                   <div className="">
                     <p className="font-semibold capitalize text-maroon">

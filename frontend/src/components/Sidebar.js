@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import * as Icons from "../Icon/Icon";
-import { LogoutIcon } from "../Icon/Icon";
+import * as Icons from "../Icons/Icon";
+import { LogoutIcon } from "../Icons/Icon";
 import { sidebarItems } from "../data/Data";
 
 import Cookies from "universal-cookie";
@@ -32,7 +32,7 @@ const Sidebar = ({ collapsed, toggled }) => {
         {sidebarItems &&
           sidebarItems.map((item) => (
             <Link to={item.path} key={item.id}>
-              <div className="p-3 flex items-center hover:bg-orange cursor-pointer overflow-hidden">
+              <div className="p-3 flex items-center hover:bg-yellow cursor-pointer overflow-hidden">
                 {renderIconComponent(item.icon)}
                 <p
                   className={`ms-3 uppercase font-semibold text-md ${
@@ -46,10 +46,10 @@ const Sidebar = ({ collapsed, toggled }) => {
           ))}
       </div>
       <div
-        className="p-3 flex items-center hover:bg-orange cursor-pointer overflow-hidden"
+        className="p-3 flex items-center hover:bg-yellow cursor-pointer overflow-hidden"
         onClick={logout}
       >
-        <LogoutIcon />
+        <LogoutIcon className="text-lg"/>
         <p
           className={`ms-3 uppercase font-semibold text-md ${
             collapsed ? "hidden" : "block"

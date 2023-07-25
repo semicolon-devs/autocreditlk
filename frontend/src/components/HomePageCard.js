@@ -31,13 +31,13 @@ const HomePageCard = ({ customer }) => {
       </div>
       <div className="flex ">
         <button
-          className="bg-maroon hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg mr-3"
+          className="bg-orange hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg mr-3"
           onClick={() => handleAddPaymentClick(customer)}
         >
           <p className="text-white uppercase font-semibold">add payment</p>
         </button>
         <button
-          className="bg-orange hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg"
+          className="bg-maroon hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg"
           onClick={handleViewDetailsClick}
         >
           <p className="text-white uppercase font-semibold">view details</p>

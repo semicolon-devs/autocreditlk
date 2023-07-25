@@ -69,7 +69,7 @@ const AccountSettings = () => {
 
               <button
                 type="submit"
-                className="bg-maroon rounded-lg px-4 py-2 mt-2 border-none outline-none"
+                className="bg-maroon w-full rounded-lg px-4 py-2 mt-2 border-none outline-none"
               >
                 <p className="text-white uppercase font-bold">reset password</p>
               </button>

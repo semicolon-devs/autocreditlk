@@ -5,7 +5,7 @@ const cookies = new Cookies();
 
 const ProtectedRoute = ({children}) => {
 
-    const token = cookies.get('meetingRoomCookie');
+    const token = cookies.get('autoCreditCookie');
 
     if(!token) {
         return <Navigate to='/sign-in' />

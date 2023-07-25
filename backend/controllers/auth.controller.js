@@ -218,7 +218,7 @@ exports.passwordReset = async (req, res, next) => {
 exports.getPendingUsers = async (req, res, next) => {
   try {
     const users = await User.find({ role: "pending" }).select(
-      "name userId email"
+      "name userId email phone"
     );
 
     res.status(200).json({ pendingUsers: users });
@@ -243,20 +243,20 @@ const generatePassword = () => {
 
 // register method
 exports.addUser = async (req, res, next) => {
-  const { name, userID, email, phone, address } = req.body;
+  const { name, email, phone } = req.body;
   const password = generatePassword();
-  console.log(password);
+  // console.log(password);
   bcrypt
     .hash(password, 10)
     .then((hashedPassword) => {
       // creating user object
       const user = new User({
         name: name,
-        userID: userID,
+        // userID: userID,
         email: email,
         password: hashedPassword,
         phone: phone,
-        address: address,
+        // address: address,
         role: "pending",
       });
 
@@ -297,7 +297,7 @@ exports.addUser = async (req, res, next) => {
         .catch((error) => {
           res.status(500).send({
             message: "Error creating user",
-            error: error.message
+            error: error.message,
           });
         });
     })
@@ -309,85 +309,83 @@ exports.addUser = async (req, res, next) => {
     });
 };
 
-
 exports.forgetPasswordReset = async (req, res, next) => {
-  const {tempPassword, email, newPassword} = req.body;
+  const { tempPassword, email, newPassword } = req.body;
 
-  User.findOne({email: email})
-  ,then(async (user) => {
-    const isMatch = await bcrypt.compare(tempPassword, user.tempPassword);
+  User.findOne({ email: email }),
+    then(async (user) => {
+      const isMatch = await bcrypt.compare(tempPassword, user.tempPassword);
 
-    if (isMatch) {
-      bcrypt
-      .hash(newPassword, 10)
-      .then((hashedPassword) => {
-        const user = {
-          email: req.body.email,
-        };
-  
-        const update = {
-          password: hashedPassword,
-          tempPassword: undefined
-        };
-  
-        User.findOneAndUpdate(user, update)
-          .then((result) => {
-            if (!result) {
-              res.status(500).send({
-                message: "otp generate failed",
+      if (isMatch) {
+        bcrypt
+          .hash(newPassword, 10)
+          .then((hashedPassword) => {
+            const user = {
+              email: req.body.email,
+            };
+
+            const update = {
+              password: hashedPassword,
+              tempPassword: undefined,
+            };
+
+            User.findOneAndUpdate(user, update)
+              .then((result) => {
+                if (!result) {
+                  res.status(500).send({
+                    message: "otp generate failed",
+                  });
+                } else {
+                  // // send mail to the user with generated password
+                  // var transporter = nodemailer.createTransport({
+                  //   service: process.env.EMAIL_PROVIDER,
+                  //   auth: {
+                  //     user: process.env.EMAIL_ADDRESS,
+                  //     pass: process.env.EMAIL_PASSWORD
+                  //   }
+                  // });
+
+                  // var mailOptions = {
+                  //   from: process.env.EMAIL_ADDRESS,
+                  //   to: req.body.email,
+                  //   subject: 'password reset',
+                  //   text: `password for meeting scheduling system is updated. \n\n
+                  //   if you didnot requiest this reset contact admin as soon as possible`
+                  // };
+
+                  // transporter.sendMail(mailOptions, function (error, info) {
+                  //   if (error) {
+                  //     console.log(error);
+                  //   } else {
+                  //     console.log('Email sent: ' + info.response);
+                  //   }
+                  // });
+                  // // -------------------------------
+                  res.status(201).send({
+                    message: "User Password reset Successfull",
+                    result,
+                  });
+                }
+              })
+              .catch((error) => {
+                res.status(500).send({
+                  message: "Error resetting password",
+                  // error,
+                });
               });
-            } else {
-              // // send mail to the user with generated password
-              // var transporter = nodemailer.createTransport({
-              //   service: process.env.EMAIL_PROVIDER,
-              //   auth: {
-              //     user: process.env.EMAIL_ADDRESS,
-              //     pass: process.env.EMAIL_PASSWORD
-              //   }
-              // });
-  
-              // var mailOptions = {
-              //   from: process.env.EMAIL_ADDRESS,
-              //   to: req.body.email,
-              //   subject: 'password reset',
-              //   text: `password for meeting scheduling system is updated. \n\n
-              //   if you didnot requiest this reset contact admin as soon as possible`
-              // };
-  
-              // transporter.sendMail(mailOptions, function (error, info) {
-              //   if (error) {
-              //     console.log(error);
-              //   } else {
-              //     console.log('Email sent: ' + info.response);
-              //   }
-              // });
-              // // -------------------------------
-              res.status(201).send({
-                message: "User Password reset Successfull",
-                result,
-              });
-            }
           })
-          .catch((error) => {
+          .catch((e) => {
             res.status(500).send({
-              message: "Error resetting password",
-              // error,
+              message: "Password was not hashed successfully",
+              e,
             });
           });
-      })
-      .catch((e) => {
-        res.status(500).send({
-          message: "Password was not hashed successfully",
-          e,
-        });
-      });
-    } else {
-      res.status(400).json({message: "temp passpord does not match"})
-    }
-  })
-  .catch((err) => {
-    res.status(400).json({message: "user with given email not found"})
-  })
+      } else {
+        res.status(400).json({ message: "temp passpord does not match" });
+      }
+    }).catch((err) => {
+      res.status(400).json({ message: "user with given email not found" });
+    });
 };
 
 exports.forgetPasswordRequest = async (req, res, next) => {
@@ -471,7 +469,7 @@ exports.passwordResetByAdmin = async (req, res, next) => {
 
       const update = {
         password: hashedPassword,
-        role: 'pending'
+        role: "pending",
       };
 
       User.findOneAndUpdate(user, update)

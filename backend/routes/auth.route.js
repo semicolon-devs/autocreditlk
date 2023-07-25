@@ -19,7 +19,7 @@ router.post("/login", login);
 router.post("/forget-password-request", forgetPasswordRequest);
 router.post("/forget-password-reset", forgetPasswordReset);
 router.post(
-  "/register",
+  "/add-user",
   // [passport.authenticate("jwt", { session: false }), isAdmin()],
   addUser
 );

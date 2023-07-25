@@ -4,8 +4,15 @@ import * as Icons from "../Icon/Icon";
 import { LogoutIcon } from "../Icon/Icon";
 import { sidebarItems } from "../data/Data";
 
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
 const Sidebar = ({ collapsed, toggled }) => {
-  // logout axio here
+  const logout = () => {
+    cookies.remove("autoCreditCookie", { path: "/" });
+    window.location.href = "/";
+  };
 
   const renderIconComponent = (icon) => {
     const IconComponent = Icons[icon];
@@ -38,7 +45,10 @@ const Sidebar = ({ collapsed, toggled }) => {
             </Link>
           ))}
       </div>
-      <div className="p-3 flex items-center hover:bg-orange cursor-pointer overflow-hidden">
+      <div
+        className="p-3 flex items-center hover:bg-orange cursor-pointer overflow-hidden"
+        onClick={logout}
+      >
         <LogoutIcon />
         <p
           className={`ms-3 uppercase font-semibold text-md ${

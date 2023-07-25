@@ -14,7 +14,43 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
-  // sign in axio here
+  const signIn = async (email, password) => {
+    setLoading(true);
+    const config = {
+      method: "post",
+      url: `http://localhost:8080/api/v1/auth/login`,
+      data: {
+        email: email,
+        password: password,
+      },
+    };
+
+    await axios(config)
+      .then((res) => {
+        if (res.data.token) {
+          cookies.set("autoCreditCookie", res.data, {
+            path: "/",
+          });
+          window.location.href = "/";
+          // } else if (res.data.userData.role == "pending") {
+          //   cookies.set("meetingRoomCookie", res.data, {
+          //     path: "/",
+          //   });
+          //   window.location.href = "/";
+        } else {
+          setMessage(res.data.message);
+        }
+      })
+      .catch((res) => {
+        console.log(res)
+        setMessage(
+          "Provided email or password does not match. Please try again"
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <div className=" bg-light flex justify-center items-center w-screen h-screen p-5">
@@ -37,7 +73,7 @@ const SignIn = () => {
             password: Yup.string().required("Required"),
           })}
           onSubmit={(values, { setSubmitting }) => {
-            // call signin axio here ==> signin axio (values.email, values.password)
+            signIn(values.email, values.password);
             setSubmitting(false);
           }}
         >
@@ -64,8 +100,8 @@ const SignIn = () => {
             </p>
 
             {message && (
-              <div className="">
-                <p className="">{message}</p>
+              <div className="w-full border border-maroon rounded-lg p-3 mb-3">
+                <p className="text-maroon">{message}</p>
               </div>
             )}
 

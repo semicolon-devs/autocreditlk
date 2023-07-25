@@ -13,7 +13,7 @@ import AccountSettings from "./pages/AccountSettings";
 import PageNotFound from "./pages/PageNotFound";
 // import AccessDeniedPage from "./pages/AccessDeniedPage";
 
-// import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
 
@@ -38,13 +38,18 @@ const App = () => {
       <Route path="/recover-account" element={<RecoverAccount />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/" element={<RootLayout />}>
-        {/* <ProtectedRoute> */}
-          <Route index element={<Home />} />
-          <Route path="/debtor-details" element={<DebtorDetails />} />
-          <Route path="/account-settings" element={<AccountSettings />} />
-          <Route path="/add-customer" element={<AddCustomer />} />
-          <Route path="/manage-users" element={<ManageUsers />} />
-        {/* </ProtectedRoute> */}
+        <Route
+          index
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/debtor-details" element={<DebtorDetails />} />
+        <Route path="/account-settings" element={<AccountSettings />} />
+        <Route path="/add-customer" element={<AddCustomer />} />
+        <Route path="/manage-users" element={<ManageUsers />} />
         {/* <Route
           path="/admin-dashboard"
           element={

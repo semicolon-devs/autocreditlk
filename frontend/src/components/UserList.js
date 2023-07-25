@@ -10,6 +10,28 @@ const UserList = () => {
   const [displayUser, setDisplayUser] = useState(null);
   const [DeleteUserModalShow, setDeleteUserModalShow] = useState(false);
 
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     const axiosConfig = {
+  //       method: "get",
+  //       url: `${process.env.REACT_APP_BACKEND}/auth/users`,
+  //       headers: {
+  //         Authorization: `Bearer ${token.token}`,
+  //       },
+  //     };
+
+  //     axios(axiosConfig)
+  //       .then((response) => {
+  //         setUsers(response.data.users);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   };
+
+  //   fetchUsers();
+  // }, []);
+
   const handleDeleteUserClick = (user) => {
     setDisplayUser(user);
     setDeleteUserModalShow(true);

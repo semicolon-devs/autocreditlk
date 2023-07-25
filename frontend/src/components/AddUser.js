@@ -1,13 +1,48 @@
 import React, { useState } from "react";
-import { Formik, Form, useField } from "formik";
+import axios from "axios";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { ThreeDots } from "react-loader-spinner";
 
 import { TextInput } from "../components/FormikElements";
 import SectionSubtitle from "../components/SectionSubtitle";
 
-const AddUser = () => {
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
+const AddUser = ({ setPendingUsers }) => {
   const [loading, setLoading] = useState(false);
+
+  const token = cookies.get("autoCreditCookie");
+
+  const addNewUser = (name, email, mobileNo) => {
+    setLoading(true);
+    const axiosConfig = {
+      method: "post",
+      url: `http://localhost:8080/api/v1/auth/add-user`,
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
+      data: {
+        name: name,
+        email: email,
+        phone: mobileNo,
+      },
+    };
+    axios(axiosConfig)
+      .then((response) => {
+        console.log(response);
+        setPendingUsers((prev) => [...prev, response.data.result]);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
     <div className="">
       <SectionSubtitle title="add user" />
@@ -29,6 +64,7 @@ const AddUser = () => {
             .required("Required"),
         })}
         onSubmit={(values, { setSubmitting, resetForm }) => {
+          addNewUser(values.name, values.email, values.mobileNo);
           setSubmitting(false);
           resetForm({});
         }}

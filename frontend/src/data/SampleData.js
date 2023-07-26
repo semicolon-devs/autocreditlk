@@ -1,50 +1,68 @@
 export const customerArr = [
   {
-    loanId: "#0548",
+    loanId: "0500",
     name: "Saman Bandara",
     total: "200,000 LKR",
     arrears: "80,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
+    mobileNo: "0771234567",
+    address: "123, Main Street, Colombo",
+    startDate: "15/08/2023",
   },
   {
-    loanId: "#0600",
+    loanId: "0600",
     name: "Sunil Shantha",
     total: "400,000 LKR",
     arrears: "80,000 LKR",
     description: "Lorem, sed do eiusmod tempor incididun...",
+    mobileNo: "0762345678",
+    address: "456, Galle Road, Kandy",
+    startDate: "20/08/2023",
   },
   {
-    loanId: "#0700",
+    loanId: "0700",
     name: "Lalith Kumara",
     total: "50,000 LKR",
     arrears: "10,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
+    mobileNo: "0713456789",
+    address: "789, Beach Road, Negombo",
+    startDate: "10/09/2023",
   },
   {
-    loanId: "#0547",
+    loanId: "0800",
     name: "Saman Bandara",
     total: "200,000 LKR",
     arrears: "80,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
+    mobileNo: "0774567890",
+    address: "234, Park Avenue, Anuradhapura",
+    startDate: "05/10/2023",
   },
   {
-    loanId: "#0601",
+    loanId: "0900",
     name: "Saman Bandara",
     total: "200,000 LKR",
     arrears: "80,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
+    mobileNo: "0765678901",
+    address: "567, Hillside Drive, Gampaha",
+    startDate: "12/10/2023",
   },
   {
-    loanId: "#0701",
+    loanId: "0400",
     name: "Saman Bandara",
     total: "200,000 LKR",
     arrears: "80,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
+    mobileNo: "0726789012",
+    address: "890, Temple Road, Matara",
+    startDate: "28/09/2023",
   },
 ];
 

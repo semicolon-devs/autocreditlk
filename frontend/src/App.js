@@ -1,4 +1,9 @@
-import { Route, Routes } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 
 import RootLayout from "./layouts/RootLayout";
 
@@ -6,7 +11,7 @@ import SignIn from "./pages/SignIn";
 import RecoverAccount from "./pages/RecoverAccount";
 import ResetPassword from "./pages/ResetPassword";
 import Home from "./pages/Home";
-import DebtorDetails from "./pages/DebtorDetails";
+import CustomerDetails from "./pages/CustomerDetails";
 import AddCustomer from "./pages/AddCustomer";
 import ManageUsers from "./pages/ManageUsers";
 import AccountSettings from "./pages/AccountSettings";
@@ -20,20 +25,9 @@ import "./App.css";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
-const App = () => {
-  // const [toggled, setToggled] = useState(false);
-
-  // const cookie = cookies.get("meetingRoomCookie");
-  // const isAdmin = () => {
-  //   if (cookie && cookie.userData.role === "admin") {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // };
-
-  return (
-    <Routes>
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/recover-account" element={<RecoverAccount />} />
       <Route path="/reset-password" element={<ResetPassword />} />
@@ -46,22 +40,27 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="/debtor-details" element={<DebtorDetails />} />
+        <Route path="/customer-details/:id" element={<CustomerDetails />} />
         <Route path="/account-settings" element={<AccountSettings />} />
         <Route path="/add-customer" element={<AddCustomer />} />
         <Route path="/manage-users" element={<ManageUsers />} />
-        {/* <Route
-          path="/admin-dashboard"
-          element={
-            <ProtectedRoute>
-            {isAdmin() ? <AdminDashboard /> : <AccessDeniedPage />}
-            </ProtectedRoute>
-          }
-        /> */}
         <Route path="*" element={<PageNotFound />} />
       </Route>
-    </Routes>
-  );
+    </>
+  )
+);
+
+const App = () => {
+  // const cookie = cookies.get("meetingRoomCookie");
+  // const isAdmin = () => {
+  //   if (cookie && cookie.userData.role === "admin") {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
+
+  return <RouterProvider router={router} />;
 };
 
 export default App;

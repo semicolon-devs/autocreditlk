@@ -1,23 +1,29 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
+import { customerArr } from "../data/SampleData";
 import { paymentsArr } from "../data/SampleData";
 
-const DebtorDetails = () => {
+const CustomerDetails = () => {
+  const { id } = useParams();
+
+  const customer = customerArr.find((item) => item.loanId === id);
+
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 bg-white p-3 drop-shadow-lg rounded-lg">
         <div>
-          <p className="text-2xl font-bold capitalize">saman bandara</p>
+          <p className="text-2xl font-bold capitalize">{customer.name}</p>
           <p className="mt-3">
             <span className="font-semibold capitalize">telephone no : </span>
-            0775145769{" "}
+            {customer.mobileNo}
             <span className="material-symbols-outlined text-sm cursor-pointer">
               edit
             </span>
           </p>
           <p className="">
             <span className="font-semibold capitalize">address : </span>
-            55, Daulagala Road, Penideniya, Peradeniya
+            {customer.address}
           </p>
           <div className="bg-pink w-max px-4 py-1 rounded-md mt-3 cursor-pointer">
             <p className="capitalize text-white">view application pdf</p>
@@ -33,23 +39,23 @@ const DebtorDetails = () => {
           <div className="rounded-lg p-5">
             <p className="">
               <span className="font-semibold capitalize">start date : </span>
-              01/01/2023
+              {customer.startDate}
             </p>
             <p className="">
               <span className="font-semibold capitalize">loan amount : </span>
-              200,000 LKR
+              {customer.total}
             </p>
             <p className="">
               <span className="font-semibold capitalize">arrears : </span>
-              50,000 LKR
+              {customer.arrears}
             </p>
             <div className=" flex mt-4">
-              <button className="bg-maroon px-4 py-1 rounded-lg">
+              <button className="bg-maroon px-4 py-1 rounded-lg outline-none border-none">
                 <p className="text-white capitalize font-semibold">
                   change details
                 </p>
               </button>
-              <button className="bg-orange px-4 py-1 rounded-lg ms-4">
+              <button className="bg-orange px-4 py-1 rounded-lg ms-4 outline-none border-none">
                 <p className="text-white capitalize font-semibold">
                   mark as complete
                 </p>
@@ -92,4 +98,4 @@ const DebtorDetails = () => {
   );
 };
 
-export default DebtorDetails;
+export default CustomerDetails;

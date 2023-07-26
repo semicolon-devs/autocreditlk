@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import SectionSubtitle from "../components/SectionSubtitle";
 
@@ -6,31 +7,38 @@ import { userArr } from "../data/SampleData";
 import { CloseIcon } from "../Icons/Icon";
 import DeleteUserModal from "../modals/DeleteUserModal";
 
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
 const UserList = () => {
+  const [users, setUsers] = useState([]);
   const [displayUser, setDisplayUser] = useState(null);
   const [DeleteUserModalShow, setDeleteUserModalShow] = useState(false);
 
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     const axiosConfig = {
-  //       method: "get",
-  //       url: `${process.env.REACT_APP_BACKEND}/auth/users`,
-  //       headers: {
-  //         Authorization: `Bearer ${token.token}`,
-  //       },
-  //     };
+  const token = cookies.get("autoCreditCookie");
 
-  //     axios(axiosConfig)
-  //       .then((response) => {
-  //         setUsers(response.data.users);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   };
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const axiosConfig = {
+        method: "get",
+        url: `${process.env.REACT_APP_BACKEND}/auth/users`,
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+        },
+      };
 
-  //   fetchUsers();
-  // }, []);
+      axios(axiosConfig)
+        .then((response) => {
+          setUsers(response.data.users);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleDeleteUserClick = (user) => {
     setDisplayUser(user);
@@ -40,11 +48,11 @@ const UserList = () => {
   return (
     <div>
       <SectionSubtitle title="users" />
-      {userArr &&
-        userArr.map((user) => (
+      {users &&
+        users.map((user) => (
           <div
             className="bg-yellow rounded-lg p-3 mb-3 flex justify-between items-center"
-            key={user.id}
+            key={user._id}
           >
             <div className="">
               <p className="text-maroon capitalize text-lg font-semibold leading-none">

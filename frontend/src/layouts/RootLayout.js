@@ -27,6 +27,8 @@ const RootLayout = () => {
 
   const sidebarHeight = `calc(${screenHeight}px - 116px)`;
 
+  const bodyHeight = screenHeight - 116;
+
   return (
     <div className="bg-light min-h-screen p-5 flex flex-col">
       <Navbar
@@ -39,7 +41,12 @@ const RootLayout = () => {
         <div className="sticky top-[96px]" style={{ height: sidebarHeight }}>
           <Sidebar collapsed={collapsed} toggled={toggled} />
         </div>
-        <Outlet />
+        <div
+          className={`overflow-y-auto rounded-lg w-full`}
+          style={{ maxHeight: `${bodyHeight}px` }}
+        >
+          <Outlet />
+        </div>
       </div>
     </div>
   );

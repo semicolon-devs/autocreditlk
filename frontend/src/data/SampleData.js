@@ -33,7 +33,7 @@ export const customerArr = [
   },
   {
     loanId: "0800",
-    name: "Saman Bandara",
+    name: "Jehan Fernando",
     total: "200,000 LKR",
     arrears: "80,000 LKR",
     description:
@@ -44,7 +44,7 @@ export const customerArr = [
   },
   {
     loanId: "0900",
-    name: "Saman Bandara",
+    name: "Jerome Fernando",
     total: "200,000 LKR",
     arrears: "80,000 LKR",
     description:
@@ -55,7 +55,7 @@ export const customerArr = [
   },
   {
     loanId: "0400",
-    name: "Saman Bandara",
+    name: "Kumar Sangakkara",
     total: "200,000 LKR",
     arrears: "80,000 LKR",
     description:

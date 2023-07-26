@@ -1,12 +1,20 @@
 import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
+import Cookies from "universal-cookie";
 
 import SectionTitle from "../components/SectionTitle";
 import SectionSubtitle from "../components/SectionSubtitle";
 
 import { TextInputWithLabel as TextInput } from "../components/FormikElements";
+import { AccountIcon } from "../Icons/Icon";
+
+const cookies = new Cookies();
 
 const AccountSettings = () => {
+  const cookie = cookies.get("autoCreditCookie");
+
+  console.log(cookie);
+
   // change password axio here
 
   return (
@@ -15,7 +23,8 @@ const AccountSettings = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="bg-white w-full rounded-lg drop-shadow-lg p-3">
           <SectionSubtitle title="account details" />
-          <div className="bg-purple-50 w-full max-w-md p-5 rounded-lg">
+          <div className="w-full max-w-md rounded-lg mx-auto text-center">
+            <AccountIcon className="text-maroon opacity-75" sx={{ fontSize: 120 }} />
             <p className="">Name : Saman Kumara</p>
             <p className="">Email : samankumara@gmail.com</p>
             <p className="">Phone No. : 076 125 4783</p>

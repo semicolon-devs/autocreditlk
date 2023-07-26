@@ -64,6 +64,73 @@ export const customerArr = [
     address: "890, Temple Road, Matara",
     startDate: "28/09/2023",
   },
+  // New objects
+  {
+    loanId: "1000",
+    name: "Chathurika Perera",
+    total: "350,000 LKR",
+    arrears: "70,000 LKR",
+    description:
+      "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
+    mobileNo: "0712345678",
+    address: "567, Lake View, Nuwara Eliya",
+    startDate: "10/11/2023",
+  },
+  {
+    loanId: "1100",
+    name: "Nimal Silva",
+    total: "100,000 LKR",
+    arrears: "20,000 LKR",
+    description:
+      "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
+    mobileNo: "0773456789",
+    address: "678, Beach Road, Kalutara",
+    startDate: "05/12/2023",
+  },
+  {
+    loanId: "1200",
+    name: "Indika Perera",
+    total: "150,000 LKR",
+    arrears: "30,000 LKR",
+    description:
+      "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
+    mobileNo: "0764567890",
+    address: "345, Main Street, Galle",
+    startDate: "20/01/2024",
+  },
+  {
+    loanId: "1300",
+    name: "Ruwan Fernando",
+    total: "300,000 LKR",
+    arrears: "60,000 LKR",
+    description:
+      "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
+    mobileNo: "0725678901",
+    address: "789, Hillside Avenue, Kurunegala",
+    startDate: "15/02/2024",
+  },
+  {
+    loanId: "1400",
+    name: "Thilini Kumari",
+    total: "250,000 LKR",
+    arrears: "40,000 LKR",
+    description:
+      "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
+    mobileNo: "0716789012",
+    address: "123, Green Road, Ratnapura",
+    startDate: "10/03/2024",
+  },
+  {
+    loanId: "1500",
+    name: "Kamal Wijesinghe",
+    total: "180,000 LKR",
+    arrears: "20,000 LKR",
+    description:
+      "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
+    mobileNo: "0767890123",
+    address: "456, High Street, Jaffna",
+    startDate: "05/04/2024",
+  },
 ];
 
 export const paymentsArr = [

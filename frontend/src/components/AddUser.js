@@ -54,7 +54,7 @@ const AddUser = ({ setPendingUsers }) => {
         }}
         validationSchema={Yup.object({
           name: Yup.string()
-            .max(20, "Must be 20 characters or less")
+            .max(30, "Must be 30 characters or less")
             .required("Required"),
           email: Yup.string()
             .email("Invalid email address")

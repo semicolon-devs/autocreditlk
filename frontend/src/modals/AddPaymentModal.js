@@ -3,15 +3,17 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import SectionSubtitle from "../components/SectionSubtitle";
-
 import { TextInput } from "../components/FormikElements";
-import { ModalPrimaryButton, ModalCancelButton } from "../components/Button";
+import {
+  modalPrimaryButtonClasses,
+  modalCancelButtonClasses,
+  buttonTextClasses
+} from "../data/Classes";
 
 const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
   const [message, setMessage] = useState(null);
 
-  const addPayment = () => {
+  const addPaymentButtonClick = () => {
     console.log("add payment");
   };
 
@@ -48,7 +50,9 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
                 Add Payment
               </Dialog.Title>
               <Dialog.Description>
-                Add <span className="font-semibold italic ">{customer.name}'s</span> payment
+                Add{" "}
+                <span className="font-semibold italic ">{customer.name}'s</span>{" "}
+                payment
               </Dialog.Description>
 
               <Formik
@@ -81,11 +85,18 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
                   )}
 
                   <div className="flex">
-                    <ModalPrimaryButton
-                      primaryButtonClick={addPayment}
-                      primaryButtonText="add payment"
-                    />
-                    <ModalCancelButton setModalShow={setModalShow} />
+                    <button
+                      className={modalPrimaryButtonClasses}
+                      onClick={addPaymentButtonClick}
+                    >
+                      <p className={buttonTextClasses}>add payment</p>
+                    </button>
+                    <button
+                      className={modalCancelButtonClasses}
+                      onClick={() => setModalShow(false)}
+                    >
+                      <p className={buttonTextClasses}>cancel</p>
+                    </button>
                   </div>
                 </Form>
               </Formik>

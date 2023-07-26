@@ -3,8 +3,8 @@ export const buttonClasses =
 
 export const buttonTextClasses = "text-white uppercase font-bold";
 
-export const modalPrimaryButtonClasses =
+export const primaryButtonClasses =
   "bg-orange rounded-lg px-4 py-1 outline-none border-none";
 
-export const modalCancelButtonClasses =
+export const secondaryButtonClasses =
   "bg-maroon rounded-lg px-4 py-1 outline-none border-none";

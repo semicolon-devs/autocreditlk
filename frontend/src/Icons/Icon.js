@@ -10,6 +10,9 @@ import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSetting
 import ErrorRoundedIcon from "@mui/icons-material/ErrorRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -27,6 +30,9 @@ export {
   ErrorRoundedIcon as ErrorIcon,
   AccountCircleRoundedIcon as AccountIcon,
   CloseRoundedIcon as CloseIcon,
+  SearchRoundedIcon as SearchIcon,
+  MoreVertRoundedIcon as ThreeDotsIcon,
+  EditRoundedIcon as EditIcon,
   ArrowBackIcon,
   ArrowRightOutlinedIcon as ArrowIcon,
 };

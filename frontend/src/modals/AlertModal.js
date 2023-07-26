@@ -3,8 +3,8 @@ import { Dialog, Transition } from "@headlessui/react";
 
 import {
   buttonTextClasses,
-  modalCancelButtonClasses,
-  modalPrimaryButtonClasses,
+  secondaryButtonClasses,
+  primaryButtonClasses,
 } from "../data/Classes";
 
 const AlertModal = ({
@@ -50,13 +50,13 @@ const AlertModal = ({
                 {message}
               </Dialog.Description>
               <button
-                className={modalPrimaryButtonClasses}
+                className={primaryButtonClasses}
                 onClick={primaryButtonClick}
               >
                 <p className={buttonTextClasses}>{primaryButtonText}</p>
               </button>
               <button
-                className={`ms-3 ${modalCancelButtonClasses}`}
+                className={`ms-3 ${secondaryButtonClasses}`}
                 onClick={() => setModalShow(false)}
               >
                 <p className={buttonTextClasses}>cancel</p>

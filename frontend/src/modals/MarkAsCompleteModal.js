@@ -17,7 +17,7 @@ const MarkAsCompleteModal = ({ modalShow, setModalShow, user }) => {
       modalShow={modalShow}
       setModalShow={setModalShow}
       message={`Are you sure you want to mark ${user.name}'s loan payment as complete ?`}
-      primaryButtonText="yes"
+      primaryButtonText="confirm completion"
       primaryButtonClick={completeButtonClick}
     />
   );

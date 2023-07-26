@@ -4,6 +4,7 @@ import HomePageCard from "../components/HomePageCard";
 // import AddPaymentModal from "../components/AddPaymentModal";
 
 import { customerArr } from "../data/SampleData";
+import { SearchIcon } from "../Icons/Icon";
 
 const Home = () => {
   const [searchField, setSearchField] = useState("");
@@ -31,7 +32,7 @@ const Home = () => {
             onChange={(e) => setSearchField(e.target.value)}
           />
           <div className="bg-maroon drop-shadow-lg rounded-md p-3 ml-2 flex justify-center items-center">
-            <span className="material-symbols-outlined text-white">search</span>
+            <SearchIcon className="text-white"/>
           </div>
         </div>
         <div className="">

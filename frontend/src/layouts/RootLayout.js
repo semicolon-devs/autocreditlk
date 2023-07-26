@@ -25,7 +25,7 @@ const RootLayout = () => {
 
   const screenHeight = window.innerHeight;
 
-  const sideBarHeight = `calc(${screenHeight}px - 116px)`;
+  const sidebarHeight = `calc(${screenHeight}px - 116px)`;
 
   return (
     <div className="bg-light min-h-screen p-5 flex flex-col">
@@ -36,7 +36,7 @@ const RootLayout = () => {
         setToggled={setToggled}
       />
       <div className="flex">
-        <div className="sticky top-[96px]" style={{ height: sideBarHeight }}>
+        <div className="sticky top-[96px]" style={{ height: sidebarHeight }}>
           <Sidebar collapsed={collapsed} toggled={toggled} />
         </div>
         <Outlet />

@@ -87,7 +87,7 @@ const AccountSettings = () => {
                 .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
             })}
             onSubmit={(values, { setSubmitting }) => {
-              //   call change password axio here ==> changePassword(values.oldPassword, values.newPassword)
+              //   call change password axio here ==> changePassword(values.currentPassword, values.newPassword)
               setSubmitting(false);
             }}
           >

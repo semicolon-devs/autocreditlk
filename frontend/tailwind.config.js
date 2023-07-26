@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
@@ -7,7 +8,7 @@ module.exports = {
       current: "currentColor",
       white: "#ffffff",
       black: "#000000",
-      grey: "#404040",
+      grey: "#808080",
       light: "#F2F2F2",
       maroon: "#260202",
       orange: "#F22D1B",

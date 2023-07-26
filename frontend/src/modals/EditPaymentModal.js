@@ -7,14 +7,14 @@ import { TextInput } from "../components/FormikElements";
 import {
   primaryButtonClasses,
   secondaryButtonClasses,
-  buttonTextClasses
+  buttonTextClasses,
 } from "../data/Classes";
 
-const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
+const EditPaymentModal = ({ modalShow, setModalShow, paymentEntry }) => {
   const [message, setMessage] = useState(null);
 
-  const addPaymentButtonClick = () => {
-    console.log("add payment");
+  const editPaymentButtonClick = () => {
+    console.log("edit payment");
   };
 
   return (
@@ -47,20 +47,21 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
           >
             <Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-3">
               <Dialog.Title className="text-2xl font-semibold mb-3">
-                Add Payment
+                Edit Payment
               </Dialog.Title>
               <Dialog.Description>
-                Add{" "}
-                <span className="font-semibold italic ">{customer.name}'s</span>{" "}
-                payment
+                Edit payment ID :{" "}
+                <span className="font-semibold italic ">
+                  {paymentEntry.paymentId}
+                </span>
               </Dialog.Description>
 
               <Formik
                 initialValues={{
-                  amount: "",
+                  newAmount: "",
                 }}
                 validationSchema={Yup.object({
-                  amount: Yup.number()
+                  newAmount: Yup.number()
                     .typeError("Amount must be a number")
                     .required("Amount is required")
                     .positive("Amount must be a positive number")
@@ -73,9 +74,9 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
               >
                 <Form className="flex flex-col w-full mt-3">
                   <TextInput
-                    name="amount"
+                    name="newAmount"
                     type="number"
-                    placeholder="Enter payment"
+                    placeholder={paymentEntry.amount}
                   />
 
                   {message && (
@@ -87,9 +88,9 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
                   <div className="flex">
                     <button
                       className={primaryButtonClasses}
-                      onClick={addPaymentButtonClick}
+                      onClick={editPaymentButtonClick}
                     >
-                      <p className={buttonTextClasses}>add payment</p>
+                      <p className={buttonTextClasses}>edit payment</p>
                     </button>
                     <button
                       className={`ms-3 ${secondaryButtonClasses}`}
@@ -108,4 +109,4 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
   );
 };
 
-export default AddPaymentModal;
+export default EditPaymentModal;

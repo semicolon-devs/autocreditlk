@@ -8,8 +8,8 @@ import { ThreeDots } from "react-loader-spinner";
 import Cookies from "universal-cookie";
 
 import {
-  modalPrimaryButtonClasses,
-  modalCancelButtonClasses,
+  primaryButtonClasses,
+  secondaryButtonClasses,
   buttonTextClasses,
 } from "../data/Classes";
 import { TextInput } from "../components/FormikElements";
@@ -107,7 +107,7 @@ const EditAccountModal = ({ modalShow, setModalShow }) => {
                   />
 
                   <button
-                    className={`w-full flex justify-center items-center ${modalPrimaryButtonClasses}`}
+                    className={`w-full flex justify-center items-center ${primaryButtonClasses}`}
                     type="submit"
                   >
                     {loading ? (
@@ -128,7 +128,7 @@ const EditAccountModal = ({ modalShow, setModalShow }) => {
                 </Form>
               </Formik>
               <button
-                className={`w-full mt-3 ${modalCancelButtonClasses}`}
+                className={`w-full mt-3 ${secondaryButtonClasses}`}
                 onClick={() => setModalShow(false)}
               >
                 <p className={buttonTextClasses}>cancel</p>

@@ -24,7 +24,7 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
         </button>
       </div>
       <div className="bg-white rounded-lg drop-shadow-lg p-3 flex-grow flex items-center justify-center me-5">
-        <h1 className="text-maroon font-bold uppercase text-dark text-xl sm:text-2xl text-center">
+        <h1 className="text-maroon font-bold uppercase text-dark text-2xl text-center">
           auto credit lk
         </h1>
         {/* <h2 className="font-semibold uppercase text-purple-50 text-lg">

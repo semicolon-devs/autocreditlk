@@ -3,6 +3,7 @@ export const customerArr = [
     loanId: "0500",
     name: "Saman Bandara",
     total: "200,000 LKR",
+    totalPaid: "40,000 LKR",
     arrears: "80,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
@@ -14,6 +15,7 @@ export const customerArr = [
     loanId: "0600",
     name: "Sunil Shantha",
     total: "400,000 LKR",
+    totalPaid: "200,000 LKR",
     arrears: "80,000 LKR",
     description: "Lorem, sed do eiusmod tempor incididun...",
     mobileNo: "0762345678",
@@ -24,6 +26,7 @@ export const customerArr = [
     loanId: "0700",
     name: "Lalith Kumara",
     total: "50,000 LKR",
+    totalPaid: "20,000 LKR",
     arrears: "10,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
@@ -35,6 +38,7 @@ export const customerArr = [
     loanId: "0800",
     name: "Jehan Fernando",
     total: "200,000 LKR",
+    totalPaid: "50,000 LKR",
     arrears: "80,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
@@ -46,6 +50,7 @@ export const customerArr = [
     loanId: "0900",
     name: "Jerome Fernando",
     total: "200,000 LKR",
+    totalPaid: "40,000 LKR",
     arrears: "80,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
@@ -57,6 +62,7 @@ export const customerArr = [
     loanId: "0400",
     name: "Kumar Sangakkara",
     total: "200,000 LKR",
+    totalPaid: "100,000 LKR",
     arrears: "80,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
@@ -64,11 +70,11 @@ export const customerArr = [
     address: "890, Temple Road, Matara",
     startDate: "28/09/2023",
   },
-  // New objects
   {
     loanId: "1000",
     name: "Chathurika Perera",
     total: "350,000 LKR",
+    totalPaid: "200,000 LKR",
     arrears: "70,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
@@ -80,6 +86,7 @@ export const customerArr = [
     loanId: "1100",
     name: "Nimal Silva",
     total: "100,000 LKR",
+    totalPaid: "10,000 LKR",
     arrears: "20,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
@@ -91,6 +98,7 @@ export const customerArr = [
     loanId: "1200",
     name: "Indika Perera",
     total: "150,000 LKR",
+    totalPaid: "80,000 LKR",
     arrears: "30,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
@@ -102,6 +110,7 @@ export const customerArr = [
     loanId: "1300",
     name: "Ruwan Fernando",
     total: "300,000 LKR",
+    totalPaid: "150,000 LKR",
     arrears: "60,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
@@ -113,6 +122,7 @@ export const customerArr = [
     loanId: "1400",
     name: "Thilini Kumari",
     total: "250,000 LKR",
+    totalPaid: "200,000 LKR",
     arrears: "40,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",
@@ -124,6 +134,7 @@ export const customerArr = [
     loanId: "1500",
     name: "Kamal Wijesinghe",
     total: "180,000 LKR",
+    totalPaid: "150,000 LKR",
     arrears: "20,000 LKR",
     description:
       "Lorem ipsum dolor sit amet, consector adipiscing elit, sed do eiusmod tempor incididun...",

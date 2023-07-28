@@ -13,6 +13,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -33,6 +34,7 @@ export {
   SearchRoundedIcon as SearchIcon,
   MoreVertRoundedIcon as ThreeDotsIcon,
   EditRoundedIcon as EditIcon,
+  DeleteRoundedIcon as DeleteIcon,
   ArrowBackIcon,
   ArrowRightOutlinedIcon as ArrowIcon,
 };

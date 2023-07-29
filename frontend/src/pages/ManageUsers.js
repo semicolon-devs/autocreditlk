@@ -12,13 +12,15 @@ const cookies = new Cookies();
 
 const ManageUsers = () => {
   const [pendingUsers, setPendingUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  console.log(pendingUsers)
+  console.log(pendingUsers);
 
   const token = cookies.get("autoCreditCookie");
 
   useEffect(() => {
     const fetchPendingUsers = async () => {
+      setLoading(true);
       const axiosConfig = {
         method: "get",
         url: `http://localhost:8080/api/v1/auth/pending-users`,
@@ -33,6 +35,9 @@ const ManageUsers = () => {
         })
         .catch((error) => {
           console.log(error);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     };
 
@@ -55,6 +60,7 @@ const ManageUsers = () => {
           <PendingUserList
             pendingUsers={pendingUsers}
             setPendingUsers={setPendingUsers}
+            loading={loading}
           />
         </div>
       </div>

@@ -58,9 +58,8 @@ const EditAccountModal = ({ modalShow, setModalShow }) => {
                 edit account details
               </Dialog.Title>
               <Dialog.Description className="mb-3">
-                Edit{" "}
-                <span className="font-semibold italic ">Sunil Shantha's</span>{" "}
-                account details of
+                Enter only the feilds to be updated. Empty feilds will remain
+                unchanged
               </Dialog.Description>
               <Formik
                 initialValues={{

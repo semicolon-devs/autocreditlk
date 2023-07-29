@@ -9,6 +9,7 @@ import SectionTitle from "../components/SectionTitle";
 import {
   TextInputWithLabel as TextInput,
   SelectWithLabel as Select,
+  TextAreaWithLabel as TextArea,
 } from "../components/FormikElements";
 
 const AddCustomer = () => {
@@ -16,6 +17,9 @@ const AddCustomer = () => {
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Required"),
+    NIC: Yup.string()
+      .matches(/^(?:\d{9}V|\d{12})$/, "Must be a valid NIC number")
+      .required("Required"),
     mobileNo: Yup.string()
       .matches(/^[0-9]{10}$/, "Must be a valid mobile number")
       .required("Required"),
@@ -34,6 +38,7 @@ const AddCustomer = () => {
     billingCycle: Yup.string()
       .oneOf(["Daily", "Weekly", "Monthly"], "Invalid selection")
       .required("Required"),
+    description: Yup.string().max(100, "Must be 100 characters or less"),
     guarantorName: Yup.string().required("Required"),
     guarantorMobileNo: Yup.string()
       .matches(/^[0-9]{10}$/, "Must be a valid mobile number")
@@ -46,12 +51,14 @@ const AddCustomer = () => {
       <Formik
         initialValues={{
           name: "",
+          NIC: "",
           mobileNo: "",
           address: "",
           loanAmount: "",
           duration: "",
           startDate: "",
           billingCycle: "",
+          description: "",
           guarantorName: "",
           guarantorMobileNo: "",
         }}
@@ -69,6 +76,13 @@ const AddCustomer = () => {
                 type="text"
                 label="Name :"
                 placeholder="Saman Kumara"
+              />
+
+              <TextInput
+                name="NIC"
+                type="text"
+                label="NIC :"
+                placeholder="871301450V / 198713001450"
               />
 
               <TextInput
@@ -112,6 +126,13 @@ const AddCustomer = () => {
                 <option value="Weekly">Weekly</option>
                 <option value="Monthly">Monthly</option>
               </Select>
+
+              <TextArea
+                name="description"
+                type="text"
+                label="Description(optional) :"
+                placeholder="Add a descripton"
+              />
             </div>
             <div className="w-full lg:max-w-md">
               <TextInput

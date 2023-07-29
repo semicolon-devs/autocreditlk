@@ -10,6 +10,7 @@ export const customerArr = [
     mobileNo: "0771234567",
     address: "123, Main Street, Colombo",
     startDate: "15/08/2023",
+    NIC: "923456789V",
   },
   {
     loanId: "0600",
@@ -21,6 +22,7 @@ export const customerArr = [
     mobileNo: "0762345678",
     address: "456, Galle Road, Kandy",
     startDate: "20/08/2023",
+    NIC: "800987654V",
   },
   {
     loanId: "0700",
@@ -33,6 +35,7 @@ export const customerArr = [
     mobileNo: "0713456789",
     address: "789, Beach Road, Negombo",
     startDate: "10/09/2023",
+    NIC: "702345678V",
   },
   {
     loanId: "0800",
@@ -45,6 +48,7 @@ export const customerArr = [
     mobileNo: "0774567890",
     address: "234, Park Avenue, Anuradhapura",
     startDate: "05/10/2023",
+    NIC: "982345678V",
   },
   {
     loanId: "0900",
@@ -57,6 +61,7 @@ export const customerArr = [
     mobileNo: "0765678901",
     address: "567, Hillside Drive, Gampaha",
     startDate: "12/10/2023",
+    NIC: "602345678V",
   },
   {
     loanId: "0400",
@@ -69,6 +74,7 @@ export const customerArr = [
     mobileNo: "0726789012",
     address: "890, Temple Road, Matara",
     startDate: "28/09/2023",
+    NIC: "402345678V",
   },
   {
     loanId: "1000",
@@ -81,6 +87,7 @@ export const customerArr = [
     mobileNo: "0712345678",
     address: "567, Lake View, Nuwara Eliya",
     startDate: "10/11/2023",
+    NIC: "502345678V",
   },
   {
     loanId: "1100",
@@ -93,6 +100,7 @@ export const customerArr = [
     mobileNo: "0773456789",
     address: "678, Beach Road, Kalutara",
     startDate: "05/12/2023",
+    NIC: "302345678V",
   },
   {
     loanId: "1200",
@@ -105,6 +113,7 @@ export const customerArr = [
     mobileNo: "0764567890",
     address: "345, Main Street, Galle",
     startDate: "20/01/2024",
+    NIC: "902345678V",
   },
   {
     loanId: "1300",
@@ -117,6 +126,7 @@ export const customerArr = [
     mobileNo: "0725678901",
     address: "789, Hillside Avenue, Kurunegala",
     startDate: "15/02/2024",
+    NIC: "702345678V",
   },
   {
     loanId: "1400",
@@ -129,6 +139,7 @@ export const customerArr = [
     mobileNo: "0716789012",
     address: "123, Green Road, Ratnapura",
     startDate: "10/03/2024",
+    NIC: "108765432V",
   },
   {
     loanId: "1500",
@@ -141,6 +152,7 @@ export const customerArr = [
     mobileNo: "0767890123",
     address: "456, High Street, Jaffna",
     startDate: "05/04/2024",
+    NIC: "409876543V",
   },
 ];
 

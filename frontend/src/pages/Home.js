@@ -12,7 +12,8 @@ const Home = () => {
   const filteredCustomerArr = customerArr.filter((customer) => {
     return (
       customer.loanId.includes(searchField) ||
-      customer.name.toLowerCase().includes(searchField.toLowerCase())
+      customer.name.toLowerCase().includes(searchField.toLowerCase()) ||
+      customer.NIC.toLowerCase().includes(searchField.toLowerCase())
     );
   });
 
@@ -32,7 +33,7 @@ const Home = () => {
             onChange={(e) => setSearchField(e.target.value)}
           />
           <div className="bg-maroon drop-shadow-lg rounded-md p-3 ml-2 flex justify-center items-center">
-            <SearchIcon className="text-white"/>
+            <SearchIcon className="text-white" />
           </div>
         </div>
         <div className="">

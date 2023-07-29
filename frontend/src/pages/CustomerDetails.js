@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
-import MarkAsCompleteModal from "../modals/MarkAsCompleteModal";
+import SendReminderModal from "../modals/SendReminderModal";
 import AddPaymentModal from "../modals/AddPaymentModal";
 import EditPaymentModal from "../modals/EditPaymentModal";
 
@@ -23,7 +23,7 @@ const CustomerDetails = () => {
 
   const today = new Date();
 
-  const [MarkAsCompleteModalShow, setMarkAsCompleteModalShow] = useState(false);
+  const [sendReminderModalShow, setSendReminderModalShow] = useState(false);
   const [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
   const [editPaymentModalShow, setEditPaymentModalShow] = useState(false);
   const [displayEditPayment, setDisplayEditPayment] = useState(null);
@@ -46,6 +46,10 @@ const CustomerDetails = () => {
             <p className="">
               <span className="font-semibold capitalize">loan ID : </span>#
               {customer.loanId}
+            </p>
+            <p className="">
+              <span className="font-semibold capitalize">NIC : </span>
+              {customer.NIC}
             </p>
             <p className="">
               <span className="font-semibold capitalize">mobile no : </span>
@@ -102,24 +106,13 @@ const CustomerDetails = () => {
                 <p className={buttonTextClasses}>change details</p>
               </button>
             </div>
-            {MarkAsCompleteModalShow && (
-              <MarkAsCompleteModal
-                modalShow={MarkAsCompleteModalShow}
-                setModalShow={setMarkAsCompleteModalShow}
-                user={customer}
+            {sendReminderModalShow && (
+              <SendReminderModal
+                modalShow={sendReminderModalShow}
+                setModalShow={setSendReminderModalShow}
+                customer={customer}
               />
             )}
-          </div>
-          <div className="bg-white drop-shadow-lg rounded-lg p-3 mt-5">
-            <SectionSubtitle title="reminder" />
-            <div className="flex items-center justify-between">
-              <p className="">Send arrears reminder as a SMS</p>
-              <button className="bg-orange px-2 py-1 rounded-lg">
-                <p className="text-white capitalize font-semibold">
-                  send reminder
-                </p>
-              </button>
-            </div>
           </div>
         </div>
         <div>
@@ -133,9 +126,9 @@ const CustomerDetails = () => {
             </button>
             <button
               className={`ms-3 ${primaryButtonClasses}`}
-              onClick={() => setMarkAsCompleteModalShow(true)}
+              onClick={() => setSendReminderModalShow(true)}
             >
-              <p className={buttonTextClasses}>mark as complete</p>
+              <p className={buttonTextClasses}>send reminder</p>
             </button>
           </div>
           {addPaymentModalShow && (

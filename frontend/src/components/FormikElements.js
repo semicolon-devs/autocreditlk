@@ -12,7 +12,7 @@ const errorClasses = "error -mt-2 mb-1 text-maroon font-bold";
 export const TextInputWithLabel = ({ label, ...props }) => {
   const [field, meta] = useField(props);
 
-  const inputMofiedClasses = `${inputClasses} ${
+  const inputModifiedClasses = `${inputClasses} ${
     meta.touched && meta.error ? conditionalInputClasses : ""
   }`;
 
@@ -21,7 +21,7 @@ export const TextInputWithLabel = ({ label, ...props }) => {
       <label className={labelClasses} htmlFor={props.id || props.name}>
         {label}
       </label>
-      <input className={inputMofiedClasses} {...field} {...props} />
+      <input className={inputModifiedClasses} {...field} {...props} />
       {meta.touched && meta.error ? (
         <div className={errorClasses}>{meta.error}</div>
       ) : null}
@@ -32,13 +32,33 @@ export const TextInputWithLabel = ({ label, ...props }) => {
 export const TextInput = ({ label, ...props }) => {
   const [field, meta] = useField(props);
 
-  const inputMofiedClasses = `${inputClasses} ${
+  const inputModifiedClasses = `${inputClasses} ${
     meta.touched && meta.error ? conditionalInputClasses : ""
   }`;
 
   return (
     <>
-      <input className={inputMofiedClasses} {...field} {...props} />
+      <input className={inputModifiedClasses} {...field} {...props} />
+      {meta.touched && meta.error ? (
+        <div className={errorClasses}>{meta.error}</div>
+      ) : null}
+    </>
+  );
+};
+
+export const TextAreaWithLabel = ({ label, ...props }) => {
+  const [field, meta] = useField(props);
+
+  const inputModifiedClasses = `${inputClasses} ${
+    meta.touched && meta.error ? conditionalInputClasses : ""
+  }`;
+
+  return (
+    <>
+      <label className={labelClasses} htmlFor={props.id || props.name}>
+        {label}
+      </label>
+      <textarea className={inputModifiedClasses} {...field} {...props} />
       {meta.touched && meta.error ? (
         <div className={errorClasses}>{meta.error}</div>
       ) : null}
@@ -49,7 +69,7 @@ export const TextInput = ({ label, ...props }) => {
 export const SelectWithLabel = ({ label, ...props }) => {
   const [field, meta] = useField(props);
 
-  const inputMofiedClasses = `${inputClasses} ${
+  const inputModifiedClasses = `${inputClasses} ${
     meta.touched && meta.error ? conditionalInputClasses : ""
   }`;
 
@@ -58,7 +78,7 @@ export const SelectWithLabel = ({ label, ...props }) => {
       <label className={labelClasses} htmlFor={props.id || props.name}>
         {label}
       </label>
-      <select className={inputMofiedClasses} {...field} {...props} />
+      <select className={inputModifiedClasses} {...field} {...props} />
       {meta.touched && meta.error ? (
         <div className={errorClasses}>{meta.error}</div>
       ) : null}
@@ -69,13 +89,13 @@ export const SelectWithLabel = ({ label, ...props }) => {
 export const Select = ({ label, ...props }) => {
   const [field, meta] = useField(props);
 
-  const inputMofiedClasses = `${inputClasses} ${
+  const inputModifiedClasses = `${inputClasses} ${
     meta.touched && meta.error ? conditionalInputClasses : ""
   }`;
 
   return (
     <div>
-      <select className={inputMofiedClasses} {...field} {...props} />
+      <select className={inputModifiedClasses} {...field} {...props} />
       {meta.touched && meta.error ? (
         <div className={errorClasses}>{meta.error}</div>
       ) : null}

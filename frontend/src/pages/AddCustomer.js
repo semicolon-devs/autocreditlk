@@ -1,10 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
-import { Formik, Form, useField } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { ThreeDots } from "react-loader-spinner";
 
 import SectionTitle from "../components/SectionTitle";
+import SectionSubtitle from "../components/SectionSubtitle";
 
 import {
   TextInputWithLabel as TextInput,
@@ -14,6 +15,9 @@ import {
 
 const AddCustomer = () => {
   const [loading, setLoading] = useState(false);
+  const [NICCopyOne, setNICCopyOne] = useState();
+  const [NICCopyTwo, setNICCopyTwo] = useState();
+  const [customerPhoto, setCustomerPhoto] = useState();
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Required"),
@@ -43,6 +47,9 @@ const AddCustomer = () => {
     guarantorMobileNo: Yup.string()
       .matches(/^[0-9]{10}$/, "Must be a valid mobile number")
       .required("Required"),
+    guarantorNIC: Yup.string()
+      .matches(/^(?:\d{9}V|\d{12})$/, "Must be a valid NIC number")
+      .required("Required"),
   });
 
   return (
@@ -61,6 +68,7 @@ const AddCustomer = () => {
           description: "",
           guarantorName: "",
           guarantorMobileNo: "",
+          guarantorNIC: "",
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
@@ -135,11 +143,49 @@ const AddCustomer = () => {
               />
             </div>
             <div className="w-full lg:max-w-md">
+              <div className="">
+                <label className="font-semibold mb-2">NIC copy 1 upload</label>
+                <input
+                  type="file"
+                  onChange={(e) => setNICCopyOne(e.target.files[0])}
+                  className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
+                />
+              </div>
+
+              <div className="">
+                <label className="font-semibold mb-2">NIC copy 2 upload</label>
+                <input
+                  type="file"
+                  onChange={(e) => setNICCopyTwo(e.target.files[0])}
+                  className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
+                />
+              </div>
+
+              <div className="">
+                <label className="font-semibold mb-2">
+                  Customer photo upload
+                </label>
+                <input
+                  type="file"
+                  onChange={(e) => setCustomerPhoto(e.target.files[0])}
+                  className="w-full rounded-lg p-2 mb-8 outline-none border border-grey"
+                />
+              </div>
+
+              <SectionSubtitle title="guarantor details" />
+
               <TextInput
                 name="guarantorName"
                 type="text"
                 label="Guarantor Name :"
                 placeholder="Sunil Shantha"
+              />
+
+              <TextInput
+                name="guarantorNIC"
+                type="text"
+                label="Guarantor NIC :"
+                placeholder="871301450V / 198713001450"
               />
 
               <TextInput

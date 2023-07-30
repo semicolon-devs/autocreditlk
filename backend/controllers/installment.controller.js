@@ -6,42 +6,43 @@ exports.addPayment = async (req, res) => {
   const { customerID, amount, paidDate, collectedBy } = req.body;
   // might need collector_id verification, before adding to the database...
 
-  Installment.create({
-    customerID,
-    amount,
-    paidDate,
-    collectedBy,
-  })
-    .then((res) => {
-      const filter = { customerID: customerID };
-      
-      const customers = Customer.find(filter)
-        .then((customer) => {
-          Customer.findOneAndUpdate(filter, {
-            paidAmount: customer.paidAmount + amount,
-          });
-
-          const smsPayload = {
-            to : customer.phone,
-            customerId: customer.customerID,
-            customerName : customer.name,
-            collectorName : collectedBy,
-            amountPaid : amount,
-            amountLeft : customer.loanAmount - customer.paidAmount
-          };
-
-          sendDailySMS(smsPayload)
-
-          res.status(200).json({ customers: customers });
-        })
-        .catch((err) => {
-          res.status(400).json({ message: err.message });
-        });
+  try {
+    await Installment.create({
+      customerID,
+      amount,
+      paidDate,
+      collectedBy,
     })
-    .catch((err) => {
-      res.status(400).json({ message: err.message });
-    });
 
+    const filter = { customerID: customerID };
+
+    try { 
+      const customer = await Customer.findOne(filter);
+    
+      await Customer.findOneAndUpdate(filter, {
+        paidAmount: customer.paidAmount + parseInt(amount),
+      });
+
+      const smsPayload = {
+        to : customer.phone,
+        customerId: customer.customerID,
+        customerName : customer.name,
+        collectorName : collectedBy,
+        amountPaid : amount,
+        amountLeft : customer.loanAmount - customer.paidAmount
+      };
+
+      await sendDailySMS(smsPayload)
+
+      res.status(200).json({ customers: customer });
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  }
+  catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+  
 };
 
 exports.getPaymentOfCustomer = async (req, res) => {
@@ -115,7 +116,7 @@ exports.updatePayment = async (req, res) => {
             id: customer.id,
           };
           const update = {
-            paidAmount: result.paidAmount - req.body.amount,
+            paidAmount: (customer.paidAmount - result.paidAmount) + req.body.amount,
           };
           Customer.findOneAndUpdate(filter, update)
             .then((result) => {

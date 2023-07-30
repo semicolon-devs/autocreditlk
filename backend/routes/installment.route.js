@@ -10,10 +10,10 @@ const {
 } = require("../controllers/installment.controller");
 
 router.post(
-  "/",
+  "/add-payment",
   [
     passport.authenticate("jwt", { session: false }),
-    checkPermission(["admin"]),
+    checkPermission(["admin", "collector"]),
   ],
   addPayment
 );

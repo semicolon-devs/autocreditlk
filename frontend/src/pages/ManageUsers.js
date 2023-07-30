@@ -6,6 +6,8 @@ import AddUser from "../components/AddUser";
 import UserList from "../components/UserList";
 import PendingUserList from "../components/PendingUserList";
 
+import BASE_URL from "../config/ApiConfig";
+
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
@@ -14,8 +16,6 @@ const ManageUsers = () => {
   const [pendingUsers, setPendingUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  console.log(pendingUsers);
-
   const token = cookies.get("autoCreditCookie");
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const ManageUsers = () => {
       setLoading(true);
       const axiosConfig = {
         method: "get",
-        url: `http://localhost:8080/api/v1/auth/pending-users`,
+        url: `${BASE_URL}auth/pending-users`,
         headers: {
           Authorization: `Bearer ${token.token}`,
         },

@@ -8,6 +8,8 @@ import { ThreeDots } from "react-loader-spinner";
 
 import { TextInput } from "../components/FormikElements";
 
+import BASE_URL from "../config/ApiConfig";
+
 import logo from "../assets/AutoCreditLogo.png";
 
 const cookies = new Cookies();
@@ -20,7 +22,7 @@ const SignIn = () => {
     setLoading(true);
     const config = {
       method: "post",
-      url: `http://localhost:8080/api/v1/auth/login`,
+      url: `${BASE_URL}auth/login`,
       data: {
         email: email,
         password: password,
@@ -30,24 +32,17 @@ const SignIn = () => {
     await axios(config)
       .then((res) => {
         if (res.data.token) {
-          cookies.set("autoCreditCookie", res.data, {
+          cookies.set("autoCreditCookie", res.data.token, {
             path: "/",
           });
+          localStorage.setItem("userData", JSON.stringify(res.data.userData));
           window.location.href = "/";
-          // } else if (res.data.userData.role == "pending") {
-          //   cookies.set("meetingRoomCookie", res.data, {
-          //     path: "/",
-          //   });
-          //   window.location.href = "/";
         } else {
           setMessage(res.data.message);
         }
       })
       .catch((res) => {
-        console.log(res);
-        setMessage(
-          "Provided email or password does not match. Please try again"
-        );
+        setMessage(res.response.data);
       })
       .finally(() => {
         setLoading(false);

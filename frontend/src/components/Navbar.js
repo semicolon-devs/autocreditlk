@@ -1,11 +1,8 @@
 import React, { useRef } from "react";
-import Cookies from "universal-cookie";
 import { MenuIcon, AccountIcon } from "../Icons/Icon";
 
-const cookies = new Cookies();
-
 const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
-  const cookie = cookies.get("autoCreditCookie");
+  const userData = JSON.parse(localStorage.getItem("userData"));
 
   const windowWidth = useRef(window.innerWidth);
 
@@ -34,7 +31,7 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
       <div className="bg-white rounded-lg p-3 drop-shadow-lg flex items-center justify-center z-20">
         <AccountIcon />
         <p className="capitalize leading-8 font-semibold ms-3 hidden sm:block">
-          {cookie ? cookie.userData.name : "Guest User"}
+          {userData ? userData.name : "Guest User"}
         </p>
       </div>
     </nav>

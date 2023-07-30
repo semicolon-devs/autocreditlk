@@ -11,6 +11,7 @@ const cookies = new Cookies();
 const Sidebar = ({ collapsed, toggled }) => {
   const logout = () => {
     cookies.remove("autoCreditCookie", { path: "/" });
+    localStorage.removeItem("userData");
     window.location.href = "/";
   };
 

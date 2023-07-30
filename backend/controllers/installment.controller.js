@@ -1,8 +1,10 @@
 const Customer = require("../models/customer.model");
 const Installment = require("../models/installment.model");
+const { sendDailySMS } = require("../services/sms.service");
 
 exports.addPayment = async (req, res) => {
   const { customerID, amount, paidDate, collectedBy } = req.body;
+  // might need collector_id verification, before adding to the database...
 
   Installment.create({
     customerID,
@@ -12,11 +14,24 @@ exports.addPayment = async (req, res) => {
   })
     .then((res) => {
       const filter = { customerID: customerID };
+      
       const customers = Customer.find(filter)
         .then((customer) => {
           Customer.findOneAndUpdate(filter, {
             paidAmount: customer.paidAmount + amount,
           });
+
+          const smsPayload = {
+            to : customer.phone,
+            customerId: customer.customerID,
+            customerName : customer.name,
+            collectorName : collectedBy,
+            amountPaid : amount,
+            amountLeft : customer.loanAmount - customer.paidAmount
+          };
+
+          sendDailySMS(smsPayload)
+
           res.status(200).json({ customers: customers });
         })
         .catch((err) => {
@@ -26,6 +41,7 @@ exports.addPayment = async (req, res) => {
     .catch((err) => {
       res.status(400).json({ message: err.message });
     });
+
 };
 
 exports.getPaymentOfCustomer = async (req, res) => {

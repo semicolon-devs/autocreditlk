@@ -6,7 +6,7 @@ const {
   addPayment,
   getPaymentOfCustomer,
   deletePayment,
-  updatePayment,
+  updatePayment
 } = require("../controllers/installment.controller");
 
 router.post(
@@ -26,6 +26,8 @@ router.get(
   ],
   getPaymentOfCustomer
 );
+
+
 
 router.delete(
   "/:id",

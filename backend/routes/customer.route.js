@@ -22,10 +22,10 @@ router.post(
   addCustomer
 );
 router.get(
-  "/",
+  "/all",
   [
     passport.authenticate("jwt", { session: false }),
-    checkPermission(["admin"]),
+    checkPermission(["admin", "collector"]),
   ],
   getCustomers
 );

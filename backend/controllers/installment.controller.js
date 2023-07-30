@@ -47,7 +47,7 @@ exports.addPayment = async (req, res) => {
 
 exports.getPaymentOfCustomer = async (req, res) => {
   const customerID = req.params.id;
-  Installment.fine({ customerID: customerID })
+  Installment.find({ customerID: customerID })
     .then((installments) => {
       res.status(200).json({ payments: installments });
     })
@@ -101,7 +101,7 @@ exports.updatePayment = async (req, res) => {
   const id = req.params.id;
 
   const filter = {
-    id: id,
+    _id: id,
   };
 
   const update = {
@@ -110,19 +110,24 @@ exports.updatePayment = async (req, res) => {
 
   Installment.findOneAndUpdate(filter, update)
     .then((result) => {
-      Customer.findById(result.customerID)
+      Customer.findOne({customerID : result.customerID})
         .then((customer) => {
           const filter = {
-            id: customer.id,
+            _id: customer.id,
           };
           const update = {
-            paidAmount: (customer.paidAmount - result.paidAmount) + req.body.amount,
-          };
+            paidAmount: (parseInt(customer.paidAmount) - parseInt(result.amount)) + parseInt(req.body.amount),
+          }
+
+          if(update.paidAmount < 0) {
+            update.paidAmount = 0;
+          }
+
           Customer.findOneAndUpdate(filter, update)
             .then((result) => {
               res
                 .status(200)
-                .json({ message: "payment  updated successfully" });
+                .json({ message: "payment updated successfully" });
             })
             .catch((err) => {
               res.status(400).json({ message: err.message });

@@ -9,6 +9,16 @@ const SMS_SENDER_API_KEY = process.env.SMS_SENDER_API_KEY;
 const SMS_SENDER_SID = process.env.SMS_SENDER_SID;
 
 async function sendOneSMS(to, message) {
+  
+  to = parseMobileNumber(to);
+  
+  if(!validateMobileNumber(to)) {
+    return {
+      message: "failed",
+      staus: "invalid mobile number"
+    }
+  }
+  
   const params = {
     user_id: SMS_SENDER_UID,
     api_key: SMS_SENDER_API_KEY,
@@ -16,6 +26,7 @@ async function sendOneSMS(to, message) {
     to: to,
     message: message
   };
+
 
   const res = await
   axios.get(SMS_SENDER_HOST, {
@@ -131,6 +142,14 @@ If you received this message by mistake, please ignore this message.
   return await sendOneSMS(to, message);
 }
 
+function parseMobileNumber(mobileNumber) {
+  if (mobileNumber.length == 10 && mobileNumber.charAt(0) == "0") {
+    mobileNumber = "94" + mobileNumber.substring(1);
+  }
+
+  return mobileNumber;
+}
+
 function validateMobileNumber(mobileNumber) {
   if (!mobileNumber || mobileNumber == "") {
     return false;
@@ -143,7 +162,7 @@ function validateMobileNumber(mobileNumber) {
 
   const mobileNumberRegExp = new RegExp("947[0-9]{8}");
 
-  return mobileNumberRegExp.test(mobileNumber)
+  return mobileNumberRegExp.test(mobileNumber);
 }
 
 module.exports = {

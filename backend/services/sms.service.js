@@ -51,7 +51,16 @@ async function sendOneSMS(to, message) {
 
 }
 
-async function sendDailySMS(to, customerId, customerName, collectorName, amountPaid, amountLeft) {
+async function sendDailySMS(payload) {
+  const {
+    to,
+    customerId,
+    customerName,
+    collectorName,
+    amountPaid,
+    amountLeft
+  } = payload;
+
   message =
     `Daliy Payment Recieved : 
 Name : ${customerName}
@@ -100,7 +109,7 @@ async function sendLoanOverdueSMS(guarantors, message) {
 
 async function sendResetOTP(to, OTP) {
   message =
-  `Your Password reset token is : ${OTP} 
+    `Your Password reset token is : ${OTP} 
 Use this to reset your password.
 If you received this message by mistake, please ignore this message.
 

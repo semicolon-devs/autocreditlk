@@ -80,8 +80,8 @@ exports.login = async (req, res, next) => {
       return res.status(200).send({
         message:
           "Please note that the user account has not been confirmed yet. you need to login with given credentials and reset password to confirm account",
+        token: token,
         userData: {
-          token: token,
           email: user.email,
           role: user.role,
         },
@@ -245,18 +245,16 @@ const generatePassword = () => {
 exports.addUser = async (req, res, next) => {
   const { name, email, phone } = req.body;
   const password = generatePassword();
-  // console.log(password);
+  console.log(password);
   bcrypt
     .hash(password, 10)
     .then((hashedPassword) => {
       // creating user object
       const user = new User({
         name: name,
-        // userID: userID,
         email: email,
         password: hashedPassword,
         phone: phone,
-        // address: address,
         role: "pending",
       });
 

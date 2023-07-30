@@ -4,7 +4,7 @@ import { ThreeDots } from "react-loader-spinner";
 import SectionSubtitle from "../components/SectionSubtitle";
 
 import { CloseIcon } from "../Icons/Icon";
-import DeletePendingUserModal from "../modals/DeletePendingUserModal";
+import DeleteUserModal from "../modals/DeleteUserModal";
 
 const PendingUserList = ({ pendingUsers, setPendingUsers, loading }) => {
   const [displayUser, setDisplayUser] = useState(null);
@@ -58,10 +58,12 @@ const PendingUserList = ({ pendingUsers, setPendingUsers, loading }) => {
         )}
       </div>
       {displayUser && (
-        <DeletePendingUserModal
+        <DeleteUserModal
           modalShow={DeletePendingUserModalShow}
           setModalShow={setDeletePendingUserModalShow}
           user={displayUser}
+          userList={pendingUsers}
+          setUserList={setPendingUsers}
         />
       )}
     </div>

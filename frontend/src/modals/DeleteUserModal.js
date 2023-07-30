@@ -1,11 +1,44 @@
 import React from "react";
+import axios from "axios";
 
 import AlertModal from "./AlertModal";
 
-const DeleteUserModal = ({ modalShow, setModalShow, user }) => {
+import Cookies from "universal-cookie";
+
+import BASE_URL from "../config/ApiConfig";
+
+const cookies = new Cookies();
+
+const DeleteUserModal = ({
+  modalShow,
+  setModalShow,
+  user,
+  userList,
+  setUserList,
+}) => {
+  const token = cookies.get("autoCreditCookie");
+
   const deleteUser = () => {
-    // axio to delete user
-    console.log("delete user");
+    const axiosConfig = {
+      method: "DELETE",
+      url: `${BASE_URL}auth/collectors/${user._id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    axios(axiosConfig)
+      .then((res) => {
+        // alert(result.data.message);
+        console.log(res);
+        const updatedUsers = userList.filter(
+          (listUser) => listUser._id !== user._id
+        );
+        setUserList(updatedUsers);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const removeButtonClick = () => {

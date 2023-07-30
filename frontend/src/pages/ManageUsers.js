@@ -25,7 +25,7 @@ const ManageUsers = () => {
         method: "get",
         url: `${BASE_URL}auth/pending-users`,
         headers: {
-          Authorization: `Bearer ${token.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
 

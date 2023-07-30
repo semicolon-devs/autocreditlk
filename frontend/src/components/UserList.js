@@ -9,6 +9,8 @@ import DeleteUserModal from "../modals/DeleteUserModal";
 
 import Cookies from "universal-cookie";
 
+import BASE_URL from "../config/ApiConfig";
+
 const cookies = new Cookies();
 
 const UserList = () => {
@@ -22,9 +24,9 @@ const UserList = () => {
     const fetchUsers = async () => {
       const axiosConfig = {
         method: "get",
-        url: `${process.env.REACT_APP_BACKEND}/auth/users`,
+        url: `${BASE_URL}auth/collectors`,
         headers: {
-          Authorization: `Bearer ${token.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
 

@@ -9,6 +9,8 @@ import SectionSubtitle from "../components/SectionSubtitle";
 
 import Cookies from "universal-cookie";
 
+import BASE_URL from "../config/ApiConfig";
+
 const cookies = new Cookies();
 
 const AddUser = ({ setPendingUsers }) => {
@@ -20,9 +22,9 @@ const AddUser = ({ setPendingUsers }) => {
     setLoading(true);
     const axiosConfig = {
       method: "post",
-      url: `http://localhost:8080/api/v1/auth/add-user`,
+      url: `${BASE_URL}auth/add-user`,
       headers: {
-        Authorization: `Bearer ${token.token}`,
+        Authorization: `Bearer ${token}`,
       },
       data: {
         name: name,

@@ -7,18 +7,25 @@ import { ThreeDots } from "react-loader-spinner";
 
 import { TextInput } from "../components/FormikElements";
 
+import logo from "../assets/AutoCreditLogo.png";
+
 const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
+  // console.log(localStorage.getItem("pendingUserToken"));
+
   return (
     <div className=" bg-light flex justify-center items-center w-screen h-screen p-5">
       <div className="bg-white p-5 rounded-xl drop-shadow-lg w-full max-w-sm">
-        <h2 className="text-dark uppercase text-center text-4xl font-bold mb-1">
+        {/* <h2 className="text-dark uppercase text-center text-4xl font-bold mb-1">
           reset password
-        </h2>
-        <p className="text-dark uppercase text-center font-semibold mb-6">
-          enter new password for your account
+        </h2> */}
+        <div className="w-full flex items-center justify-center mb-3">
+          <img src={logo} className="w-1/2" alt="Auto Credit LK logo" />
+        </div>
+        <p className="text-dark uppercase text-center font-semibold mb-3">
+          enter new password
         </p>
         <Formik
           initialValues={{

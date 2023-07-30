@@ -31,14 +31,28 @@ const SignIn = () => {
 
     await axios(config)
       .then((res) => {
-        if (res.data.token) {
-          cookies.set("autoCreditCookie", res.data.token, {
-            path: "/",
-          });
-          localStorage.setItem("userData", JSON.stringify(res.data.userData));
-          window.location.href = "/";
+        console.log(res);
+        if (res.data.userData.role == "pending") {
+          if (res.data.token) {
+            localStorage.setItem(
+              "pendingUserToken",
+              JSON.stringify(res.data.token)
+            );
+            localStorage.setItem("userData", JSON.stringify(res.data.userData));
+            window.location.href = "/reset-password";
+          } else {
+            setMessage(res.data.message);
+          }
         } else {
-          setMessage(res.data.message);
+          if (res.data.token) {
+            cookies.set("autoCreditCookie", res.data.token, {
+              path: "/",
+            });
+            localStorage.setItem("userData", JSON.stringify(res.data.userData));
+            window.location.href = "/";
+          } else {
+            setMessage(res.data.message);
+          }
         }
       })
       .catch((res) => {

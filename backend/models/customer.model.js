@@ -11,6 +11,10 @@ const CustomerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    NIC: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -23,7 +27,15 @@ const CustomerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      required: true,
+    },
     guarantor: {
+      type: String,
+      required: true,
+    },
+    guarantorNIC: {
       type: String,
       required: true,
     },

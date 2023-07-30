@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 import HomePageCard from "../components/HomePageCard";
 // import AddPaymentModal from "../components/AddPaymentModal";
@@ -6,8 +7,41 @@ import HomePageCard from "../components/HomePageCard";
 import { customerArr } from "../data/SampleData";
 import { SearchIcon } from "../Icons/Icon";
 
+import Cookies from "universal-cookie";
+
+import BASE_URL from "../config/ApiConfig";
+
+const cookies = new Cookies();
+
 const Home = () => {
   const [searchField, setSearchField] = useState("");
+  const [customers, setCustomers] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const token = cookies.get("autoCreditCookie");
+
+  useEffect(() => {
+    const getCustomers = () => {
+      setLoading(true);
+      const axiosConfig = {
+        method: "get",
+        url: `${BASE_URL}customers/all`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      axios(axiosConfig)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+  }, []);
 
   const filteredCustomerArr = customerArr.filter((customer) => {
     return (
@@ -41,10 +75,6 @@ const Home = () => {
             {filtered}
           </div>
         </div>
-        {/* <AddPaymentModal
-        addPaymentModalShow={addPaymentModalShow}
-        setAddPaymentModalShow={setAddPaymentModalShow}
-      /> */}
       </div>
     </div>
   );

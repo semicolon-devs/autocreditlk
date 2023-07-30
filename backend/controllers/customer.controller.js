@@ -43,10 +43,13 @@ exports.addCustomer = async (req, res) => {
   try {
     const {
       name,
+      NIC,
       email,
       phone,
       address,
+      description,
       guarantor,
+      guarantorNIC,
       guarantorMobile,
       customerID,
       loanAmount,
@@ -141,10 +144,13 @@ exports.addCustomer = async (req, res) => {
                             Customer.create({
                               customerID,
                               name,
+                              NIC,
                               email,
                               phone,
                               address,
+                              description,
                               guarantor,
+                              guarantorNIC,
                               guarantorMobile,
                               loanAmount,
                               paidAmount: 0,
@@ -193,11 +199,11 @@ exports.addCustomer = async (req, res) => {
 
 exports.getCustomers = async (req, res) => {
   Customer.find()
-    .then( (customers) => {
-      let customerDetails = []
+    .then((customers) => {
+      let customerDetails = [];
 
       for (let customer of customers) {
-        let customerDetail = {}
+        let customerDetail = {};
         customerDetail.name = customer.name;
         customerDetail.loanAmount = customer.loanAmount;
         customerDetail.paidAmount = customer.paidAmount;
@@ -205,7 +211,7 @@ exports.getCustomers = async (req, res) => {
         customerDetail.startDate = customer.startDate;
         customerDetail.customerID = customer.customerID;
 
-        customerDetails.push(customerDetail)
+        customerDetails.push(customerDetail);
       }
 
       res.status(200).json({ customers: customerDetails });
@@ -214,5 +220,4 @@ exports.getCustomers = async (req, res) => {
       console.log(err);
       res.status(400).json({ message: err.message });
     });
-
 };

@@ -13,17 +13,78 @@ import {
   TextAreaWithLabel as TextArea,
 } from "../components/FormikElements";
 
+import Cookies from "universal-cookie";
+
+import BASE_URL from "../config/ApiConfig";
+
+const cookies = new Cookies();
+
 const AddCustomer = () => {
   const [loading, setLoading] = useState(false);
   const [NICCopyOne, setNICCopyOne] = useState();
   const [NICCopyTwo, setNICCopyTwo] = useState();
   const [customerPhoto, setCustomerPhoto] = useState();
 
+  const token = cookies.get("autoCreditCookie");
+
+  const addNewCustomer = (values) => {
+    const {
+      name,
+      NIC,
+      email,
+      mobileNo,
+      address,
+      loanAmount,
+      duration,
+      startDate,
+      billingCycle,
+      description,
+      guarantorName,
+      guarantorMobileNo,
+      guarantorNIC,
+    } = values;
+
+    setLoading(true);
+    const axiosConfig = {
+      method: "post",
+      url: `${BASE_URL}customers`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        name: name,
+        NIC: NIC,
+        email: email,
+        phone: mobileNo,
+        address: address,
+        loanAmount: loanAmount,
+        duration: duration,
+        startDate: startDate,
+        billingCycle: billingCycle,
+        description: description,
+        guarantor: guarantorName,
+        guarantorMobile: guarantorMobileNo,
+        guarantorNIC: guarantorNIC,
+      },
+    };
+    axios(axiosConfig)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   const validationSchema = Yup.object({
     name: Yup.string().required("Required"),
     NIC: Yup.string()
       .matches(/^(?:\d{9}V|\d{12})$/, "Must be a valid NIC number")
       .required("Required"),
+    email: Yup.string().email("Invalid email address").required("Required"),
     mobileNo: Yup.string()
       .matches(/^[0-9]{10}$/, "Must be a valid mobile number")
       .required("Required"),
@@ -59,6 +120,7 @@ const AddCustomer = () => {
         initialValues={{
           name: "",
           NIC: "",
+          email: "",
           mobileNo: "",
           address: "",
           loanAmount: "",
@@ -72,7 +134,7 @@ const AddCustomer = () => {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
-          console.log(values);
+          addNewCustomer(values);
           setSubmitting(false);
         }}
       >
@@ -91,6 +153,13 @@ const AddCustomer = () => {
                 type="text"
                 label="NIC :"
                 placeholder="871301450V / 198713001450"
+              />
+
+              <TextInput
+                name="email"
+                type="text"
+                label="Email :"
+                placeholder="samankumara@gmail.com"
               />
 
               <TextInput

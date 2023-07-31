@@ -13,15 +13,33 @@ const {
   passwordResetByAdmin,
   forgetPasswordReset,
   forgetPasswordRequest,
+  getUserData,
 } = require("../controllers/auth.controller");
 
-router.post("/login", login);
+router.post(
+  "/login",
+  [
+    passport.authenticate("local", { session: false }),
+  ],
+  login
+);
 router.post("/forget-password-request", forgetPasswordRequest);
 router.post("/forget-password-reset", forgetPasswordReset);
 router.post(
   "/add-user",
-  // [passport.authenticate("jwt", { session: false }), isAdmin()],
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
   addUser
+);
+router.get(
+  "/userdata",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin", "collector"]),
+  ],
+  getUserData
 );
 router.post(
   "/password-reset",

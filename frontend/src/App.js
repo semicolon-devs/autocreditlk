@@ -13,10 +13,12 @@ import ResetPassword from "./pages/ResetPassword";
 import Home from "./pages/Home";
 import CustomerDetails from "./pages/CustomerDetails";
 import AddCustomer from "./pages/AddCustomer";
+import Insights from "./pages/Insights";
 import ManageUsers from "./pages/ManageUsers";
 import AccountSettings from "./pages/AccountSettings";
 import PageNotFound from "./pages/PageNotFound";
 import SMSGateway from "./pages/SMSGateway";
+import ReportsPage from "./pages/ReportsPage";
 // import AccessDeniedPage from "./pages/AccessDeniedPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -44,8 +46,10 @@ const router = createBrowserRouter(
         <Route path="/customer-details/:id" element={<CustomerDetails />} />
         <Route path="/account-settings" element={<AccountSettings />} />
         <Route path="/add-customer" element={<AddCustomer />} />
+        <Route path="/insights" element={<Insights />} />
         <Route path="/manage-users" element={<ManageUsers />} />
         <Route path="/sms-gateway" element={<SMSGateway />} />
+        <Route path="/reports" element={<ReportsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </>

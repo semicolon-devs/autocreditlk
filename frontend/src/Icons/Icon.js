@@ -17,6 +17,7 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import SpeakerNotesRoundedIcon from "@mui/icons-material/SpeakerNotesRounded";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import FiberManualRecordRoundedIcon from "@mui/icons-material/FiberManualRecordRounded";
+import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -40,7 +41,8 @@ export {
   DeleteRoundedIcon as DeleteIcon,
   SpeakerNotesRoundedIcon as SMSIcon,
   RefreshRoundedIcon as RefreshIcon,
-  FiberManualRecordRoundedIcon as DotIcon, 
+  FiberManualRecordRoundedIcon as DotIcon,
+  DescriptionRoundedIcon as ReportIcon,
   ArrowBackIcon,
   ArrowRightOutlinedIcon as ArrowIcon,
 };

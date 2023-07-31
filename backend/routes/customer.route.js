@@ -14,9 +14,11 @@ router.post(
     passport.authenticate("jwt", { session: false }),
     checkPermission(["admin"]),
     uploader.fields([
-      { name: "application", maxCount: 1 },
-      { name: "document1", maxCount: 1 },
-      { name: "document2", maxCount: 1 },
+      { name: "NICFrontCopy", maxCount: 1 },
+      { name: "NICRearCopy", maxCount: 1 },
+      { name: "customerPhoto", maxCount: 1 },
+      { name: "guarantorNICFrontCopy", maxCount: 1 },
+      { name: "guarantorNICRearCopy", maxCount: 1 },
     ]),
   ],
   addCustomer

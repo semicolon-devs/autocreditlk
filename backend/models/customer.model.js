@@ -23,13 +23,15 @@ const CustomerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    phoneTwo: {
+      type: String,
+    },
     address: {
       type: String,
       required: true,
     },
     description: {
       type: String,
-      required: true,
     },
     guarantor: {
       type: String,
@@ -43,7 +45,14 @@ const CustomerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    guarantorMobileTwo: {
+      type: String,
+    },
     loanAmount: {
+      type: Number,
+      required: true,
+    },
+    installmentAmount: {
       type: Number,
       required: true,
     },
@@ -67,15 +76,28 @@ const CustomerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    applicationDocumentLink: {
+    collectorId: {
+      // change string to correct datatype
       type: String,
       required: true,
     },
-    document1Link: {
+    NICFrontCopyLink: {
       type: String,
       required: true,
     },
-    document2Link: {
+    NICRearCopyLink: {
+      type: String,
+      required: true,
+    },
+    customerPhotoLink: {
+      type: String,
+      required: true,
+    },
+    guarantorNICFrontCopyLink: {
+      type: String,
+      required: true,
+    },
+    guarantorNICRearCopyLink: {
       type: String,
       required: true,
     },

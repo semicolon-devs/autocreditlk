@@ -195,38 +195,21 @@ export const paymentsArr = [
   },
 ];
 
-export const userArr = [
+export const collectorArr = [
   {
-    id: 1,
+    id: "1",
     name: "saman kumara",
-    mobileNo: "0774125739",
-    email: "samankumara@gmail.com",
   },
   {
-    id: 2,
+    id: "2",
     name: "sunil shantha",
-    mobileNo: "0774125739",
-    email: "sunilshantha@gmail.com",
   },
   {
-    id: 3,
+    id: "3",
     name: "wasantha kumarasinghe",
-    mobileNo: "0774125739",
-    email: "wasanthakumarasinghe@gmail.com",
-  },
-];
-
-export const pendingUserArr = [
-  {
-    id: 1,
-    name: "ruwan bandara",
-    mobileNo: "0774125739",
-    email: "ruwanbandara@gmail.com",
   },
   {
-    id: 2,
-    name: "milton perera",
-    mobileNo: "0774125739",
-    email: "miltonperera@gmail.com",
+    id: "4",
+    name: "Jayantha kumara",
   },
 ];

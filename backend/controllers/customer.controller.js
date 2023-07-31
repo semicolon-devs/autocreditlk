@@ -42,29 +42,37 @@ const uploadFileToFirebaseStorage = async (customerID, file) => {
 exports.addCustomer = async (req, res) => {
   try {
     const {
+      customerID,
       name,
       NIC,
       email,
       phone,
+      phoneTwo,
       address,
-      description,
-      guarantor,
-      guarantorNIC,
-      guarantorMobile,
-      customerID,
       loanAmount,
+      installmentAmount,
       noOfInstallments,
       startDate,
       billingCycle,
+      collectorId,
+      description,
+      guarantor,
+      guarantorMobile,
+      guarantorMobileTwo,
+      guarantorNIC,
     } = req.body;
 
-    const application = req.files["application"][0];
-    const document1 = req.files["document1"][0];
-    const document2 = req.files["document2"][0];
+    const NICFrontCopy = req.files["NICFrontCopy"][0];
+    const NICRearCopy = req.files["NICRearCopy"][0];
+    const customerPhoto = req.files["customerPhoto"][0];
+    const guarantorNICFrontCopy = req.files["guarantorNICFrontCopy"][0];
+    const guarantorNICRearCopy = req.files["guarantorNICRearCopy"][0];
 
-    var applicationLink;
-    var document1Link;
-    var document2Link;
+    var NICFrontCopyLink;
+    var NICRearCopyLink;
+    var customerPhotoLink;
+    var guarantorNICFrontCopyLink;
+    var guarantorNICRearCopyLink;
 
     // const applicationLink = await uploadFileToFirebaseStorage(
     //   customerID,

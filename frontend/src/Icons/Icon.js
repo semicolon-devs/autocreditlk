@@ -14,6 +14,9 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import SpeakerNotesRoundedIcon from "@mui/icons-material/SpeakerNotesRounded";
+import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
+import FiberManualRecordRoundedIcon from "@mui/icons-material/FiberManualRecordRounded";
 
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -35,6 +38,9 @@ export {
   MoreVertRoundedIcon as ThreeDotsIcon,
   EditRoundedIcon as EditIcon,
   DeleteRoundedIcon as DeleteIcon,
+  SpeakerNotesRoundedIcon as SMSIcon,
+  RefreshRoundedIcon as RefreshIcon,
+  FiberManualRecordRoundedIcon as DotIcon, 
   ArrowBackIcon,
   ArrowRightOutlinedIcon as ArrowIcon,
 };

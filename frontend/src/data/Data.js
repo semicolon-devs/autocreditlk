@@ -23,6 +23,13 @@ export const sidebarItems = [
   },
   {
     id: 5,
+    name: "SMS gateway",
+    icon: "SMSIcon",
+    path: "/sms-gateway",
+    accessAll: false,
+  },
+  {
+    id: 6,
     name: "account settings",
     icon: "SettingsIcon",
     path: "/account-settings",

@@ -16,6 +16,7 @@ import AddCustomer from "./pages/AddCustomer";
 import ManageUsers from "./pages/ManageUsers";
 import AccountSettings from "./pages/AccountSettings";
 import PageNotFound from "./pages/PageNotFound";
+import SMSGateway from "./pages/SMSGateway";
 // import AccessDeniedPage from "./pages/AccessDeniedPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
         <Route path="/account-settings" element={<AccountSettings />} />
         <Route path="/add-customer" element={<AddCustomer />} />
         <Route path="/manage-users" element={<ManageUsers />} />
+        <Route path="/sms-gateway" element={<SMSGateway />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </>

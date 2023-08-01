@@ -1,6 +1,7 @@
 const axios = require("axios");
 // const { response } = require("express");
 require("dotenv").config();
+const { parseMobileNumber, validateMobileNumber } = require("../utils/PhoneNumberValidation");
 
 
 const SMS_SENDER_HOST = process.env.SMS_SENDER_ENDPOINT;
@@ -140,29 +141,6 @@ If you received this message by mistake, please ignore this message.
 `
 
   return await sendOneSMS(to, message);
-}
-
-function parseMobileNumber(mobileNumber) {
-  if (mobileNumber.length == 10 && mobileNumber.charAt(0) == "0") {
-    mobileNumber = "94" + mobileNumber.substring(1);
-  }
-
-  return mobileNumber;
-}
-
-function validateMobileNumber(mobileNumber) {
-  if (!mobileNumber || mobileNumber == "") {
-    return false;
-  }
-
-  if (mobileNumber.length == 10 && mobileNumber.charAt(0) == "0") {
-    mobileNumber = "94" + mobileNumber.substring(1);
-  }
-
-
-  const mobileNumberRegExp = new RegExp("947[0-9]{8}");
-
-  return mobileNumberRegExp.test(mobileNumber);
 }
 
 module.exports = {

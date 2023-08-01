@@ -10,6 +10,7 @@ const authRouter = require('./routes/auth.route')
 const customerRouter = require('./routes/customer.route')
 const installmentRouter = require('./routes/installment.route')
 const smsRouter = require('./routes/sms.route')
+const userRouter = require('./routes/user.route')
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -49,6 +50,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/customers", customerRouter);
 app.use("/api/v1/installment", installmentRouter);
 app.use("/api/v1/sms", smsRouter);
+app.use("/api/v1/collector", userRouter);
 
 
 // server listening to requests on port on env file

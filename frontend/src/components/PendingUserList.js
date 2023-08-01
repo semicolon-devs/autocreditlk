@@ -19,12 +19,12 @@ const PendingUserList = ({ pendingUsers, setPendingUsers, loading }) => {
   return (
     <div>
       <SectionSubtitle title="pending users" />
-      <div className="flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
         {!loading ? (
           pendingUsers &&
           pendingUsers.map((user) => (
             <div
-              className="bg-pink w-full rounded-lg p-3 mb-3 flex justify-between items-center"
+              className="bg-yellow w-full rounded-lg p-3 mb-3 flex justify-between items-center"
               key={user._id}
             >
               <div className="">
@@ -36,7 +36,7 @@ const PendingUserList = ({ pendingUsers, setPendingUsers, loading }) => {
               </div>
               <div className="">
                 <button
-                  className=""
+                  className="outline-none border-none"
                   onClick={() => handleDeletePendingUserClick(user)}
                 >
                   <CloseIcon className="text-maroon" />

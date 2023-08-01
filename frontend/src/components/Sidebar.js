@@ -11,9 +11,12 @@ const cookies = new Cookies();
 const Sidebar = ({ collapsed, toggled }) => {
   const logout = () => {
     cookies.remove("autoCreditCookie", { path: "/" });
+    localStorage.removeItem("userRole");
     localStorage.removeItem("userData");
     window.location.href = "/";
   };
+
+  const userRole = JSON.parse(localStorage.getItem("userRole"));
 
   const renderIconComponent = (icon) => {
     const IconComponent = Icons[icon];
@@ -32,19 +35,21 @@ const Sidebar = ({ collapsed, toggled }) => {
       <div className="">
         {sidebarItems &&
           sidebarItems.map((item) => (
-            <NavLink
-              to={item.path}
-              key={item.id}
-              className={`p-3 flex items-center hover:bg-yellow cursor-pointer overflow-hidden aria-[current=page]:bg-yellow`}
-            >
-              {renderIconComponent(item.icon)}
-              <p
-                className={`ms-3 uppercase font-semibold text-md ${
-                  collapsed ? "hidden" : "block"
-                }`}
+            <NavLink to={item.path} className="w-full">
+              <button
+                key={item.id}
+                className={`p-3 w-full flex items-center hover:bg-yellow cursor-pointer overflow-hidden aria-[current=page]:bg-yellow disabled:opacity-50 disabled:cursor-default disabled:hover:bg-transparent`}
+                disabled={userRole == "collector" && !item.accessAll && true}
               >
-                {item.name}
-              </p>
+                {renderIconComponent(item.icon)}
+                <p
+                  className={`ms-3 uppercase font-semibold text-md ${
+                    collapsed ? "hidden" : "block"
+                  }`}
+                >
+                  {item.name}
+                </p>
+              </button>
             </NavLink>
           ))}
       </div>

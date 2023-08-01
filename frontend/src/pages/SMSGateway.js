@@ -108,7 +108,7 @@ const SMSGateway = () => {
                     </>
                   )}
                 </div>
-                <p className="font-semibold">Account Balance : {accBalance} LKR</p>
+                <p className="font-semibold">Balance : {accBalance} SMS</p>
               </>
             )}
           </div>

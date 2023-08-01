@@ -59,7 +59,7 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
           debtor management system
         </h2> */}
       </div>
-      <div className="bg-white rounded-lg p-3 drop-shadow-lg flex items-center justify-center z-20">
+      <div className="bg-white h-full rounded-lg p-3 drop-shadow-lg flex items-center justify-center z-20">
         <AccountIcon />
         <p className="capitalize leading-8 font-semibold ms-3 hidden sm:block">
           {userData ? userData.name : "Guest User"}

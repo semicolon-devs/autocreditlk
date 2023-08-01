@@ -49,29 +49,31 @@ const UserList = () => {
   return (
     <div>
       <SectionSubtitle title="users" />
-      {users &&
-        users.map((user) => (
-          <div
-            className="bg-yellow rounded-lg p-3 mb-3 flex justify-between items-center"
-            key={user._id}
-          >
-            <div className="">
-              <p className="text-maroon capitalize text-lg font-semibold leading-none">
-                {user.name}
-              </p>
-              <p className="text-maroon ">{user.email}</p>
-              <p className="text-maroon leading-none">{user.mobileNo}</p>
+      <div className="flex flex-col items-center justify-center">
+        {users &&
+          users.map((user) => (
+            <div
+              className="bg-yellow rounded-lg p-3 mb-3 flex justify-between items-center"
+              key={user._id}
+            >
+              <div className="">
+                <p className="text-maroon capitalize text-lg font-semibold leading-none">
+                  {user.name}
+                </p>
+                <p className="text-maroon ">{user.email}</p>
+                <p className="text-maroon leading-none">{user.mobileNo}</p>
+              </div>
+              <div className="">
+                <button
+                  className="border-none outline-none"
+                  onClick={() => handleDeleteUserClick(user)}
+                >
+                  <CloseIcon className="text-maroon" />
+                </button>
+              </div>
             </div>
-            <div className="">
-              <button
-                className="border-none outline-none"
-                onClick={() => handleDeleteUserClick(user)}
-              >
-                <CloseIcon className="text-maroon" />
-              </button>
-            </div>
-          </div>
-        ))}
+          ))}
+      </div>
       {displayUser && (
         <DeleteUserModal
           modalShow={DeleteUserModalShow}

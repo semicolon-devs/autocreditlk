@@ -1,7 +1,38 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
+import axios from "axios";
 import { MenuIcon, AccountIcon } from "../Icons/Icon";
 
+import Cookies from "universal-cookie";
+
+import BASE_URL from "../config/ApiConfig";
+
+const cookies = new Cookies();
+
 const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
+  const token = cookies.get("autoCreditCookie");
+
+  const getUserData = async () => {
+    const config = {
+      method: "get",
+      url: `${BASE_URL}auth/userData`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    await axios(config)
+      .then((res) => {
+        localStorage.setItem("userData", JSON.stringify(res.data.userData));
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   const userData = JSON.parse(localStorage.getItem("userData"));
 
   const windowWidth = useRef(window.innerWidth);

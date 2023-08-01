@@ -1,13 +1,12 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const passport = require("passport");
 const User = require("../models/user.model");
-// var nodemailer = require("nodemailer");
+const { sendResetOTP, sendFirstTimeOTP } = require('../services/sms.service')
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
-exports.getCollectors = async (req, res, next) => {
+exports.getCollectors = async (req, res) => {
   User.find({ role: "collector" })
     .select("userID name email phone")
     .then((users) => {
@@ -18,7 +17,7 @@ exports.getCollectors = async (req, res, next) => {
     });
 };
 
-exports.deleteUser = async (req, res, next) => {
+exports.deleteUser = async (req, res) => {
   User.findById(req.params.id)
     .then((user) => {
       if (user.role == "admin") {
@@ -43,68 +42,58 @@ exports.deleteUser = async (req, res, next) => {
     });
 };
 
-exports.login = async (req, res, next) => {
-  passport.authenticate("local", { session: false }, (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.status(400).send(info.message);
+exports.getUserData = async (req, res) => {
+  try {
+
+    const userData = {
+      name: req.user.name,
+      email: req.user.email,
+      phone: req.user.phone,
+      role: req.user.role,
     }
 
-    const token = jwt.sign(
-      {
-        name: user.name,
-        userID: user.userID,
-        email: user.email,
-        role: user.role,
-        password: user.password,
-      },
-      SECRET_KEY,
-      { expiresIn: "24h" }
-    );
+    res.status(200).json({ userData: userData });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
 
-    if (user.role == "admin" || user.role == "collector") {
-      const resObject = {
-        token: token,
-        userData: {
-          name: user.name,
-          userId: user.userID,
-          email: user.email,
-          phone: user.phone,
-          role: user.role,
-        },
-      };
-      return res.status(200).send(resObject);
-    } else if (user.role == "pending") {
-      return res.status(200).send({
-        message:
-          "Please note that the user account has not been confirmed yet. you need to login with given credentials and reset password to confirm account",
-        token: token,
-        userData: {
-          email: user.email,
-          role: user.role,
-        },
-      });
-    } else {
-      return res.status(200).json({
-        message:
-          "Prior registration is required before accessing Meeting Management System",
-      });
-    }
-  })(req, res, next);
+}
+
+exports.login = async (req, res) => {
+  const token = jwt.sign(
+    {
+      name: req.user.name,
+      userID: req.user.userID,
+      email: req.user.email,
+      role: req.user.role,
+      password: req.user.password,
+    },
+    SECRET_KEY,
+    { expiresIn: "24h" }
+  );
+
+  if (req.user.role == "admin" || req.user.role == "collector") {
+    const resObject = {
+      token: token,
+      role: req.user.role
+    };
+    return res.status(200).send(resObject);
+  } else if (req.user.role == "pending") {
+    return res.status(200).send({
+      message:
+        "Please note that the user account has not been confirmed yet. you need to login with given credentials and reset password to confirm account",
+      token: token,
+      role: req.user.role
+    });
+  } else {
+    return res.status(200).json({
+      message:
+        "Prior registration is required before accessing Meeting Management System",
+    });
+  }
 };
 
-// exports.logout = async (req, res, next) => {
-//   req.logout(function (err) {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.status(200).json({ message: "logout successfull" });
-//   });
-// };
-
-exports.passwordResetToDefault = async (req, res, next) => {
+exports.passwordResetToDefault = async (req, res) => {
   const password = generatePassword();
   bcrypt
     .hash(password, 10)
@@ -119,38 +108,17 @@ exports.passwordResetToDefault = async (req, res, next) => {
       };
 
       User.findOneAndUpdate(user, update)
-        .then((result) => {
+        .then(async (result) => {
           if (!result) {
             res.status(500).send({
               message: "user password reset failed",
             });
           } else {
-            // // send mail to the user with generated password
-            // var transporter = nodemailer.createTransport({
-            //   service: process.env.EMAIL_PROVIDER,
-            //   auth: {
-            //     user: process.env.EMAIL_ADDRESS,
-            //     pass: process.env.EMAIL_PASSWORD,
-            //   },
-            // });
 
-            // var mailOptions = {
-            //   from: process.env.EMAIL_ADDRESS,
-            //   to: req.body.email,
-            //   subject: "meeting scheduling new login",
-            //   text: `login credentionals of your account \n${req.body.email} \n${password}`,
-            // };
+            // temp password (password) need to send via sms here
+            // phone -> user.phone
+            await sendResetOTP(user.phone, password)
 
-            // console.log(mailOptions);
-
-            // transporter.sendMail(mailOptions, function (error, info) {
-            //   if (error) {
-            //     console.log(error);
-            //   } else {
-            //     console.log("Email sent: " + info.response);
-            //   }
-            // });
-            // // -------------------------------
             res.status(201).send({
               message: "User Password reset Successfull",
               result,
@@ -172,7 +140,7 @@ exports.passwordResetToDefault = async (req, res, next) => {
     });
 };
 
-exports.passwordReset = async (req, res, next) => {
+exports.passwordReset = async (req, res) => {
   bcrypt
     .hash(req.body.newPassword, 10)
     .then((hashedPassword) => {
@@ -191,7 +159,7 @@ exports.passwordReset = async (req, res, next) => {
         .then((result) => {
           if (!result) {
             console.log(result);
-            res.status(500).send({
+            res.status(400).send({
               message: "user Registration failed",
             });
           } else {
@@ -215,7 +183,7 @@ exports.passwordReset = async (req, res, next) => {
     });
 };
 
-exports.getPendingUsers = async (req, res, next) => {
+exports.getPendingUsers = async (req, res) => {
   try {
     const users = await User.find({ role: "pending" }).select(
       "name userId email phone"
@@ -242,13 +210,13 @@ const generatePassword = () => {
 };
 
 // register method
-exports.addUser = async (req, res, next) => {
+exports.addUser = async (req, res) => {
   const { name, email, phone } = req.body;
   const password = generatePassword();
   console.log(password);
   bcrypt
     .hash(password, 10)
-    .then((hashedPassword) => {
+    .then(async (hashedPassword) => {
       // creating user object
       const user = new User({
         name: name,
@@ -258,31 +226,11 @@ exports.addUser = async (req, res, next) => {
         role: "pending",
       });
 
-      // // send mail to the user with generated password
-      // var transporter = nodemailer.createTransport({
-      //   service: process.env.EMAIL_PROVIDER,
-      //   auth: {
-      //     user: process.env.EMAIL_ADDRESS,
-      //     pass: process.env.EMAIL_PASSWORD,
-      //   },
-      // });
-
-      // var mailOptions = {
-      //   from: process.env.EMAIL_ADDRESS,
-      //   to: req.body.email,
-      //   subject: "meeting scheduling login",
-      //   text: `login credentionals of your account \n ${req.body.email} \n ${password}`,
-      // };
-
-      // console.log(mailOptions);
-
-      // transporter.sendMail(mailOptions, function (error, info) {
-      //   if (error) {
-      //     console.log(error);
-      //   } else {
-      //     console.log("Email sent: " + info.response);
-      //   }
-      // });
+      // temp password (password) need to send via sms here
+      // phone -> user.phone
+      await sendFirstTimeOTP(phone, password)
+      
+      console.log("running");
 
       user
         .save()
@@ -307,7 +255,7 @@ exports.addUser = async (req, res, next) => {
     });
 };
 
-exports.forgetPasswordReset = async (req, res, next) => {
+exports.forgetPasswordReset = async (req, res) => {
   const { tempPassword, email, newPassword } = req.body;
 
   User.findOne({ email: email }),
@@ -328,37 +276,17 @@ exports.forgetPasswordReset = async (req, res, next) => {
             };
 
             User.findOneAndUpdate(user, update)
-              .then((result) => {
+              .then(async (result) => {
                 if (!result) {
                   res.status(500).send({
                     message: "otp generate failed",
                   });
                 } else {
-                  // // send mail to the user with generated password
-                  // var transporter = nodemailer.createTransport({
-                  //   service: process.env.EMAIL_PROVIDER,
-                  //   auth: {
-                  //     user: process.env.EMAIL_ADDRESS,
-                  //     pass: process.env.EMAIL_PASSWORD
-                  //   }
-                  // });
 
-                  // var mailOptions = {
-                  //   from: process.env.EMAIL_ADDRESS,
-                  //   to: req.body.email,
-                  //   subject: 'password reset',
-                  //   text: `password for meeting scheduling system is updated. \n\n
-                  //   if you didnot requiest this reset contact admin as soon as possible`
-                  // };
+                  // temp password (password) need to send via sms here
+                  // phone -> user.phone
+                  await sendResetOTP(user.phone, `use OTP - ${password}`)
 
-                  // transporter.sendMail(mailOptions, function (error, info) {
-                  //   if (error) {
-                  //     console.log(error);
-                  //   } else {
-                  //     console.log('Email sent: ' + info.response);
-                  //   }
-                  // });
-                  // // -------------------------------
                   res.status(201).send({
                     message: "User Password reset Successfull",
                     result,
@@ -386,7 +314,7 @@ exports.forgetPasswordReset = async (req, res, next) => {
     });
 };
 
-exports.forgetPasswordRequest = async (req, res, next) => {
+exports.forgetPasswordRequest = async (req, res) => {
   const tempPassword = generatePassword();
   bcrypt
     .hash(tempPassword, 10)
@@ -400,41 +328,19 @@ exports.forgetPasswordRequest = async (req, res, next) => {
       };
 
       User.findOneAndUpdate(user, update)
-        .then((result) => {
+        .then( async (result) => {
           if (!result) {
             res.status(500).send({
               message: "user with given email not found",
             });
           } else {
             console.log(tempPassword);
-            // // send mail to the user with generated password
-            // var transporter = nodemailer.createTransport({
-            //   service: process.env.EMAIL_PROVIDER,
-            //   auth: {
-            //     user: process.env.EMAIL_ADDRESS,
-            //     pass: process.env.EMAIL_PASSWORD
-            //   }
-            // });
 
-            // var mailOptions = {
-            //   from: process.env.EMAIL_ADDRESS,
-            //   to: req.body.email,
-            //   subject: 'Account Recovery Link - Meeting Management System',
-            //   text: `We have received a request to reset the password for your account in the Meeting Management System.\n
-            //         To proceed with resetting your password, please click on the following link: \n\n
-            //         http://localhost:3000/auth/reset?email=${req.body.email}&temp=${tempPassword}`
-            // };
+            // temp password (password) need to send via sms here
+            // phone -> user.phone
+            await sendResetOTP(user.phone, password)
 
-            // console.log(mailOptions);
 
-            // transporter.sendMail(mailOptions, function (error, info) {
-            //   if (error) {
-            //     console.log(error);
-            //   } else {
-            //     console.log('Email sent: ' + info.response);
-            //   }
-            // });
-            // // -------------------------------
             res.status(201).send({
               message: "User Password reset Successfull",
               result,
@@ -456,7 +362,7 @@ exports.forgetPasswordRequest = async (req, res, next) => {
     });
 };
 
-exports.passwordResetByAdmin = async (req, res, next) => {
+exports.passwordResetByAdmin = async (req, res) => {
   const password = generatePassword();
   bcrypt
     .hash(password, 10)
@@ -471,39 +377,19 @@ exports.passwordResetByAdmin = async (req, res, next) => {
       };
 
       User.findOneAndUpdate(user, update)
-        .then((result) => {
+        .then( async (result) => {
           if (!result) {
             res.status(500).send({
               message: "user password reset failed",
             });
           } else {
             console.log(password);
-            // // send mail to the user with generated password
-            // var transporter = nodemailer.createTransport({
-            //   service: process.env.EMAIL_PROVIDER,
-            //   auth: {
-            //     user: process.env.EMAIL_ADDRESS,
-            //     pass: process.env.EMAIL_PASSWORD
-            //   }
-            // });
 
-            // var mailOptions = {
-            //   from: process.env.EMAIL_ADDRESS,
-            //   to: req.body.email,
-            //   subject: 'meeting scheduling new login',
-            //   text: `login credentionals of your account \n${req.body.email} \n${password}`
-            // };
+            // temp password (password) need to send via sms here
+            // phone -> user.phone
+            await sendResetOTP(user.phone, password)
 
-            // console.log(mailOptions);
 
-            // transporter.sendMail(mailOptions, function (error, info) {
-            //   if (error) {
-            //     console.log(error);
-            //   } else {
-            //     console.log('Email sent: ' + info.response);
-            //   }
-            // });
-            // // -------------------------------
             res.status(201).send({
               message: "User Password reset Successfull",
               result,

@@ -3,7 +3,6 @@ import axios from "axios";
 
 import SectionSubtitle from "../components/SectionSubtitle";
 
-import { userArr } from "../data/SampleData";
 import { CloseIcon } from "../Icons/Icon";
 import DeleteUserModal from "../modals/DeleteUserModal";
 

@@ -6,42 +6,6 @@ const { sendResetOTP, sendFirstTimeOTP } = require('../services/sms.service')
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
-exports.getCollectors = async (req, res) => {
-  User.find({ role: "collector" })
-    .select("userID name email phone")
-    .then((users) => {
-      res.status(200).json({ collectors: users });
-    })
-    .catch((err) => {
-      res.status(400).json({ message: err.message });
-    });
-};
-
-exports.deleteUser = async (req, res) => {
-  User.findById(req.params.id)
-    .then((user) => {
-      if (user.role == "admin") {
-        res.status(400).json({ message: "can not remove admin" });
-      } else {
-        User.deleteOne({ email: user.email })
-          .then((result) => {
-            res.status(200).json({
-              message: "user Removed Successfully",
-            });
-          })
-          .catch((err) => {
-            res.status(400).json({
-              message: "removing user unsuccessfull !",
-              error: err.message,
-            });
-          });
-      }
-    })
-    .catch((err) => {
-      res.status(400).json({ message: err.message });
-    });
-};
-
 exports.getUserData = async (req, res) => {
   try {
 
@@ -140,7 +104,7 @@ exports.passwordResetToDefault = async (req, res) => {
     });
 };
 
-exports.passwordReset = async (req, res) => {
+exports.tempPasswordReset = async (req, res) => {
   bcrypt
     .hash(req.body.newPassword, 10)
     .then((hashedPassword) => {
@@ -181,19 +145,6 @@ exports.passwordReset = async (req, res) => {
         e,
       });
     });
-};
-
-exports.getPendingUsers = async (req, res) => {
-  try {
-    const users = await User.find({ role: "pending" }).select(
-      "name userId email phone"
-    );
-
-    res.status(200).json({ pendingUsers: users });
-  } catch (err) {
-    console.log(err);
-    res.status(400).json({ message: err.message });
-  }
 };
 
 const generatePassword = () => {

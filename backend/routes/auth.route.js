@@ -4,16 +4,13 @@ const passport = require("passport");
 const { checkPermission } = require("../middleware/userAuth");
 const {
   login,
-  passwordReset,
   passwordResetToDefault,
-  getCollectors,
-  deleteUser,
   addUser,
-  getPendingUsers,
   passwordResetByAdmin,
   forgetPasswordReset,
   forgetPasswordRequest,
   getUserData,
+  tempPasswordReset,
 } = require("../controllers/auth.controller");
 
 router.post(
@@ -42,12 +39,12 @@ router.get(
   getUserData
 );
 router.post(
-  "/password-reset",
+  "/temp-password-reset",
   [
     passport.authenticate("jwt", { session: false }),
     checkPermission(["admin", "collector", "pending"]),
   ],
-  passwordReset
+  tempPasswordReset
 );
 router.post(
   "/password-reset-by-admin",
@@ -57,22 +54,7 @@ router.post(
   ],
   passwordResetByAdmin
 );
-router.get(
-  "/collectors",
-  [
-    passport.authenticate("jwt", { session: false }),
-    checkPermission(["admin"]),
-  ],
-  getCollectors
-);
-router.get(
-  "/pending-users",
-  [
-    passport.authenticate("jwt", { session: false }),
-    checkPermission(["admin"]),
-  ],
-  getPendingUsers
-);
+
 router.post(
   "/password-reset-to-default",
   [
@@ -81,13 +63,6 @@ router.post(
   ],
   passwordResetToDefault
 );
-router.delete(
-  "/collectors/:id",
-  [
-    passport.authenticate("jwt", { session: false }),
-    checkPermission(["admin"]),
-  ],
-  deleteUser
-);
+
 
 module.exports = router;

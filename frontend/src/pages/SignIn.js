@@ -31,14 +31,14 @@ const SignIn = () => {
 
     await axios(config)
       .then((res) => {
-        console.log(res);
-        if (res.data.userData.role == "pending") {
+        // console.log(res);
+        if (res.data.role == "pending") {
           if (res.data.token) {
             localStorage.setItem(
               "pendingUserToken",
               JSON.stringify(res.data.token)
             );
-            localStorage.setItem("userData", JSON.stringify(res.data.userData));
+            localStorage.setItem("userRole", JSON.stringify(res.data.role));
             window.location.href = "/reset-password";
           } else {
             setMessage(res.data.message);
@@ -48,7 +48,7 @@ const SignIn = () => {
             cookies.set("autoCreditCookie", res.data.token, {
               path: "/",
             });
-            localStorage.setItem("userData", JSON.stringify(res.data.userData));
+            localStorage.setItem("userRole", JSON.stringify(res.data.role));
             window.location.href = "/";
           } else {
             setMessage(res.data.message);
@@ -57,6 +57,7 @@ const SignIn = () => {
       })
       .catch((res) => {
         setMessage(res.response.data);
+        // console.log(res);
       })
       .finally(() => {
         setLoading(false);

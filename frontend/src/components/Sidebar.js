@@ -35,21 +35,23 @@ const Sidebar = ({ collapsed, toggled }) => {
       <div className="">
         {sidebarItems &&
           sidebarItems.map((item) => (
-            <NavLink to={item.path} className="w-full">
-              <button
-                key={item.id}
-                className={`p-3 w-full flex items-center hover:bg-yellow cursor-pointer overflow-hidden aria-[current=page]:bg-yellow disabled:opacity-50 disabled:cursor-default disabled:hover:bg-transparent`}
-                disabled={userRole == "collector" && !item.accessAll && true}
+            <NavLink
+              to={item.path}
+              key={item.id}
+              className={`p-3 w-full flex items-center  overflow-hidden ${
+                userRole == "collector" && item.adminAccessOnly
+                  ? "pointer-events-none opacity-50 cursor-default hover:bg-transparent"
+                  : "hover:bg-yellow aria-[current=page]:bg-yellow cursor-pointer"
+              }`}
+            >
+              {renderIconComponent(item.icon)}
+              <p
+                className={`ms-3 uppercase font-semibold text-md ${
+                  collapsed ? "hidden" : "block"
+                }`}
               >
-                {renderIconComponent(item.icon)}
-                <p
-                  className={`ms-3 uppercase font-semibold text-md ${
-                    collapsed ? "hidden" : "block"
-                  }`}
-                >
-                  {item.name}
-                </p>
-              </button>
+                {item.name}
+              </p>
             </NavLink>
           ))}
       </div>

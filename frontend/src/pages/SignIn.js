@@ -31,7 +31,7 @@ const SignIn = () => {
 
     await axios(config)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         if (res.data.role == "pending") {
           if (res.data.token) {
             localStorage.setItem(
@@ -47,6 +47,7 @@ const SignIn = () => {
           if (res.data.token) {
             cookies.set("autoCreditCookie", res.data.token, {
               path: "/",
+              maxAge: 60 * 60 * 24,
             });
             localStorage.setItem("userRole", JSON.stringify(res.data.role));
             window.location.href = "/";
@@ -57,7 +58,7 @@ const SignIn = () => {
       })
       .catch((res) => {
         setMessage(res.response.data);
-        // console.log(res);
+        console.log(res);
       })
       .finally(() => {
         setLoading(false);

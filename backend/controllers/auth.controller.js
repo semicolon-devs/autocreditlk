@@ -121,7 +121,7 @@ exports.passwordResetToDefault = async (req, res) => {
 
             res.status(201).send({
               message: "User Password reset Successfull",
-              result,
+              // result,
             });
           }
         })
@@ -146,7 +146,7 @@ exports.passwordReset = async (req, res) => {
     .then((hashedPassword) => {
       // creating user object
       const user = {
-        email: req.body.email,
+        email: req.user.email,
       };
 
       const update = {
@@ -165,7 +165,9 @@ exports.passwordReset = async (req, res) => {
           } else {
             res.status(201).send({
               message: "User Registerd Successfully",
-              result,
+              // userData: {
+              //   email: result.email
+              // }
             });
           }
         })

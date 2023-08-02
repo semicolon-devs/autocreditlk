@@ -34,7 +34,6 @@ const AddUser = ({ setPendingUsers }) => {
     };
     axios(axiosConfig)
       .then((response) => {
-        console.log(response);
         setPendingUsers((prev) => [...prev, response.data.result]);
       })
       .catch((err) => {

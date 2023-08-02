@@ -53,7 +53,7 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
       </div>
       <div className="bg-white h-full rounded-lg drop-shadow-lg p-3 flex-grow flex items-center justify-center">
         <h1 className="text-maroon font-bold uppercase text-dark text-xl sm:text-2xl text-center">
-          auto credit lk
+          auto credit
         </h1>
         {/* <h2 className="font-semibold uppercase text-purple-50 text-lg">
           debtor management system

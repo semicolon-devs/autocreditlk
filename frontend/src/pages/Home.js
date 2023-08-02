@@ -32,7 +32,8 @@ const Home = () => {
       };
       axios(axiosConfig)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
+          setCustomers(response.data.customers);
         })
         .catch((err) => {
           console.log(err);
@@ -41,18 +42,20 @@ const Home = () => {
           setLoading(false);
         });
     };
+
+    getCustomers();
   }, []);
 
-  const filteredCustomerArr = customerArr.filter((customer) => {
+  const filteredCustomers = customers.filter((customer) => {
     return (
-      customer.loanId.includes(searchField) ||
+      customer.customerID.includes(searchField) ||
       customer.name.toLowerCase().includes(searchField.toLowerCase()) ||
       customer.NIC.toLowerCase().includes(searchField.toLowerCase())
     );
   });
 
-  const filtered = filteredCustomerArr.map((customer) => (
-    <HomePageCard key={customer.loanId} customer={customer} />
+  const filtered = filteredCustomers.map((customer) => (
+    <HomePageCard key={customer._id} customer={customer} />
   ));
 
   return (

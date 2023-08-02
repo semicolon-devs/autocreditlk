@@ -23,7 +23,7 @@ const ManageUsers = () => {
       setLoading(true);
       const axiosConfig = {
         method: "get",
-        url: `${BASE_URL}auth/pending-users`,
+        url: `${BASE_URL}collector/pending-users`,
         headers: {
           Authorization: `Bearer ${token}`,
         },

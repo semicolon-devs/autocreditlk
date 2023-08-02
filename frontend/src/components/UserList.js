@@ -23,18 +23,18 @@ const UserList = () => {
     const fetchUsers = async () => {
       const axiosConfig = {
         method: "get",
-        url: `${BASE_URL}auth/collectors`,
+        url: `${BASE_URL}collector/collectors`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
 
       axios(axiosConfig)
-        .then((response) => {
-          setUsers(response.data.users);
+        .then((res) => {
+          setUsers(res.data.collectors);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
     };
 
@@ -53,7 +53,7 @@ const UserList = () => {
         {users &&
           users.map((user) => (
             <div
-              className="bg-yellow rounded-lg p-3 mb-3 flex justify-between items-center"
+              className="bg-yellow w-full rounded-lg p-3 mb-3 flex justify-between items-center"
               key={user._id}
             >
               <div className="">
@@ -61,7 +61,7 @@ const UserList = () => {
                   {user.name}
                 </p>
                 <p className="text-maroon ">{user.email}</p>
-                <p className="text-maroon leading-none">{user.mobileNo}</p>
+                <p className="text-maroon leading-none">{user.phone}</p>
               </div>
               <div className="">
                 <button

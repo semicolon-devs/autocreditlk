@@ -17,35 +17,30 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
-  const userToken = JSON.parse(localStorage.getItem("userToken"));
+  const pendingUserToken = JSON.parse(localStorage.getItem("pendingUserToken"));
 
-  const token = cookies.get("autoCreditCookie");
-
-  // console.log(localStorage.getItem("pendingUserToken"));
-
-  const resetPassword = async (tempPassword, password) => {
+  const resetPassword = async (password) => {
     setLoading(true);
     const config = {
       method: "post",
-      url: `${BASE_URL}auth/password-reset`,
+      url: `${BASE_URL}auth/temp-password-reset`,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${pendingUserToken}`,
       },
       data: {
-        password: tempPassword,
         newPassword: password,
       },
     };
 
     await axios(config)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         localStorage.clear();
         window.location.href = "/sign-in";
       })
       .catch((res) => {
-        setMessage(res.response.data);
-        // console.log(res);
+        // setMessage(res.response.data);
+        console.log(res);
       })
       .finally(() => {
         setLoading(false);
@@ -66,12 +61,10 @@ const ResetPassword = () => {
         </p>
         <Formik
           initialValues={{
-            tempPassword: "",
             password: "",
             confirmPassword: "",
           }}
           validationSchema={Yup.object({
-            tempPassword: Yup.string().required("Required"),
             password: Yup.string()
               .required("Required")
               .min(8, "Your password is too short.")
@@ -91,12 +84,6 @@ const ResetPassword = () => {
           }}
         >
           <Form>
-            <TextInput
-              name="tempPassword"
-              type="password"
-              placeholder="Enter temporary password"
-            />
-
             <TextInput
               name="password"
               type="password"
@@ -132,8 +119,8 @@ const ResetPassword = () => {
             </button>
 
             {message && (
-              <div className="">
-                <p className="">{message}</p>
+              <div className="w-full border border-orange rounded-lg mt-3 p-3">
+                <p className="text-orange">{message}</p>
               </div>
             )}
           </Form>

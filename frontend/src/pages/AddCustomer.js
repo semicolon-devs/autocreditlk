@@ -40,7 +40,7 @@ const AddCustomer = () => {
     generateCollectorIdArray();
   }, []);
 
-  const addNewCustomer = (values) => {
+  const addNewCustomer = async (values) => {
     const {
       customerId,
       name,
@@ -63,6 +63,7 @@ const AddCustomer = () => {
     } = values;
 
     setLoading(true);
+
     const formData = new FormData();
     formData.append("customerID", customerId);
     formData.append("name", name);
@@ -78,37 +79,39 @@ const AddCustomer = () => {
     formData.append("billingCycle", billingCycle);
     formData.append("collectorId", collectorId);
     formData.append("description", description);
-    formData.append("NICFrontCopy", NICFrontCopy[0]);
-    formData.append("NICRearCopy", NICRearCopy[0]);
-    formData.append("customerPhoto", customerPhoto[0]);
+    formData.append("NICFrontCopy", NICFrontCopy);
+    formData.append("NICRearCopy", NICRearCopy);
+    formData.append("customerPhoto", customerPhoto);
     formData.append("guarantor", guarantorName);
     formData.append("guarantorMobile", guarantorMobileNo);
     formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
     formData.append("guarantorNIC", guarantorNIC);
-    formData.append("guarantorNICFrontCopy", guarantorNICFrontCopy[0]);
-    formData.append("guarantorNICRearCopy", guarantorNICRearCopy[0]);
+    formData.append("guarantorNICFrontCopy", guarantorNICFrontCopy);
+    formData.append("guarantorNICRearCopy", guarantorNICRearCopy);
 
-    axios
-      .post(`${BASE_URL}customers`, formData, {
+    try {
+      const response = await axios.post(`${BASE_URL}customers`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
       });
+      // console.log(response);
+      setNICFrontCopy(null);
+      setNICRearCopy(null);
+      setCustomerPhoto(null);
+      setGuarantorNICFrontCopy(null);
+      setGuarantorNICRearCopy(null);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const validationSchema = Yup.object({
     customerId: Yup.string()
-      .matches(/^#(\d{4})$/, "Must start with '#' and be followed by 4 digits")
+      .matches(/^(\d{4})$/, "Must be 4 digits")
       .required("Required"),
     name: Yup.string().required("Required"),
     NIC: Yup.string()
@@ -172,7 +175,7 @@ const AddCustomer = () => {
           address: "",
           loanAmount: "",
           installmentAmount: "",
-          duration: "",
+          noOfInstallments: "",
           startDate: "",
           billingCycle: "",
           collectorId: "",
@@ -183,9 +186,10 @@ const AddCustomer = () => {
           guarantorNIC: "",
         }}
         validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values, { setSubmitting, resetForm }) => {
           addNewCustomer(values);
           setSubmitting(false);
+          resetForm({});
         }}
       >
         <div className="bg-white w-full rounded-lg drop-shadow-lg p-3">
@@ -195,7 +199,7 @@ const AddCustomer = () => {
                 name="customerId"
                 type="text"
                 label="Customer ID :"
-                placeholder="#8080"
+                placeholder="8080"
               />
 
               <TextInput
@@ -250,7 +254,7 @@ const AddCustomer = () => {
               <TextInput
                 name="installmentAmount"
                 type="number"
-                label="Loan amount :"
+                label="Installment amount :"
                 placeholder="2,000"
               />
 
@@ -375,7 +379,7 @@ const AddCustomer = () => {
 
               <button
                 type="submit"
-                className="bg-maroon w-full rounded-lg px-4 py-2 mt-2 border-none outline-none"
+                className="bg-maroon w-full rounded-lg px-4 py-2 mt-2 border-none outline-none flex items-center justify-center"
               >
                 {loading ? (
                   <ThreeDots

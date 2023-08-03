@@ -62,7 +62,7 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
       <div className="bg-white h-full rounded-lg p-3 drop-shadow-lg flex items-center justify-center z-20">
         <AccountIcon />
         <p className="capitalize leading-8 font-semibold ms-3 hidden sm:block">
-          {userData ? userData.name.split(" ")[0] : "Guest User"}
+          {userData ? userData.name.split(" ")[0] : "Loading..."}
         </p>
       </div>
     </nav>

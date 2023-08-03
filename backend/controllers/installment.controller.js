@@ -45,23 +45,6 @@ exports.addPayment = async (req, res) => {
   
 };
 
-exports.getPaymentOfCustomer = async (req, res) => {
-  const customerID = req.params.id;
-
-  try {
-    const installments = await Installment.find({ customerID: customerID });
-    const customer = await Customer.findOne({ customerID: customerID })
-    
-    res.status(200).json({ payments: installments, customer : customer })
-  }catch (err) {
-
-    console.log(err);
-    res.status(400).json({ message: err.message });
-  }
-
-};
-
-
 exports.getPaymentInfo = async (req, res) => {
   const id = req.params.id;
   Installment.findById(id)

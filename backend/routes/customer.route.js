@@ -5,6 +5,9 @@ const { checkPermission } = require("../middleware/userAuth");
 const {
   addCustomer,
   getCustomers,
+  deleteCustomer,
+  updateCustomer,
+  getPaymentOfCustomer
 } = require("../controllers/customer.controller");
 const { uploader } = require("../config/multer.config");
 
@@ -31,5 +34,29 @@ router.get(
   ],
   getCustomers
 );
+router.get(
+  "/:id",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  getPaymentOfCustomer
+);
+router.delete(
+  "/:id",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  deleteCustomer
+)
+router.put(
+  "/:id",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  updateCustomer
+)
 
 module.exports = router;

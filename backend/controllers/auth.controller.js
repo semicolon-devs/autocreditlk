@@ -150,8 +150,8 @@ exports.tempPasswordReset = async (req, res) => {
 };
 
 const generatePassword = () => {
-  var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  var passwordLength = 12;
+  var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var passwordLength = 8;
   var password = "";
 
   for (var i = 0; i <= passwordLength; i++) {

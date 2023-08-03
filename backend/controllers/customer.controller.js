@@ -5,6 +5,7 @@ const {
   getDownloadURL,
 } = require("firebase/storage");
 const { storage } = require("../config/firebase.config");
+const Installment = require("../models/installment.model");
 
 const uploadFileToFirebaseStorage = async (fileType, customerID, file) => {
   const fileRef = ref(storage, `documents/${customerID}/${fileType + "-" + file.originalname}`);
@@ -121,5 +122,80 @@ exports.getCustomers = async (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(400).json({ message: err.message });
+    });
+};
+
+exports.getPaymentOfCustomer = async (req, res) => {
+  const customerID = req.params.id;
+
+  try {
+    const installments = await Installment.find({ customerID: customerID });
+    const customer = await Customer.findOne({ customerID: customerID })
+    
+    res.status(200).json({ payments: installments, customer : customer })
+  }catch (err) {
+
+    console.log(err);
+    res.status(400).json({ message: err.message });
+  }
+
+};
+
+exports.deleteCustomer = async (req, res) => {
+  const customerID = req.params.id;
+
+  Customer.findByIdAndDelete(customerID)
+    .then((customer) => {
+      Installment.deleteMany({customerID: customerID})
+      .then((result) => {
+        res.status(200).json({message: "customer deleted with all installment details"});
+      })
+      .catch((err) => {
+        res.status(200).json({message: "installment details remove failed"});
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ message: "customer delete failed" });
+    });
+};
+
+exports.updateCustomer = async (req, res) => {
+  const customerID = req.params.id;
+  const {
+    name,
+    NIC,
+    email,
+    phone,
+    phoneTwo,
+    address,
+    description,
+    guarantor,
+    guarantorMobile,
+    guarantorMobileTwo,
+    guarantorNIC,
+  } = req.body;
+
+  const newCustomerDetails = {
+    name,
+    NIC,
+    email,
+    phone,
+    phoneTwo,
+    address,
+    description,
+    guarantor,
+    guarantorMobile,
+    guarantorMobileTwo,
+    guarantorNIC,
+  }
+
+  Customer.findByIdAndUpdate(customerID, newCustomerDetails, {new: true})
+    .then((customer) => {
+      res.status(200).json({message: "customer details updated"})
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ message: "customer delete failed" });
     });
 };

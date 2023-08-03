@@ -1,7 +1,7 @@
-var fs = require('fs');
-var nodemailer = require('nodemailer');
-var events = require('events');
-var moment = require('moment')
+const fs = require('fs');
+const nodemailer = require('nodemailer');
+const events = require('events');
+const moment = require('moment')
 
 const date_time = moment().format("MMM Do YY");  
 const fileName = date_time + ' - Auto Credit Daily Report' +'.xlsx';
@@ -21,7 +21,7 @@ var smtpTransport = nodemailer.createTransport({
 function inputmail(){
     ///////Email
     const from = 'Auto Credit<morning123lucifer@gmail.com>';
-    const to  = 'hasankasanjana.dev@gmail.com';
+    const to  = 'supuledirisinghe@gmail.com';
     const subject  = date_time + ' - Auto Credit Daily Report';
     const text = 'File Attached for :' + date_time;
     const html = '';

@@ -4,7 +4,6 @@ const passport = require("passport");
 const { checkPermission } = require("../middleware/userAuth");
 const {
   addPayment,
-  getPaymentOfCustomer,
   deletePayment,
   updatePayment
 } = require("../controllers/installment.controller");
@@ -17,17 +16,6 @@ router.post(
   ],
   addPayment
 );
-
-router.get(
-  "/:id",
-  [
-    passport.authenticate("jwt", { session: false }),
-    checkPermission(["admin"]),
-  ],
-  getPaymentOfCustomer
-);
-
-
 
 router.delete(
   "/:id",

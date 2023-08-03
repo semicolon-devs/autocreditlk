@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ThreeDots } from "react-loader-spinner";
 
+import ChangeCustomerDetailsModal from "../modals/ChangeCustomerDetailsModal";
 import SendReminderModal from "../modals/SendReminderModal";
 import AddPaymentModal from "../modals/AddPaymentModal";
 import EditPaymentModal from "../modals/EditPaymentModal";
@@ -25,6 +26,8 @@ import BASE_URL from "../config/ApiConfig";
 const cookies = new Cookies();
 
 const CustomerDetails = () => {
+  const [changeCustomerDetailsModalShow, setChangeCustomerDetailsModalShow] =
+    useState(false);
   const [sendReminderModalShow, setSendReminderModalShow] = useState(false);
   const [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
   const [editPaymentModalShow, setEditPaymentModalShow] = useState(false);
@@ -101,30 +104,36 @@ const CustomerDetails = () => {
                   <span className="font-semibold capitalize">name : </span>
                   {customer.name}
                 </p>
+
                 <p className="">
                   <span className="font-semibold capitalize">loan ID : </span>#
                   {customer.customerID}
                 </p>
+
                 <p className="">
                   <span className="font-semibold capitalize">NIC : </span>
                   {customer.NIC}
                 </p>
+
                 <p className="">
                   <span className="font-semibold capitalize">
                     mobile no. 01 :{" "}
                   </span>
                   {customer.phone}
                 </p>
+
                 <p className="">
                   <span className="font-semibold capitalize">
                     mobile no. 02 :{" "}
                   </span>
                   {customer.phoneTwo}
                 </p>
+
                 <p className="">
                   <span className="font-semibold capitalize">address : </span>
                   {customer.address}
                 </p>
+
                 <p className="">
                   <span className="font-semibold capitalize">
                     start date :{" "}
@@ -136,15 +145,18 @@ const CustomerDetails = () => {
                     timeZone: "Asia/Colombo",
                   })}
                 </p>
+
                 <div className="flex gap-3">
                   <div className="bg-yellow p-3 rounded-lg">
                     <p className="font-semibold capitalize">loan amount</p>
                     <p className="">{customer.loanAmount}</p>
                   </div>
+
                   <div className="bg-yellow p-3 rounded-lg">
                     <p className="font-semibold capitalize">amount paid</p>
                     <p className="">{customer.paidAmount}</p>
                   </div>
+
                   <div className="bg-pink p-3 rounded-lg">
                     <p className="font-semibold capitalize">
                       arrears as at{" "}
@@ -158,27 +170,39 @@ const CustomerDetails = () => {
                     <p className="">{customer.arrears}</p>
                   </div>
                 </div>
+
                 <p className="">
                   <span className="font-semibold capitalize">
                     billing cycle :{" "}
                   </span>
                   {customer.billingCycle}
                 </p>
+
                 <p className="">
+                  <span className="font-semibold capitalize">
+                    Installment amount :{" "}
+                  </span>
+                  {customer.installmentAmount}
+                </p>
+
+                {/* <p className="">
                   <span className="font-semibold capitalize">
                     No of installments :{" "}
                   </span>
                   {customer.noOfInstallments}
-                </p>
+                </p> */}
+
                 <p className="">
                   <span className="font-semibold capitalize">
                     description :{" "}
                   </span>
                   {customer.description}
                 </p>
+
                 <p className="">
                   <span className="font-semibold capitalize">documents : </span>
                 </p>
+
                 <div
                   className="bg-pink w-max px-4 py-1 rounded-md cursor-pointer"
                   onClick={() =>
@@ -187,6 +211,7 @@ const CustomerDetails = () => {
                 >
                   <p className="capitalize text-white">NIC front copy</p>
                 </div>
+
                 <div
                   className="bg-pink w-max px-4 py-1 rounded-md mt-2 cursor-pointer"
                   onClick={() =>
@@ -195,6 +220,7 @@ const CustomerDetails = () => {
                 >
                   <p className="capitalize text-white">NIC rear copy</p>
                 </div>
+
                 <div
                   className="bg-pink w-max px-4 py-1 rounded-md mt-2 cursor-pointer mb-3"
                   onClick={() =>
@@ -203,35 +229,41 @@ const CustomerDetails = () => {
                 >
                   <p className="capitalize text-white">customer photo</p>
                 </div>
+
                 <p className="">
                   <span className="font-semibold capitalize">
                     guarantor name :{" "}
                   </span>
                   {customer.guarantor}
                 </p>
+
                 <p className="">
                   <span className="font-semibold capitalize">
                     guarantor NIC :{" "}
                   </span>
                   {customer.guarantorNIC}
                 </p>
+
                 <p className="">
                   <span className="font-semibold capitalize">
                     guarantor Mobile No. 1 :{" "}
                   </span>
                   {customer.guarantorMobile}
                 </p>
+
                 <p className="">
                   <span className="font-semibold capitalize">
                     guarantor Mobile No. 2 :{" "}
                   </span>
                   {customer.guarantorMobileTwo}
                 </p>
+
                 <p className="">
                   <span className="font-semibold capitalize">
                     guarantor documents :{" "}
                   </span>
                 </p>
+
                 <div
                   className="bg-pink w-max px-4 py-1 rounded-md cursor-pointer"
                   onClick={() =>
@@ -242,6 +274,7 @@ const CustomerDetails = () => {
                     Guarantor NIC front copy
                   </p>
                 </div>
+
                 <div
                   className="bg-pink w-max px-4 py-1 rounded-md mt-2 cursor-pointer"
                   onClick={() =>
@@ -252,15 +285,20 @@ const CustomerDetails = () => {
                     Guarantor NIC rear copy
                   </p>
                 </div>
+
                 <div className=" flex mt-4">
-                  <button className={buttonClasses}>
+                  <button
+                    className={buttonClasses}
+                    onClick={() => setChangeCustomerDetailsModalShow(true)}
+                  >
                     <p className={buttonTextClasses}>change details</p>
                   </button>
                 </div>
-                {sendReminderModalShow && (
-                  <SendReminderModal
-                    modalShow={sendReminderModalShow}
-                    setModalShow={setSendReminderModalShow}
+
+                {changeCustomerDetailsModalShow && (
+                  <ChangeCustomerDetailsModal
+                    modalShow={changeCustomerDetailsModalShow}
+                    setModalShow={setChangeCustomerDetailsModalShow}
                     customer={customer}
                   />
                 )}
@@ -294,6 +332,13 @@ const CustomerDetails = () => {
             <AddPaymentModal
               modalShow={addPaymentModalShow}
               setModalShow={setAddPaymentModalShow}
+              customer={customer}
+            />
+          )}
+          {sendReminderModalShow && (
+            <SendReminderModal
+              modalShow={sendReminderModalShow}
+              setModalShow={setSendReminderModalShow}
               customer={customer}
             />
           )}

@@ -26,7 +26,7 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
 
   const token = cookies.get("autoCreditCookie");
 
-  console.log(userData);
+  // console.log(userData);
 
   const addPayment = ({ amount }) => {
     const axiosConfig = {

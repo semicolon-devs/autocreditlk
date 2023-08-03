@@ -50,7 +50,7 @@ const AddCustomer = () => {
       mobileNoTwo,
       address,
       loanAmount,
-      noOfInstallments,
+      // noOfInstallments,
       installmentAmount,
       startDate,
       billingCycle,
@@ -74,7 +74,7 @@ const AddCustomer = () => {
     formData.append("address", address);
     formData.append("loanAmount", loanAmount);
     formData.append("installmentAmount", installmentAmount);
-    formData.append("noOfInstallments", noOfInstallments);
+    // formData.append("noOfInstallments", noOfInstallments);
     formData.append("startDate", startDate);
     formData.append("billingCycle", billingCycle);
     formData.append("collectorId", collectorId);
@@ -136,10 +136,10 @@ const AddCustomer = () => {
       .typeError("Must be a number")
       .positive("Must be a positive number")
       .required("Required"),
-    noOfInstallments: Yup.number()
-      .typeError("Must be a number")
-      .positive("Must be a positive number")
-      .required("Required"),
+    // noOfInstallments: Yup.number()
+    //   .typeError("Must be a number")
+    //   .positive("Must be a positive number")
+    //   .required("Required"),
     startDate: Yup.date().required("Required"),
     billingCycle: Yup.string()
       .oneOf(["Daily", "Weekly", "Monthly"], "Invalid selection")
@@ -175,7 +175,7 @@ const AddCustomer = () => {
           address: "",
           loanAmount: "",
           installmentAmount: "",
-          noOfInstallments: "",
+          // noOfInstallments: "",
           startDate: "",
           billingCycle: "",
           collectorId: "",
@@ -258,12 +258,12 @@ const AddCustomer = () => {
                 placeholder="2,000"
               />
 
-              <TextInput
+              {/* <TextInput
                 name="noOfInstallments"
                 type="number"
                 label="No of Installments :"
                 placeholder="12"
-              />
+              /> */}
 
               <TextInput
                 name="startDate"

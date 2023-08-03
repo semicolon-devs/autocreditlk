@@ -20,7 +20,7 @@ const UserList = () => {
   const token = cookies.get("autoCreditCookie");
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchCollectors = async () => {
       const axiosConfig = {
         method: "get",
         url: `${BASE_URL}collector/collectors`,
@@ -38,7 +38,7 @@ const UserList = () => {
         });
     };
 
-    fetchUsers();
+    fetchCollectors();
   }, []);
 
   const handleDeleteUserClick = (user) => {

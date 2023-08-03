@@ -19,7 +19,7 @@ import BASE_URL from "../config/ApiConfig";
 
 const cookies = new Cookies();
 
-const AddCustomer = () => {
+const AddExistingCustomer = () => {
   const [loading, setLoading] = useState(false);
   const [collectorArr, setCollectorArr] = useState([]);
   const [collectorIdArr, setCollectorIdArr] = useState([]);
@@ -59,74 +59,74 @@ const AddCustomer = () => {
     generateCollectorIdArray();
   }, []);
 
-  const addNewCustomer = async (values) => {
-    const {
-      customerId,
-      name,
-      NIC,
-      email,
-      mobileNo,
-      mobileNoTwo,
-      address,
-      loanAmount,
-      // noOfInstallments,
-      installmentAmount,
-      startDate,
-      billingCycle,
-      collectorId,
-      description,
-      guarantorName,
-      guarantorMobileNo,
-      guarantorMobileNoTwo,
-      guarantorNIC,
-    } = values;
+  //   const addNewCustomer = async (values) => {
+  //     const {
+  //       customerId,
+  //       name,
+  //       NIC,
+  //       email,
+  //       mobileNo,
+  //       mobileNoTwo,
+  //       address,
+  //       loanAmount,
+  //       // noOfInstallments,
+  //       installmentAmount,
+  //       startDate,
+  //       billingCycle,
+  //       collectorId,
+  //       description,
+  //       guarantorName,
+  //       guarantorMobileNo,
+  //       guarantorMobileNoTwo,
+  //       guarantorNIC,
+  //     } = values;
 
-    setLoading(true);
+  //     setLoading(true);
 
-    const formData = new FormData();
-    formData.append("customerID", customerId);
-    formData.append("name", name);
-    formData.append("NIC", NIC);
-    formData.append("email", email);
-    formData.append("phone", mobileNo);
-    formData.append("phoneTwo", mobileNoTwo);
-    formData.append("address", address);
-    formData.append("loanAmount", loanAmount);
-    formData.append("installmentAmount", installmentAmount);
-    // formData.append("noOfInstallments", noOfInstallments);
-    formData.append("startDate", startDate);
-    formData.append("billingCycle", billingCycle);
-    formData.append("collectorId", collectorId);
-    formData.append("description", description);
-    formData.append("NICFrontCopy", NICFrontCopy);
-    formData.append("NICRearCopy", NICRearCopy);
-    formData.append("customerPhoto", customerPhoto);
-    formData.append("guarantor", guarantorName);
-    formData.append("guarantorMobile", guarantorMobileNo);
-    formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
-    formData.append("guarantorNIC", guarantorNIC);
-    formData.append("guarantorNICFrontCopy", guarantorNICFrontCopy);
-    formData.append("guarantorNICRearCopy", guarantorNICRearCopy);
+  //     const formData = new FormData();
+  //     formData.append("customerID", customerId);
+  //     formData.append("name", name);
+  //     formData.append("NIC", NIC);
+  //     formData.append("email", email);
+  //     formData.append("phone", mobileNo);
+  //     formData.append("phoneTwo", mobileNoTwo);
+  //     formData.append("address", address);
+  //     formData.append("loanAmount", loanAmount);
+  //     formData.append("installmentAmount", installmentAmount);
+  //     // formData.append("noOfInstallments", noOfInstallments);
+  //     formData.append("startDate", startDate);
+  //     formData.append("billingCycle", billingCycle);
+  //     formData.append("collectorId", collectorId);
+  //     formData.append("description", description);
+  //     formData.append("NICFrontCopy", NICFrontCopy);
+  //     formData.append("NICRearCopy", NICRearCopy);
+  //     formData.append("customerPhoto", customerPhoto);
+  //     formData.append("guarantor", guarantorName);
+  //     formData.append("guarantorMobile", guarantorMobileNo);
+  //     formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
+  //     formData.append("guarantorNIC", guarantorNIC);
+  //     formData.append("guarantorNICFrontCopy", guarantorNICFrontCopy);
+  //     formData.append("guarantorNICRearCopy", guarantorNICRearCopy);
 
-    try {
-      const response = await axios.post(`${BASE_URL}customers`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      // console.log(response);
-      setNICFrontCopy(null);
-      setNICRearCopy(null);
-      setCustomerPhoto(null);
-      setGuarantorNICFrontCopy(null);
-      setGuarantorNICRearCopy(null);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     try {
+  //       const response = await axios.post(`${BASE_URL}customers`, formData, {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       // console.log(response);
+  //       setNICFrontCopy(null);
+  //       setNICRearCopy(null);
+  //       setCustomerPhoto(null);
+  //       setGuarantorNICFrontCopy(null);
+  //       setGuarantorNICRearCopy(null);
+  //     } catch (err) {
+  //       console.log(err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
   const validationSchema = Yup.object({
     customerId: Yup.string()
@@ -160,6 +160,11 @@ const AddCustomer = () => {
     //   .positive("Must be a positive number")
     //   .required("Required"),
     startDate: Yup.date().required("Required"),
+    paidAmount: Yup.number()
+      .typeError("Must be a number")
+      .positive("Must be a positive number")
+      .required("Required"),
+    paidAmountDate: Yup.date().required("Required"),
     billingCycle: Yup.string()
       .oneOf(["Daily", "Weekly", "Monthly"], "Invalid selection")
       .required("Required"),
@@ -182,7 +187,7 @@ const AddCustomer = () => {
 
   return (
     <div className="w-full">
-      <SectionTitle title="add new customer" />
+      <SectionTitle title="add existing customer" />
       <Formik
         initialValues={{
           customerId: "",
@@ -196,6 +201,8 @@ const AddCustomer = () => {
           installmentAmount: "",
           // noOfInstallments: "",
           startDate: "",
+          paidAmount: "",
+          paidAmountDate: "",
           billingCycle: "",
           collectorId: "",
           description: "",
@@ -206,7 +213,7 @@ const AddCustomer = () => {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
-          addNewCustomer(values);
+          //   addNewCustomer(values);
           setSubmitting(false);
           resetForm({});
         }}
@@ -277,12 +284,26 @@ const AddCustomer = () => {
                 placeholder="2,000"
               />
 
-              {/* <TextInput
-                name="noOfInstallments"
+              <TextInput
+                name="paidAmount"
                 type="number"
-                label="No of Installments :"
-                placeholder="12"
-              /> */}
+                label="Paid amount :"
+                placeholder="2,000"
+              />
+
+              {/* <TextInput
+                  name="noOfInstallments"
+                  type="number"
+                  label="No of Installments :"
+                  placeholder="12"
+                /> */}
+
+              <TextInput
+                name="paidAmountDate"
+                type="date"
+                label="Paid Amount Date :"
+                placeholder="01/08/2023"
+              />
 
               <TextInput
                 name="startDate"
@@ -423,4 +444,4 @@ const AddCustomer = () => {
   );
 };
 
-export default AddCustomer;
+export default AddExistingCustomer;

@@ -5,14 +5,15 @@ const moment = require('moment')
 
 // TODO: remove hardcoded values on stag
 const EMAIL_ADDRESS = process.env.EMAIL_ADDRESS || "morning123lucifer@gmail.com";
-const EMAIL_PROVIDER = process.env.EMAIL_PROVIDER || "gmail"
-const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD || "ypgdraaoruolsgek"
+const EMAIL_PROVIDER = process.env.EMAIL_PROVIDER || "gmail";
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD || "ypgdraaoruolsgek";
 const COMPANY_NAME = "Auto Credit";
+const FILE_EXTENSION = "xls";
 
 function getMailOptions(payload) {
   const from = COMPANY_NAME + '<' + EMAIL_ADDRESS + '>';
   const to = payload.to;
-  const subject = payload.date + ' -' + COMPANY_NAME + payload.reportType;
+  const subject = payload.date + ' -' + COMPANY_NAME + payload.reportType + 'Report';
   const text = 'File Attached for : ' + payload.date;
   const html = '';
 
@@ -34,50 +35,57 @@ function getDate() {
   return moment().format("MMM Do YY");
 }
 
-function generateDailyReport(records) {
-  const data = 'DAILY REPORT' + '\n' +
+function getMonth() {
+  return moment().format("MMMM YYYY");
+}
+
+function getWeek() {
+  return moment().startOf("week").format("MMMM YYYY") + " to " + moment().endOf("week").format("MMMM YYYY");
+}
+
+function generateDailyReport(records, filePath) {
+  generateReport(records, filePath, "DAILY REPORT", getDate());
+}
+
+function generateMonthlyReport(records, filePath) {
+  generateReport(records, filePath, "MONTHLY REPORT", getMonth());
+}
+
+function generateWeeklyReport(records, filePath) {
+  generateReport(records, filePath, "WEEKLY REPORT", getWeek());
+}
+
+function generateReport(records, filePath, reportType, date) {
+  let data = reportType + '\n' +
     'Auto Credit' + '\n' +
-    getDate() + '\n' + '\n';
+    date + '\n' + '\n';
 
   // extract the list of collectors
   let collectors = new Set();
   records.forEach((record) => {
     collectors.add(record.collector)
-
   })
 
+  // TODO: if the report needs a list of every collector, fetch it from db.
   let total = {};
   for (const item of collectors) {
     total[item] = 0;
   }
 
+  records.forEach((record) => {
+    total[record.collector] += Number(record.amount);
+    data += record.id + '\t' + record.name + '\t' + record.collector + '\t' + record.amount + '\n';
+  });
 
-  // console.log(total);
+  data += '\n' + '\n' + '\n';
 
-  let total_A = 0;
-  let total_B = 0;
-  let total_C = 0;
 
-  for (var i = 0; i < records.length; i++) {
-
-    if (records[i].collector == 'A') {
-      total_A += Number(records[i].amount);
-    } else if (records[i].collector == 'B') {
-      total_B += Number(records[i].amount);
-    } else {
-      total_C += Number(records[i].amount);
-    }
-
-    data = data + records[i].id + '\t' + records[i].name + '\t' + records[i].collector + '\t' + records[i].amount + '\n';
+  const collectorNames = Object.keys(total);
+  for (const name of collectorNames) {
+    data += "Collected Amount by " + name + '\t' + total[name] + '\n'
   }
 
-  data = data + '\n' + '\n' + '\n';
-  data = data + "Collected Amount by A" + '\t' + total_A + '\n';
-  data = data + "Collected Amount by B" + '\t' + total_B + '\n';
-  data = data + "Collected Amount by C" + '\t' + total_C + '\n';
-
-
-  fs.writeFile((getDate() + ' - Auto Credit Daily Report' + '.xlsx'), data, (err) => {
+  fs.writeFile(filePath, data, (err) => {
     if (err) {
       throw err
     };
@@ -129,33 +137,40 @@ function sendMail(payload) {
 //   });
 
 
+function main() {
+  const records = [{
+    "name": "Nilesh",
+    "id": "RDTC",
+    "collector": "A",
+    "amount": "1000"
+  }, {
+    "name": "Nilesh",
+    "id": "RDTC",
+    "collector": "B",
+    "amount": "2000"
+  }, {
+    "name": "Nilesh",
+    "id": "RDTC",
+    "collector": "B",
+    "amount": "3000"
+  }];
 
-const records = [{
-  "name": "Nilesh",
-  "id": "RDTC",
-  "collector": "A",
-  "amount": "1000"
-}, {
-  "name": "Nilesh",
-  "id": "RDTC",
-  "collector": "B",
-  "amount": "2000"
-}, {
-  "name": "Nilesh",
-  "id": "RDTC",
-  "collector": "B",
-  "amount": "3000"
-}];
 
-const fileName = getDate() + ' - Auto Credit Daily Report' + '.xlsx'
-const payload = {
-  to: "supuledirisinghe@gmail.com",
-  fileName: fileName,
-  filePath: fileName,
-  reportType: "Daily Report",
-  date: getDate()
-};
+  const reportType = "Weelkly";
+  const fileName = getDate() + ' - Auto Credit ' + reportType + ' Report' + '.' + FILE_EXTENSION
+  const filePath = "./reports/" + fileName;
 
-generateDailyReport(records);
+  const payload = {
+    to: "supuledirisinghe@gmail.com",
+    fileName: fileName,
+    filePath: filePath,
+    reportType: reportType,
+    date: getDate()
+  };
 
-sendMail(payload)
+  generateWeeklyReport(records, filePath);
+
+  sendMail(payload)
+}
+
+main();

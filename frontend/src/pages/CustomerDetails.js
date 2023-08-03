@@ -32,7 +32,7 @@ const CustomerDetails = () => {
   const [customer, setCustomer] = useState(null);
   const [customerPayments, setCustomerPayments] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(null);
 
   const { id } = useParams();
 
@@ -48,7 +48,7 @@ const CustomerDetails = () => {
       setLoading(true);
       const axiosConfig = {
         method: "get",
-        url: `${BASE_URL}installment/${id}`,
+        url: `${BASE_URL}customers/${id}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },

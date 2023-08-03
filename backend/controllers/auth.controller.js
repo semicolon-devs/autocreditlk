@@ -2,26 +2,25 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
-const { sendResetOTP, sendFirstTimeOTP } = require('../services/sms.service')
+const { sendResetOTP, sendFirstTimeOTP } = require("../services/sms.service");
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
 exports.getUserData = async (req, res) => {
   try {
-
     const userData = {
+      _id: req.user._id,
       name: req.user.name,
       email: req.user.email,
       phone: req.user.phone,
       role: req.user.role,
-    }
+    };
 
     res.status(200).json({ userData: userData });
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
-
-}
+};
 
 exports.login = async (req, res) => {
   const token = jwt.sign(
@@ -39,7 +38,7 @@ exports.login = async (req, res) => {
   if (req.user.role == "admin" || req.user.role == "collector") {
     const resObject = {
       token: token,
-      role: req.user.role
+      role: req.user.role,
     };
     return res.status(200).send(resObject);
   } else if (req.user.role == "pending") {
@@ -47,7 +46,7 @@ exports.login = async (req, res) => {
       message:
         "Please note that the user account has not been confirmed yet. you need to login with given credentials and reset password to confirm account",
       token: token,
-      role: req.user.role
+      role: req.user.role,
     });
   } else {
     return res.status(200).json({
@@ -78,10 +77,9 @@ exports.passwordResetToDefault = async (req, res) => {
               message: "user password reset failed",
             });
           } else {
-
             // temp password (password) need to send via sms here
             // phone -> user.phone
-            await sendResetOTP(user.phone, password)
+            await sendResetOTP(user.phone, password);
 
             res.status(201).send({
               message: "User Password reset Successfull",
@@ -181,8 +179,8 @@ exports.addUser = async (req, res) => {
 
       // temp password (password) need to send via sms here
       // phone -> user.phone
-      await sendFirstTimeOTP(phone, password)
-      
+      await sendFirstTimeOTP(phone, password);
+
       console.log("running");
 
       user
@@ -235,10 +233,9 @@ exports.forgetPasswordReset = async (req, res) => {
                     message: "otp generate failed",
                   });
                 } else {
-
                   // temp password (password) need to send via sms here
                   // phone -> user.phone
-                  await sendResetOTP(user.phone, `use OTP - ${password}`)
+                  await sendResetOTP(user.phone, `use OTP - ${password}`);
 
                   res.status(201).send({
                     message: "User Password reset Successfull",
@@ -281,7 +278,7 @@ exports.forgetPasswordRequest = async (req, res) => {
       };
 
       User.findOneAndUpdate(user, update)
-        .then( async (result) => {
+        .then(async (result) => {
           if (!result) {
             res.status(500).send({
               message: "user with given email not found",
@@ -291,8 +288,7 @@ exports.forgetPasswordRequest = async (req, res) => {
 
             // temp password (password) need to send via sms here
             // phone -> user.phone
-            await sendResetOTP(user.phone, password)
-
+            await sendResetOTP(user.phone, password);
 
             res.status(201).send({
               message: "User Password reset Successfull",
@@ -330,7 +326,7 @@ exports.passwordResetByAdmin = async (req, res) => {
       };
 
       User.findOneAndUpdate(user, update)
-        .then( async (result) => {
+        .then(async (result) => {
           if (!result) {
             res.status(500).send({
               message: "user password reset failed",
@@ -340,8 +336,7 @@ exports.passwordResetByAdmin = async (req, res) => {
 
             // temp password (password) need to send via sms here
             // phone -> user.phone
-            await sendResetOTP(user.phone, password)
-
+            await sendResetOTP(user.phone, password);
 
             res.status(201).send({
               message: "User Password reset Successfull",

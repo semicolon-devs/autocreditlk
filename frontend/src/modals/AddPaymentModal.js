@@ -2,19 +2,54 @@ import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 import { TextInput } from "../components/FormikElements";
 import {
   primaryButtonClasses,
   secondaryButtonClasses,
-  buttonTextClasses
+  buttonTextClasses,
 } from "../data/Classes";
+
+import Cookies from "universal-cookie";
+
+import BASE_URL from "../config/ApiConfig";
+
+const cookies = new Cookies();
 
 const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
   const [message, setMessage] = useState(null);
 
-  const addPaymentButtonClick = () => {
-    console.log("add payment");
+  const today = new Date();
+
+  const userData = JSON.parse(localStorage.getItem("userData"));
+
+  const token = cookies.get("autoCreditCookie");
+
+  console.log(userData);
+
+  const addPayment = ({ amount }) => {
+    const axiosConfig = {
+      method: "post",
+      url: `${BASE_URL}installment//add-payment`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        customerID: customer.customerID,
+        amount: amount,
+        paidDate: today,
+        collectedBy: userData._id,
+      },
+    };
+    axios(axiosConfig)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        // setMessage(err.data.message);
+        console.log(err);
+      });
   };
 
   return (
@@ -67,7 +102,7 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
                     .integer("Amount must be an integer"),
                 })}
                 onSubmit={(values, { setSubmitting }) => {
-                  // signIn(values.email, values.password);
+                  addPayment(values.amount);
                   setSubmitting(false);
                 }}
               >
@@ -85,10 +120,7 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
                   )}
 
                   <div className="flex">
-                    <button
-                      className={primaryButtonClasses}
-                      onClick={addPaymentButtonClick}
-                    >
+                    <button className={primaryButtonClasses} type="submit">
                       <p className={buttonTextClasses}>add payment</p>
                     </button>
                     <button

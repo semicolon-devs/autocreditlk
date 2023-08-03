@@ -21,7 +21,7 @@ const DeleteUserModal = ({
   const deleteUser = () => {
     const axiosConfig = {
       method: "DELETE",
-      url: `${BASE_URL}auth/collectors/${user._id}`,
+      url: `${BASE_URL}collector/delete/${user._id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

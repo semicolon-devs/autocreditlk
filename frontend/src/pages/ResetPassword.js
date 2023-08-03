@@ -78,7 +78,7 @@ const ResetPassword = () => {
           })}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             // handlePasswordReset(values.password);
-            resetPassword(values.tempPassword, values.password);
+            resetPassword(values.password);
             setSubmitting(false);
             resetForm({});
           }}

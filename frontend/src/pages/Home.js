@@ -20,6 +20,9 @@ const Home = () => {
 
   const token = cookies.get("autoCreditCookie");
 
+  // console.log(customers);
+  // console.log(searchField);
+
   useEffect(() => {
     const getCustomers = () => {
       setLoading(true);

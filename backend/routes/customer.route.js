@@ -8,9 +8,9 @@ const {
   deleteCustomer,
   updateCustomer,
   getPaymentOfCustomer,
-  getGuarantorIDs,
   topUpLoan,
   addExisitngCustomer,
+  getGuarantorIDs,
 } = require("../controllers/customer.controller");
 const { uploader } = require("../config/multer.config");
 
@@ -61,7 +61,7 @@ router.get(
   getPaymentOfCustomer
 );
 router.get(
-  "/guarantor-ids",
+  "/guarantors/ids",
   [
     passport.authenticate("jwt", { session: false }),
     checkPermission(["admin"]),

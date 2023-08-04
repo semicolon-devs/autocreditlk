@@ -29,7 +29,7 @@ router.post(
   addCustomer
 );
 router.post(
-  "/existing/",
+  "/existing",
   [
     passport.authenticate("jwt", { session: false }),
     checkPermission(["admin"]),

@@ -268,6 +268,7 @@ const AddCustomer = () => {
                 type="number"
                 label="Loan amount :"
                 placeholder="50,000"
+                onWheel={(e) => e.target.blur()}
               />
 
               <TextInput
@@ -275,6 +276,7 @@ const AddCustomer = () => {
                 type="number"
                 label="Installment amount :"
                 placeholder="2,000"
+                onWheel={(e) => e.target.blur()}
               />
 
               {/* <TextInput

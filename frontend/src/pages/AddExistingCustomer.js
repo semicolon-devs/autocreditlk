@@ -44,89 +44,93 @@ const AddExistingCustomer = () => {
       axios(axiosConfig)
         .then((res) => {
           setCollectorArr(res.data.collectors);
+          const collectorIdArr = res.data.collectors.map(
+            (collector) => collector._id
+          );
         })
         .catch((err) => {
           console.log(err);
         });
     };
 
-    const generateCollectorIdArray = () => {
-      const collectorIdArr = collectorArr.map((collector) => collector._id);
-      setCollectorIdArr(collectorIdArr);
-    };
-
     fetchCollectors();
-    generateCollectorIdArray();
   }, []);
 
-  //   const addNewCustomer = async (values) => {
-  //     const {
-  //       customerId,
-  //       name,
-  //       NIC,
-  //       email,
-  //       mobileNo,
-  //       mobileNoTwo,
-  //       address,
-  //       loanAmount,
-  //       // noOfInstallments,
-  //       installmentAmount,
-  //       startDate,
-  //       billingCycle,
-  //       collectorId,
-  //       description,
-  //       guarantorName,
-  //       guarantorMobileNo,
-  //       guarantorMobileNoTwo,
-  //       guarantorNIC,
-  //     } = values;
+  const addExisitngCustomer = async (values) => {
+    const {
+      customerId,
+      name,
+      NIC,
+      email,
+      mobileNo,
+      mobileNoTwo,
+      address,
+      loanAmount,
+      // noOfInstallments,
+      installmentAmount,
+      paidAmount,
+      paidAmountDate,
+      startDate,
+      billingCycle,
+      collectorId,
+      description,
+      guarantorName,
+      guarantorMobileNo,
+      guarantorMobileNoTwo,
+      guarantorNIC,
+    } = values;
 
-  //     setLoading(true);
+    setLoading(true);
 
-  //     const formData = new FormData();
-  //     formData.append("customerID", customerId);
-  //     formData.append("name", name);
-  //     formData.append("NIC", NIC);
-  //     formData.append("email", email);
-  //     formData.append("phone", mobileNo);
-  //     formData.append("phoneTwo", mobileNoTwo);
-  //     formData.append("address", address);
-  //     formData.append("loanAmount", loanAmount);
-  //     formData.append("installmentAmount", installmentAmount);
-  //     // formData.append("noOfInstallments", noOfInstallments);
-  //     formData.append("startDate", startDate);
-  //     formData.append("billingCycle", billingCycle);
-  //     formData.append("collectorId", collectorId);
-  //     formData.append("description", description);
-  //     formData.append("NICFrontCopy", NICFrontCopy);
-  //     formData.append("NICRearCopy", NICRearCopy);
-  //     formData.append("customerPhoto", customerPhoto);
-  //     formData.append("guarantor", guarantorName);
-  //     formData.append("guarantorMobile", guarantorMobileNo);
-  //     formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
-  //     formData.append("guarantorNIC", guarantorNIC);
-  //     formData.append("guarantorNICFrontCopy", guarantorNICFrontCopy);
-  //     formData.append("guarantorNICRearCopy", guarantorNICRearCopy);
+    const formData = new FormData();
+    formData.append("customerID", customerId);
+    formData.append("name", name);
+    formData.append("NIC", NIC);
+    formData.append("email", email);
+    formData.append("phone", mobileNo);
+    formData.append("phoneTwo", mobileNoTwo);
+    formData.append("address", address);
+    formData.append("loanAmount", loanAmount);
+    formData.append("installmentAmount", installmentAmount);
+    // formData.append("noOfInstallments", noOfInstallments);
+    formData.append("startDate", startDate);
+    formData.append("paidAmount", paidAmount);
+    formData.append("paidAmountDate", paidAmountDate);
+    formData.append("billingCycle", billingCycle);
+    formData.append("collectorId", collectorId);
+    formData.append("description", description);
+    formData.append("NICFrontCopy", NICFrontCopy);
+    formData.append("NICRearCopy", NICRearCopy);
+    formData.append("customerPhoto", customerPhoto);
+    formData.append("guarantor", guarantorName);
+    formData.append("guarantorMobile", guarantorMobileNo);
+    formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
+    formData.append("guarantorNIC", guarantorNIC);
+    formData.append("guarantorNICFrontCopy", guarantorNICFrontCopy);
+    formData.append("guarantorNICRearCopy", guarantorNICRearCopy);
 
-  //     try {
-  //       const response = await axios.post(`${BASE_URL}customers`, formData, {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       // console.log(response);
-  //       setNICFrontCopy(null);
-  //       setNICRearCopy(null);
-  //       setCustomerPhoto(null);
-  //       setGuarantorNICFrontCopy(null);
-  //       setGuarantorNICRearCopy(null);
-  //     } catch (err) {
-  //       console.log(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+    try {
+      const response = await axios.post(
+        `${BASE_URL}customers/existing`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setNICFrontCopy(null);
+      setNICRearCopy(null);
+      setCustomerPhoto(null);
+      setGuarantorNICFrontCopy(null);
+      setGuarantorNICRearCopy(null);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const validationSchema = Yup.object({
     customerId: Yup.string()
@@ -213,7 +217,7 @@ const AddExistingCustomer = () => {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
-          //   addNewCustomer(values);
+          addExisitngCustomer(values);
           setSubmitting(false);
           resetForm({});
         }}
@@ -275,6 +279,7 @@ const AddExistingCustomer = () => {
                 type="number"
                 label="Loan amount :"
                 placeholder="50,000"
+                onWheel={(e) => e.target.blur()}
               />
 
               <TextInput
@@ -282,6 +287,7 @@ const AddExistingCustomer = () => {
                 type="number"
                 label="Installment amount :"
                 placeholder="2,000"
+                onWheel={(e) => e.target.blur()}
               />
 
               <TextInput
@@ -289,6 +295,7 @@ const AddExistingCustomer = () => {
                 type="number"
                 label="Paid amount :"
                 placeholder="2,000"
+                onWheel={(e) => e.target.blur()}
               />
 
               {/* <TextInput

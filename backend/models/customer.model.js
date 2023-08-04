@@ -61,11 +61,7 @@ const CustomerSchema = new mongoose.Schema(
       required: true,
     },
     paidAmountDate: {
-      type: Number,
-    },
-    noOfInstallments: {
-      type: Number,
-      required: true,
+      type: Date,
     },
     startDate: {
       type: Date,

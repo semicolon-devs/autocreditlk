@@ -3,33 +3,33 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const { sendResetOTP, sendFirstTimeOTP } = require("../services/sms.service");
+const { generatePassword } = require("../utils/passwordGenerate");
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
 exports.getUserData = async (req, res) => {
-  try {
-    const userData = {
-      _id: req.user._id,
-      name: req.user.name,
-      email: req.user.email,
-      phone: req.user.phone,
-      role: req.user.role,
-    };
-
-    res.status(200).json({ userData: userData });
-  } catch (e) {
-    res.status(400).json({ error: e.message });
-  }
+  User.findOne({ email: req.user.email })
+    .then((user) => {
+      const userData = {
+        userID: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+      };
+      res.status(200).json({ userData: userData });
+    })
+    .catch((err) => {
+      res.status(200).json({ message: "user data not found" });
+    });
 };
 
 exports.login = async (req, res) => {
   const token = jwt.sign(
     {
       name: req.user.name,
-      userID: req.user.userID,
       email: req.user.email,
       role: req.user.role,
-      password: req.user.password,
     },
     SECRET_KEY,
     { expiresIn: "24h" }
@@ -145,19 +145,6 @@ exports.tempPasswordReset = async (req, res) => {
         e,
       });
     });
-};
-
-const generatePassword = () => {
-  var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  var passwordLength = 8;
-  var password = "";
-
-  for (var i = 0; i <= passwordLength; i++) {
-    var randomNumber = Math.floor(Math.random() * chars.length);
-    password += chars.substring(randomNumber, randomNumber + 1);
-  }
-
-  return password;
 };
 
 // register method

@@ -10,7 +10,7 @@ const InstallmentsSchema = new mongoose.Schema({
     required: true,
   },
   paidDate: {
-    type: String,
+    type: Date,
     required: true,
   },
   collectedBy: {

@@ -7,7 +7,9 @@ const {
   getCustomers,
   deleteCustomer,
   updateCustomer,
-  getPaymentOfCustomer
+  getPaymentOfCustomer,
+  topUpLoan,
+  addExisitngCustomer,
 } = require("../controllers/customer.controller");
 const { uploader } = require("../config/multer.config");
 
@@ -26,6 +28,21 @@ router.post(
   ],
   addCustomer
 );
+router.post(
+  "/existing/",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+    uploader.fields([
+      { name: "NICFrontCopy", maxCount: 1 },
+      { name: "NICRearCopy", maxCount: 1 },
+      { name: "customerPhoto", maxCount: 1 },
+      { name: "guarantorNICFrontCopy", maxCount: 1 },
+      { name: "guarantorNICRearCopy", maxCount: 1 },
+    ]),
+  ],
+  addExisitngCustomer
+);
 router.get(
   "/all",
   [
@@ -38,7 +55,7 @@ router.get(
   "/:id",
   [
     passport.authenticate("jwt", { session: false }),
-    checkPermission(["admin"]),
+    checkPermission(["admin", "collector"]),
   ],
   getPaymentOfCustomer
 );
@@ -49,7 +66,7 @@ router.delete(
     checkPermission(["admin"]),
   ],
   deleteCustomer
-)
+);
 router.put(
   "/:id",
   [
@@ -57,6 +74,14 @@ router.put(
     checkPermission(["admin"]),
   ],
   updateCustomer
-)
+);
+router.put(
+  "/topup/:id",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  topUpLoan
+);
 
 module.exports = router;

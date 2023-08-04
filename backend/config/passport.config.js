@@ -36,11 +36,12 @@ const jwtOptions = {
 
 // Create JWT strategy
 exports.jwtStrategy = new JwtStrategy(jwtOptions, async (jwtPayload, done) => {
-  const user = await User.findOne({ email: jwtPayload.email });
-  
-  if (user.password === jwtPayload.password) {
+  User.findOne({email: jwtPayload.email})
+  .then((user) => {
     return done(null, user);
-  } else {
+  })
+  .catch((err) => {
     return done(null, false);
-  }
+  })
 });
+

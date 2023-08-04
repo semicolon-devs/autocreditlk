@@ -60,6 +60,9 @@ const CustomerSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    paidAmountDate: {
+      type: Number,
+    },
     noOfInstallments: {
       type: Number,
       required: true,

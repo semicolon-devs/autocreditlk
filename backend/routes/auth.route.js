@@ -24,10 +24,10 @@ router.post("/forget-password-request", forgetPasswordRequest);
 router.post("/forget-password-reset", forgetPasswordReset);
 router.post(
   "/add-user",
-  // [
-  //   passport.authenticate("jwt", { session: false }),
-  //   checkPermission(["admin"]),
-  // ],
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
   addUser
 );
 router.get(

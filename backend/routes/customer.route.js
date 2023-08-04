@@ -8,6 +8,7 @@ const {
   deleteCustomer,
   updateCustomer,
   getPaymentOfCustomer,
+  getGuarantorIDs,
   topUpLoan,
   addExisitngCustomer,
 } = require("../controllers/customer.controller");
@@ -58,6 +59,14 @@ router.get(
     checkPermission(["admin", "collector"]),
   ],
   getPaymentOfCustomer
+);
+router.get(
+  "/guarantor-ids",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  getGuarantorIDs
 );
 router.delete(
   "/:id",

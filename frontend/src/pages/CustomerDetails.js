@@ -4,6 +4,7 @@ import axios from "axios";
 import { ThreeDots } from "react-loader-spinner";
 
 import ChangeCustomerDetailsModal from "../modals/ChangeCustomerDetailsModal";
+import DeleteCustomerModal from "../modals/DeleteCustomerModal";
 import SendReminderModal from "../modals/SendReminderModal";
 import AddPaymentModal from "../modals/AddPaymentModal";
 import EditPaymentModal from "../modals/EditPaymentModal";
@@ -28,6 +29,7 @@ const cookies = new Cookies();
 const CustomerDetails = () => {
   const [changeCustomerDetailsModalShow, setChangeCustomerDetailsModalShow] =
     useState(false);
+  const [deleteCustomerModalShow, setDeleteCustomerModalShow] = useState(false);
   const [sendReminderModalShow, setSendReminderModalShow] = useState(false);
   const [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
   const [editPaymentModalShow, setEditPaymentModalShow] = useState(false);
@@ -146,7 +148,7 @@ const CustomerDetails = () => {
                   })}
                 </p>
 
-                <div className="flex gap-3">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 my-3">
                   <div className="bg-yellow p-3 rounded-lg">
                     <p className="font-semibold capitalize">loan amount</p>
                     <p className="">{customer.loanAmount}</p>
@@ -286,12 +288,18 @@ const CustomerDetails = () => {
                   </p>
                 </div>
 
-                <div className=" flex mt-4">
+                <div className="flex flex-col gap-3 mt-4">
                   <button
-                    className={buttonClasses}
+                    className={`${secondaryButtonClasses} w-full`}
                     onClick={() => setChangeCustomerDetailsModalShow(true)}
                   >
                     <p className={buttonTextClasses}>change details</p>
+                  </button>
+                  <button
+                    className={`${primaryButtonClasses} w-full`}
+                    onClick={() => setDeleteCustomerModalShow(true)}
+                  >
+                    <p className={buttonTextClasses}>remove customer</p>
                   </button>
                 </div>
 
@@ -299,6 +307,13 @@ const CustomerDetails = () => {
                   <ChangeCustomerDetailsModal
                     modalShow={changeCustomerDetailsModalShow}
                     setModalShow={setChangeCustomerDetailsModalShow}
+                    customer={customer}
+                  />
+                )}
+                {deleteCustomerModalShow && (
+                  <DeleteCustomerModal
+                    modalShow={deleteCustomerModalShow}
+                    setModalShow={setDeleteCustomerModalShow}
                     customer={customer}
                   />
                 )}
@@ -315,18 +330,20 @@ const CustomerDetails = () => {
         <div>
           <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5">
             <SectionSubtitle title="payments" />
-            <button
-              className={secondaryButtonClasses}
-              onClick={() => setAddPaymentModalShow(true)}
-            >
-              <p className={buttonTextClasses}>add payment</p>
-            </button>
-            <button
-              className={`ms-3 ${primaryButtonClasses}`}
-              onClick={() => setSendReminderModalShow(true)}
-            >
-              <p className={buttonTextClasses}>send reminder</p>
-            </button>
+            <div className="flex items-center justify-start gap-3">
+              <button
+                className={secondaryButtonClasses}
+                onClick={() => setAddPaymentModalShow(true)}
+              >
+                <p className={buttonTextClasses}>add payment</p>
+              </button>
+              <button
+                className={`${primaryButtonClasses}`}
+                onClick={() => setSendReminderModalShow(true)}
+              >
+                <p className={buttonTextClasses}>send reminder</p>
+              </button>
+            </div>
           </div>
           {addPaymentModalShow && (
             <AddPaymentModal

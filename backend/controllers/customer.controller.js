@@ -225,7 +225,9 @@ exports.getPaymentOfCustomer = async (req, res) => {
 exports.deleteCustomer = async (req, res) => {
   const customerID = req.params.id;
 
-  Customer.findByIdAndDelete(customerID)
+  const filter = { customerID: customerID };
+
+  Customer.findOneAndDelete(filter)
     .then((customer) => {
       Installment.deleteMany({ customerID: customerID })
         .then((result) => {
@@ -267,6 +269,7 @@ exports.topUpLoan = async (req, res) => {
 
 exports.updateCustomer = async (req, res) => {
   const customerID = req.params.id;
+  // console.log(req);
   const {
     name,
     NIC,
@@ -298,6 +301,7 @@ exports.updateCustomer = async (req, res) => {
 
   Customer.findOneAndUpdate(filter, newCustomerDetails, { new: true })
     .then((customer) => {
+      // console.log(customer);
       res.status(200).json({ message: "customer details updated" });
     })
     .catch((err) => {

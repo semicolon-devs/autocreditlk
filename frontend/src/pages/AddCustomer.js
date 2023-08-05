@@ -28,6 +28,7 @@ const AddCustomer = () => {
   const [guarantorNICFrontCopy, setGuarantorNICFrontCopy] = useState([]);
   const [guarantorNICRearCopy, setGuarantorNICRearCopy] = useState([]);
   const [customerPhoto, setCustomerPhoto] = useState();
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const token = cookies.get("autoCreditCookie");
 
@@ -44,19 +45,15 @@ const AddCustomer = () => {
       axios(axiosConfig)
         .then((res) => {
           setCollectorArr(res.data.collectors);
+          const IdArr = res.data.collectors.map((collector) => collector._id);
+          setCollectorIdArr(IdArr);
         })
         .catch((err) => {
           console.log(err);
         });
     };
 
-    const generateCollectorIdArray = () => {
-      const collectorIdArr = collectorArr.map((collector) => collector._id);
-      setCollectorIdArr(collectorIdArr);
-    };
-
     fetchCollectors();
-    generateCollectorIdArray();
   }, []);
 
   const addNewCustomer = async (values) => {
@@ -115,7 +112,7 @@ const AddCustomer = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      // console.log(response);
+      setSubmitSuccess(true);
       setNICFrontCopy(null);
       setNICRearCopy(null);
       setCustomerPhoto(null);
@@ -126,6 +123,26 @@ const AddCustomer = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleNICFrontCopyChange = (e) => {
+    setNICFrontCopy(e.target.files[0]);
+  };
+
+  const handleNICRearCopyChange = (e) => {
+    setNICRearCopy(e.target.files[0]);
+  };
+
+  const handleCustomerPhotoChange = (e) => {
+    setCustomerPhoto(e.target.files[0]);
+  };
+
+  const handleGuarantorNICFrontCopyChange = (e) => {
+    setGuarantorNICFrontCopy(e.target.files[0]);
+  };
+
+  const handleGuarantorNICRearCopyChange = (e) => {
+    setGuarantorNICRearCopy(e.target.files[0]);
   };
 
   const validationSchema = Yup.object({
@@ -208,7 +225,9 @@ const AddCustomer = () => {
         onSubmit={(values, { setSubmitting, resetForm }) => {
           addNewCustomer(values);
           setSubmitting(false);
-          resetForm({});
+          if (submitSuccess) {
+            resetForm({});
+          }
         }}
       >
         <div className="bg-white w-full rounded-lg drop-shadow-lg p-3">
@@ -323,7 +342,7 @@ const AddCustomer = () => {
                 <label className="font-semibold mb-2">NIC front copy </label>
                 <input
                   type="file"
-                  onChange={(e) => setNICFrontCopy(e.target.files[0])}
+                  onChange={handleNICFrontCopyChange}
                   className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
                 />
               </div>
@@ -332,7 +351,7 @@ const AddCustomer = () => {
                 <label className="font-semibold mb-2">NIC rear copy </label>
                 <input
                   type="file"
-                  onChange={(e) => setNICRearCopy(e.target.files[0])}
+                  onChange={handleNICRearCopyChange}
                   className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
                 />
               </div>
@@ -341,7 +360,7 @@ const AddCustomer = () => {
                 <label className="font-semibold mb-2">Customer photo</label>
                 <input
                   type="file"
-                  onChange={(e) => setCustomerPhoto(e.target.files[0])}
+                  onChange={handleCustomerPhotoChange}
                   className="w-full rounded-lg p-2 mb-8 outline-none border border-grey"
                 />
               </div>
@@ -382,7 +401,7 @@ const AddCustomer = () => {
                 </label>
                 <input
                   type="file"
-                  onChange={(e) => setGuarantorNICFrontCopy(e.target.files[0])}
+                  onChange={handleGuarantorNICFrontCopyChange}
                   className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
                 />
               </div>
@@ -393,7 +412,7 @@ const AddCustomer = () => {
                 </label>
                 <input
                   type="file"
-                  onChange={(e) => setGuarantorNICRearCopy(e.target.files[0])}
+                  onChange={handleGuarantorNICRearCopyChange}
                   className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
                 />
               </div>

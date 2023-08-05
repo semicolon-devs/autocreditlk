@@ -20,7 +20,7 @@ import AccountSettings from "./pages/AccountSettings";
 import PageNotFound from "./pages/PageNotFound";
 import SMSGateway from "./pages/SMSGateway";
 import ReportsPage from "./pages/ReportsPage";
-// import AccessDeniedPage from "./pages/AccessDeniedPage";
+import AccessDeniedPage from "./pages/AccessDeniedPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -29,32 +29,58 @@ import "./App.css";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
+const isAdmin = () => {
+  if (JSON.parse(localStorage.getItem("userRole")) === "admin") {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/recover-account" element={<RecoverAccount />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/" element={<RootLayout />}>
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <RootLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Home />} />
         <Route
-          index
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
+          path="/customer-details/:id"
+          element={isAdmin() ? <CustomerDetails /> : <AccessDeniedPage />}
         />
-        <Route path="/customer-details/:id" element={<CustomerDetails />} />
         <Route path="/account-settings" element={<AccountSettings />} />
-        <Route path="/add-customer" element={<AddCustomer />} />
+        <Route
+          path="/add-customer"
+          element={isAdmin() ? <AddCustomer /> : <AccessDeniedPage />}
+        />
         <Route
           path="/add-existing-customer"
-          element={<AddExistingCustomer />}
+          element={isAdmin() ? <AddExistingCustomer /> : <AccessDeniedPage />}
         />
-        <Route path="/insights" element={<Insights />} />
-        <Route path="/manage-users" element={<ManageUsers />} />
-        <Route path="/sms-gateway" element={<SMSGateway />} />
-        <Route path="/reports" element={<ReportsPage />} />
+        <Route
+          path="/insights"
+          element={isAdmin() ? <Insights /> : <AccessDeniedPage />}
+        />
+        <Route
+          path="/manage-users"
+          element={isAdmin() ? <ManageUsers /> : <AccessDeniedPage />}
+        />
+        <Route
+          path="/sms-gateway"
+          element={isAdmin() ? <SMSGateway /> : <AccessDeniedPage />}
+        />
+        <Route
+          path="/reports"
+          element={isAdmin() ? <ReportsPage /> : <AccessDeniedPage />}
+        />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </>
@@ -62,15 +88,6 @@ const router = createBrowserRouter(
 );
 
 const App = () => {
-  // const cookie = cookies.get("meetingRoomCookie");
-  // const isAdmin = () => {
-  //   if (cookie && cookie.userData.role === "admin") {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // };
-
   return <RouterProvider router={router} />;
 };
 

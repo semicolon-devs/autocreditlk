@@ -19,6 +19,7 @@ import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import FiberManualRecordRoundedIcon from "@mui/icons-material/FiberManualRecordRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import DoDisturbRoundedIcon from "@mui/icons-material/DoDisturbRounded";
 
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -45,6 +46,7 @@ export {
   FiberManualRecordRoundedIcon as DotIcon,
   DescriptionRoundedIcon as ReportIcon,
   AddRoundedIcon as AddIcon,
+  DoDisturbRoundedIcon as DeniedIcon,
   ArrowBackIcon,
   ArrowRightOutlinedIcon as ArrowIcon,
 };

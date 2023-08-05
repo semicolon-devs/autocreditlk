@@ -38,31 +38,46 @@ const ChangeCustomerDetailsModal = ({ modalShow, setModalShow, customer }) => {
 
     setLoading(true);
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("NIC", NIC);
-    formData.append("email", email);
-    formData.append("phone", mobileNo);
-    formData.append("phoneTwo", mobileNoTwo);
-    formData.append("address", address);
-    formData.append("description", description);
-    formData.append("guarantor", guarantorName);
-    formData.append("guarantorMobile", guarantorMobileNo);
-    formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
-    formData.append("guarantorNIC", guarantorNIC);
+    const data = {
+      name: name,
+      NIC: NIC,
+      email: email,
+      phone: mobileNo,
+      phoneTwo: mobileNoTwo,
+      address: address,
+      description: description,
+      guarantor: guarantorName,
+      guarantorMobile: guarantorMobileNo,
+      guarantorMobileTwo: guarantorMobileNoTwo,
+      guarantorNIC: guarantorNIC,
+    };
+    // const formData = new FormData();
+    // formData.append("name", name);
+    // formData.append("NIC", NIC);
+    // formData.append("email", email);
+    // formData.append("phone", mobileNo);
+    // formData.append("phoneTwo", mobileNoTwo);
+    // formData.append("address", address);
+    // formData.append("description", description);
+    // formData.append("guarantor", guarantorName);
+    // formData.append("guarantorMobile", guarantorMobileNo);
+    // formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
+    // formData.append("guarantorNIC", guarantorNIC);
 
     try {
       const response = await axios.put(
         `${BASE_URL}customers/${customer.customerID}`,
-        formData,
+        // formData,
+        data,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            // "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log(response);
+      // console.log(response);
+      window.location.reload(false);
     } catch (err) {
       console.log(err);
     } finally {
@@ -145,17 +160,17 @@ const ChangeCustomerDetailsModal = ({ modalShow, setModalShow, customer }) => {
                   </Dialog.Description>
                   <Formik
                     initialValues={{
-                      name: "",
-                      NIC: "",
-                      email: "",
-                      mobileNo: "",
-                      mobileNoTwo: "",
-                      address: "",
-                      description: "",
-                      guarantorName: "",
-                      guarantorMobileNo: "",
-                      guarantorMobileNoTwo: "",
-                      guarantorNIC: "",
+                      name: customer.name,
+                      NIC: customer.NIC,
+                      email: customer.email,
+                      mobileNo: customer.phone,
+                      mobileNoTwo: customer.phoneTwo,
+                      address: customer.address,
+                      description: customer.description,
+                      guarantorName: customer.guarantor,
+                      guarantorMobileNo: customer.guarantorMobile,
+                      guarantorMobileNoTwo: customer.guarantorMobileTwo,
+                      guarantorNIC: customer.guarantorNIC,
                     }}
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting, resetForm }) => {

@@ -109,8 +109,6 @@ const AddExistingCustomer = () => {
     formData.append("guarantorNICFrontCopy", guarantorNICFrontCopy);
     formData.append("guarantorNICRearCopy", guarantorNICRearCopy);
 
-    console.log(formData);
-
     try {
       const response = await axios.post(
         `${BASE_URL}customers/existing`,

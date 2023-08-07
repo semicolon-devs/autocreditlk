@@ -81,7 +81,6 @@ exports.addCustomer = async (req, res) => {
       guarantorNICRearCopyLink,
     })
       .then((result) => {
-        // const customers = Customer.findMany({});
         res.status(200).json({ result: result });
       })
       .catch((err) => {
@@ -107,7 +106,6 @@ exports.addExisitngCustomer = async (req, res) => {
       installmentAmount,
       paidAmount,
       paidAmountDate,
-      // noOfInstallments,
       startDate,
       billingCycle,
       collectorId,
@@ -163,7 +161,6 @@ exports.addExisitngCustomer = async (req, res) => {
       installmentAmount,
       paidAmount,
       paidAmountDate,
-      // noOfInstallments,
       startDate: new Date(startDate + "T00:00:00+05:30"),
       billingCycle,
       collectorId,
@@ -175,14 +172,28 @@ exports.addExisitngCustomer = async (req, res) => {
       guarantorNICRearCopyLink,
     })
       .then((result) => {
-        // const customers = Customer.findMany({});
-        res.status(200).json({ result: result });
+        Installment.create({
+          customerID: result.customerID,
+          amount: result.paidAmount,
+          paidDate: new Date(result.paidAmountDate),
+          collectedBy: "Admin",
+        })
+          .then((installment) => {
+            res.status(200).json({ result: result });
+          })
+          .catch((err) => {
+            res
+              .status(400)
+              .json({
+                message: "customer add but adding installment failed",
+                err: err.message,
+              });
+          });
       })
       .catch((err) => {
         res.status(400).json({ message: err.message });
       });
   } catch (e) {
-    console.log("running");
     res.status(400).json({ message: e.message });
   }
 };

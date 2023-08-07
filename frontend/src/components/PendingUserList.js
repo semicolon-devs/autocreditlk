@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { ThreeDots } from "react-loader-spinner";
 
 import SectionSubtitle from "../components/SectionSubtitle";
 
 import { CloseIcon } from "../Icons/Icon";
 import DeleteUserModal from "../modals/DeleteUserModal";
+
+import { ThreeDots } from "react-loader-spinner";
 
 const PendingUserList = ({ pendingUsers, setPendingUsers, loading }) => {
   const [displayUser, setDisplayUser] = useState(null);
@@ -49,7 +50,7 @@ const PendingUserList = ({ pendingUsers, setPendingUsers, loading }) => {
             height="40"
             width="40"
             radius="9"
-            color="#F2766B"
+            color="#808080"
             ariaLabel="three-dots-loading"
             wrapperStyle={{}}
             wrapperClassName=""

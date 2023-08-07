@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
 import Cookies from "universal-cookie";
+import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 
 import SectionTitle from "../components/SectionTitle";
 import SectionSubtitle from "../components/SectionSubtitle";
@@ -10,22 +12,58 @@ import EditAccountModal from "../modals/EditAccountModal";
 import { TextInputWithLabel as TextInput } from "../components/FormikElements";
 import { AccountIcon } from "../Icons/Icon";
 import { buttonClasses, buttonTextClasses } from "../data/Classes";
-import ResetPasswordConfirm from "../modals/ResetPasswordConfirm";
+
+import BASE_URL from "../config/ApiConfig";
 
 const cookies = new Cookies();
 
 const AccountSettings = () => {
   const [editDetailsModalShow, setEditDetailsModalShow] = useState(null);
   const [resetPasswordModalShow, setResetPasswordModalShow] = useState(null);
+  const [userdata, setUserdata] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const cookie = cookies.get("autoCreditCookie");
+  const token = cookies.get("autoCreditCookie");
 
-  // change password axio here
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("userData"));
+    if (data) {
+      setUserdata(data);
+    }
+  }, []);
+
+  const changePassword = async (password) => {
+    setLoading(true);
+    const config = {
+      method: "post",
+      url: `${BASE_URL}auth/temp-password-reset`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        newPassword: password,
+      },
+    };
+
+    await axios(config)
+      .then((res) => {
+        cookies.remove("autoCreditCookie", { path: "/" });
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userData");
+        window.location.href = "/";
+      })
+      .catch((res) => {
+        console.log(res);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <div className="w-full">
       <SectionTitle title="account settings" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="bg-white w-full rounded-lg drop-shadow-lg p-3">
           <SectionSubtitle title="account details" classes="text-center" />
           <div className="w-full max-w-max rounded-lg mx-auto text-center">
@@ -34,21 +72,17 @@ const AccountSettings = () => {
               sx={{ fontSize: 120 }}
             />
             <div className="flex flex-col mt-3">
-              <div className="flex justify-between gap-x-4">
+              <div className="flex justify-between gap-x-6">
                 <p className="font-semibold">Name</p>
-                <p className="">Saman Kumara</p>
+                <p className="">{userdata.name}</p>
               </div>
-              <div className="flex justify-between gap-x-4">
+              <div className="flex justify-between gap-x-6">
                 <p className="font-semibold">Email</p>
-                <p className="">samankumara@gmail.com</p>
+                <p className="">{userdata.email}</p>
               </div>
-              <div className="flex justify-between gap-x-4">
+              <div className="flex justify-between gap-x-6">
                 <p className="font-semibold">Phone</p>
-                <p className="">076 125 4783</p>
-              </div>
-              <div className="flex justify-between gap-x-4">
-                <p className="font-semibold">Address</p>
-                <p className="">Penideniya, Peradeniya, Kandy</p>
+                <p className="">{userdata.phone}</p>
               </div>
             </div>
             <button
@@ -63,18 +97,19 @@ const AccountSettings = () => {
           <EditAccountModal
             modalShow={editDetailsModalShow}
             setModalShow={setEditDetailsModalShow}
+            user={userdata}
           />
         )}
         <div className="bg-white w-full rounded-lg drop-shadow-lg p-3">
           <SectionSubtitle title="change password" />
           <Formik
             initialValues={{
-              currentPassword: "",
+              // currentPassword: "",
               newPassword: "",
               confirmPassword: "",
             }}
             validationSchema={Yup.object({
-              currentPassword: Yup.string().required("Required"),
+              // currentPassword: Yup.string().required("Required"),
               newPassword: Yup.string()
                 .required("Required")
                 .min(8, "Your password is too short.")
@@ -86,17 +121,18 @@ const AccountSettings = () => {
                 .required("Required")
                 .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
             })}
-            onSubmit={(values, { setSubmitting }) => {
-              //   call change password axio here ==> changePassword(values.currentPassword, values.newPassword)
+            onSubmit={(values, { setSubmitting, resetForm }) => {
+              changePassword(values.newPassword);
               setSubmitting(false);
+              resetForm({});
             }}
           >
             <Form className="w-full max-w-sm">
-              <TextInput
+              {/* <TextInput
                 name="currentPassword"
                 type="password"
                 placeholder="Enter current password"
-              />
+              /> */}
 
               <TextInput
                 name="newPassword"
@@ -110,8 +146,24 @@ const AccountSettings = () => {
                 placeholder="Confirm new password"
               />
 
-              <button type="submit" className={`mt-3 ${buttonClasses}`}>
-                <p className={`${buttonTextClasses}`}>reset password</p>
+              <button
+                type="submit"
+                className={`mt-3 ${buttonClasses} flex items-center justify-center`}
+              >
+                {loading ? (
+                  <ThreeDots
+                    height="40"
+                    width="40"
+                    radius="9"
+                    color="white"
+                    ariaLabel="three-dots-loading"
+                    wrapperStyle={{}}
+                    wrapperClassName=""
+                    visible={true}
+                  />
+                ) : (
+                  <p className={`${buttonTextClasses}`}>change password</p>
+                )}
               </button>
             </Form>
           </Formik>

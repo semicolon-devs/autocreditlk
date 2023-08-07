@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import { MenuIcon, AccountIcon } from "../Icons/Icon";
 
@@ -9,6 +9,8 @@ import BASE_URL from "../config/ApiConfig";
 const cookies = new Cookies();
 
 const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
+  const [username, setUsername] = useState(null);
+
   const token = cookies.get("autoCreditCookie");
 
   const getUserData = async () => {
@@ -23,6 +25,7 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
     await axios(config)
       .then((res) => {
         localStorage.setItem("userData", JSON.stringify(res.data.userData));
+        setUsername(res.data.userData.name.split(" ")[0]);
       })
       .catch((res) => {
         console.log(res);
@@ -62,7 +65,7 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
       <div className="bg-white h-full rounded-lg p-3 drop-shadow-lg flex items-center justify-center z-20">
         <AccountIcon />
         <p className="capitalize leading-8 font-semibold ms-3 hidden sm:block">
-          {userData ? userData.name.split(" ")[0] : "Loading..."}
+          {username ? username : "Loading..."}
         </p>
       </div>
     </nav>

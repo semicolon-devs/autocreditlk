@@ -113,14 +113,15 @@ exports.tempPasswordReset = async (req, res) => {
 
       const update = {
         password: hashedPassword,
-        role: "collector",
+        // role: "collector",
       };
+
+      req.user.role == "admin" ? update.role = "admin" : update.role = "collector";
 
       // saving user data to database
       User.findOneAndUpdate(user, update, { new: true })
         .then((result) => {
           if (!result) {
-            console.log(result);
             res.status(400).send({
               message: "user Registration failed",
             });
@@ -142,7 +143,7 @@ exports.tempPasswordReset = async (req, res) => {
     .catch((e) => {
       res.status(500).send({
         message: "Password was not hashed successfully",
-        e,
+        error: e.message,
       });
     });
 };

@@ -68,7 +68,7 @@ const Home = () => {
           <input
             type="string"
             className="bg-white drop-shadow-lg rounded-md p-3 font-semibold outline-none border-none w-full"
-            placeholder="Search by loandID or name"
+            placeholder="Search"
             value={searchField}
             onChange={(e) => setSearchField(e.target.value)}
           />

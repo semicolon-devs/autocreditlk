@@ -5,9 +5,9 @@ const labelClasses = "font-semibold mb-2";
 const inputClasses =
   "text-input w-full rounded-lg p-2 mb-3 outline-none border border-grey";
 
-const conditionalInputClasses = "border-2 border-maroon";
+const conditionalInputClasses = "border-2 border-red";
 
-const errorClasses = "error -mt-2 mb-1 text-maroon font-bold";
+const errorClasses = "error -mt-2 mb-1 text-red font-bold";
 
 export const TextInputWithLabel = ({ label, ...props }) => {
   const [field, meta] = useField(props);

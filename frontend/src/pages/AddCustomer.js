@@ -262,7 +262,7 @@ const AddCustomer = () => {
               <TextInput
                 name="email"
                 type="text"
-                label="Email :"
+                label="Email (optional):"
                 placeholder="samankumara@gmail.com"
               />
 
@@ -337,14 +337,16 @@ const AddCustomer = () => {
               <TextArea
                 name="description"
                 type="text"
-                label="Description(optional) :"
+                label="Description (optional) :"
                 placeholder="Add a descripton"
               />
             </div>
 
             <div className="w-full lg:max-w-md">
               <div className="">
-                <label className="font-semibold mb-2">NIC front copy </label>
+                <label className="font-semibold mb-2">
+                  NIC front copy <span className="text-red">(Required)</span>
+                </label>
                 <input
                   type="file"
                   onChange={handleNICFrontCopyChange}
@@ -353,7 +355,9 @@ const AddCustomer = () => {
               </div>
 
               <div className="">
-                <label className="font-semibold mb-2">NIC rear copy </label>
+                <label className="font-semibold mb-2">
+                  NIC rear copy <span className="text-red">(Required)</span>
+                </label>
                 <input
                   type="file"
                   onChange={handleNICRearCopyChange}
@@ -362,7 +366,9 @@ const AddCustomer = () => {
               </div>
 
               <div className="">
-                <label className="font-semibold mb-2">Customer photo</label>
+                <label className="font-semibold mb-2">
+                  Customer photo <span className="text-red">(Required)</span>
+                </label>
                 <input
                   type="file"
                   onChange={handleCustomerPhotoChange}
@@ -403,6 +409,7 @@ const AddCustomer = () => {
               <div className="">
                 <label className="font-semibold mb-2">
                   Guarantor NIC front copy{" "}
+                  <span className="text-red">(Required)</span>
                 </label>
                 <input
                   type="file"
@@ -414,6 +421,7 @@ const AddCustomer = () => {
               <div className="">
                 <label className="font-semibold mb-2">
                   Guarantor NIC rear copy{" "}
+                  <span className="text-red">(Required)</span>
                 </label>
                 <input
                   type="file"

@@ -26,7 +26,7 @@ const HomePageCard = ({ customer }) => {
   return (
     <div className="bg-white w-full drop-shadow-lg p-3 rounded-lg flex flex-col justify-between">
       <div className="">
-        <p className="font-bold mb-2 text-purple-950">#{customerID}</p>
+        <p className="font-bold mb-2 text-purple-950">{customerID}</p>
         <p className="font-bold text-xl">{name}</p>
         <p className="font-semibold">{NIC}</p>
         <p className="">Total - {loanAmount}</p>

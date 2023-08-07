@@ -37,8 +37,8 @@ exports.deleteUser = async (req, res) => {
 
 
 exports.updateProfile = async (req, res) => {
+  const id = req.params.id;
   const {
-    id,
     name,
     email,
     phone
@@ -46,9 +46,6 @@ exports.updateProfile = async (req, res) => {
 
   let payload = {};
 
-  if (id && id != "") {
-    payload.id = id;
-  }
   if (name && name != "") {
     payload.name = name;
   }
@@ -58,21 +55,21 @@ exports.updateProfile = async (req, res) => {
 
   // add error message to response if phone number is invalid
   if (phone && phone != "" && validateMobileNumber(phone)) {
-    payload.phone = parseMobileNumber(phone);
+    payload.phone = phone;
   }
 
-  const filter = {
-    _id: id
-  }
+  // const filter = {
+  //   _id: id
+  // }
 
-  // console.log(payload)
+  // console.log(id, payload)
 
   // updating user by id
-  User.findOneAndUpdate(filter, payload)
+  User.findByIdAndUpdate(id, payload)
     .then((user) => {
       res.status(201).json({
         message: "Success",
-        user: user
+        // user: user
       });
     })
     .catch((err) => {

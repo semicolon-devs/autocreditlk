@@ -12,17 +12,59 @@ import {
   secondaryButtonClasses,
   buttonTextClasses,
 } from "../data/Classes";
-import { TextInput } from "../components/FormikElements";
+import { TextInputWithLabel as TextInput } from "../components/FormikElements";
+
+import BASE_URL from "../config/ApiConfig";
 
 const cookies = new Cookies();
 
-const EditAccountModal = ({ modalShow, setModalShow }) => {
+const EditAccountModal = ({ modalShow, setModalShow, user }) => {
   const [loading, setLoading] = useState(false);
 
   const token = cookies.get("autoCreditCookie");
 
   const editAccountDetails = (name, email, mobileNo) => {
-    console.log("axios here");
+    setLoading(true);
+    const axiosConfig = {
+      method: "POST",
+      url: `${BASE_URL}collector/update-profile/${user.userID}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        name: name,
+        email: email,
+        phone: mobileNo,
+      },
+    };
+
+    axios(axiosConfig)
+      .then((res) => {
+        // alert(result.data.message);
+        // console.log(res);
+        const config = {
+          method: "get",
+          url: `${BASE_URL}auth/userData`,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        axios(config)
+          .then((res) => {
+            localStorage.setItem("userData", JSON.stringify(res.data.userData));
+            window.location.reload(false);
+          })
+          .catch((res) => {
+            console.log(res);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -58,14 +100,13 @@ const EditAccountModal = ({ modalShow, setModalShow }) => {
                 edit account details
               </Dialog.Title>
               <Dialog.Description className="mb-3">
-                Enter only the feilds to be updated. Empty feilds will remain
-                unchanged
+                Only enter the feilds you wish to update
               </Dialog.Description>
               <Formik
                 initialValues={{
-                  name: "",
-                  email: "",
-                  mobileNo: "",
+                  name: user.name,
+                  email: user.email,
+                  mobileNo: user.phone,
                 }}
                 validationSchema={Yup.object({
                   name: Yup.string().max(30, "Must be 30 characters or less"),
@@ -89,19 +130,26 @@ const EditAccountModal = ({ modalShow, setModalShow }) => {
                 }}
               >
                 <Form className="">
-                  <TextInput
-                    name="name"
-                    type="text"
-                    placeholder="Enter new user name"
-                  />
+                  {user.role !== "admin" && (
+                    <TextInput
+                      name="name"
+                      type="text"
+                      label="Enter new name :"
+                      placeholder="Enter new user name"
+                    />
+                  )}
+
                   <TextInput
                     name="email"
                     type="email"
+                    label="Enter new email :"
                     placeholder="Enter new user email"
                   />
+
                   <TextInput
                     name="mobileNo"
                     type="text"
+                    label="Enter new mobile number :"
                     placeholder="Enter new user mobile number"
                   />
 

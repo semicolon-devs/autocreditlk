@@ -92,7 +92,7 @@ const CustomerDetails = () => {
                 height="40"
                 width="40"
                 radius="9"
-                color="#F2D852"
+                color="#808080"
                 ariaLabel="three-dots-loading"
                 wrapperStyle={{}}
                 wrapperClassName=""
@@ -108,7 +108,7 @@ const CustomerDetails = () => {
                 </p>
 
                 <p className="">
-                  <span className="font-semibold capitalize">loan ID : </span>#
+                  <span className="font-semibold capitalize">loan ID : </span>
                   {customer.customerID}
                 </p>
 
@@ -367,7 +367,7 @@ const CustomerDetails = () => {
                   height="40"
                   width="40"
                   radius="9"
-                  color="#F2766B"
+                  color="#808080"
                   ariaLabel="three-dots-loading"
                   wrapperStyle={{}}
                   wrapperClassName=""

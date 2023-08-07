@@ -29,6 +29,7 @@ const AddCustomer = () => {
   const [guarantorNICRearCopy, setGuarantorNICRearCopy] = useState([]);
   const [customerPhoto, setCustomerPhoto] = useState();
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const token = cookies.get("autoCreditCookie");
 
@@ -112,14 +113,18 @@ const AddCustomer = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setSubmitSuccess(true);
-      setNICFrontCopy(null);
-      setNICRearCopy(null);
-      setCustomerPhoto(null);
-      setGuarantorNICFrontCopy(null);
-      setGuarantorNICRearCopy(null);
+      window.location.href = "/";
+      // setSubmitSuccess(true);
+      // setNICFrontCopy(null);
+      // setNICRearCopy(null);
+      // setCustomerPhoto(null);
+      // setGuarantorNICFrontCopy(null);
+      // setGuarantorNICRearCopy(null);
     } catch (err) {
       console.log(err);
+      setMessage(
+        "Error adding the customer. Please check if all required feilds are filled. And submit the form again"
+      );
     } finally {
       setLoading(false);
     }
@@ -153,7 +158,7 @@ const AddCustomer = () => {
     NIC: Yup.string()
       .matches(/^(?:\d{9}V|\d{12})$/, "Must be a valid NIC number")
       .required("Required"),
-    email: Yup.string().email("Invalid email address").required("Required"),
+    email: Yup.string().email("Invalid email address"),
     mobileNo: Yup.string()
       .matches(/^[0-9]{10}$/, "Must be a valid mobile number")
       .required("Required"),
@@ -225,9 +230,9 @@ const AddCustomer = () => {
         onSubmit={(values, { setSubmitting, resetForm }) => {
           addNewCustomer(values);
           setSubmitting(false);
-          if (submitSuccess) {
-            resetForm({});
-          }
+          // if (submitSuccess) {
+          //   resetForm({});
+          // }
         }}
       >
         <div className="bg-white w-full rounded-lg drop-shadow-lg p-3">
@@ -291,6 +296,13 @@ const AddCustomer = () => {
               />
 
               <TextInput
+                name="startDate"
+                type="date"
+                label="Start Date :"
+                placeholder="01/08/2023"
+              />
+
+              <TextInput
                 name="installmentAmount"
                 type="number"
                 label="Installment amount :"
@@ -304,13 +316,6 @@ const AddCustomer = () => {
                 label="No of Installments :"
                 placeholder="12"
               /> */}
-
-              <TextInput
-                name="startDate"
-                type="date"
-                label="Start Date :"
-                placeholder="01/08/2023"
-              />
 
               <Select label="Billing Cycle" name="billingCycle">
                 <option value="">Select billing cycle</option>
@@ -436,6 +441,11 @@ const AddCustomer = () => {
                   <p className="text-white uppercase font-bold">add customer</p>
                 )}
               </button>
+              {message && (
+                <div className="w-full border border-orange rounded-lg p-3 mt-5">
+                  <p className="text-orange text-center">{message}</p>
+                </div>
+              )}
             </div>
           </Form>
         </div>

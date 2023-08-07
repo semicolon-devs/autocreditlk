@@ -64,10 +64,10 @@ const Home = () => {
   return (
     <div className="bg-light">
       <div className="">
-        <div className="flex">
+        <div className="flex max-w-xs">
           <input
             type="string"
-            className="bg-white drop-shadow-lg w-80 rounded-md p-3 font-semibold outline-none border-none"
+            className="bg-white drop-shadow-lg rounded-md p-3 font-semibold outline-none border-none w-full"
             placeholder="Search by loandID or name"
             value={searchField}
             onChange={(e) => setSearchField(e.target.value)}

@@ -29,6 +29,7 @@ const AddExistingCustomer = () => {
   const [guarantorNICRearCopy, setGuarantorNICRearCopy] = useState([]);
   const [customerPhoto, setCustomerPhoto] = useState();
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const token = cookies.get("autoCreditCookie");
 
@@ -120,14 +121,20 @@ const AddExistingCustomer = () => {
           },
         }
       );
-      setSubmitSuccess(true);
-      setNICFrontCopy(null);
-      setNICRearCopy(null);
-      setCustomerPhoto(null);
-      setGuarantorNICFrontCopy(null);
-      setGuarantorNICRearCopy(null);
+      window.location.href = "/";
+      // if (response.status == 200) {
+      //   setSubmitSuccess(true);
+      //   setNICFrontCopy(null);
+      //   setNICRearCopy(null);
+      //   setCustomerPhoto(null);
+      //   setGuarantorNICFrontCopy(null);
+      //   setGuarantorNICRearCopy(null);
+      // }
     } catch (err) {
       console.log(err);
+      setMessage(
+        "Error adding the customer. Please check if all required feilds are filled. And submit the form again"
+      );
     } finally {
       setLoading(false);
     }
@@ -161,7 +168,7 @@ const AddExistingCustomer = () => {
     NIC: Yup.string()
       .matches(/^(?:\d{9}V|\d{12})$/, "Must be a valid NIC number")
       .required("Required"),
-    email: Yup.string().email("Invalid email address").required("Required"),
+    email: Yup.string().email("Invalid email address"),
     mobileNo: Yup.string()
       .matches(/^[0-9]{10}$/, "Must be a valid mobile number")
       .required("Required"),
@@ -240,9 +247,9 @@ const AddExistingCustomer = () => {
         onSubmit={(values, { setSubmitting, resetForm }) => {
           addExisitngCustomer(values);
           setSubmitting(false);
-          if (submitSuccess) {
-            resetForm({});
-          }
+          // if (submitSuccess) {
+          //   resetForm({});
+          // }
         }}
       >
         <div className="bg-white w-full rounded-lg drop-shadow-lg p-3">
@@ -306,6 +313,13 @@ const AddExistingCustomer = () => {
               />
 
               <TextInput
+                name="startDate"
+                type="date"
+                label="Start Date :"
+                placeholder="01/08/2023"
+              />
+
+              <TextInput
                 name="installmentAmount"
                 type="number"
                 label="Installment amount :"
@@ -332,13 +346,6 @@ const AddExistingCustomer = () => {
                 name="paidAmountDate"
                 type="date"
                 label="Paid Amount Date :"
-                placeholder="01/08/2023"
-              />
-
-              <TextInput
-                name="startDate"
-                type="date"
-                label="Start Date :"
                 placeholder="01/08/2023"
               />
 
@@ -369,7 +376,9 @@ const AddExistingCustomer = () => {
 
             <div className="w-full lg:max-w-md">
               <div className="">
-                <label className="font-semibold mb-2">NIC front copy </label>
+                <label className="font-semibold mb-2">
+                  NIC front copy (Required)
+                </label>
                 <input
                   type="file"
                   onChange={handleNICFrontCopyChange}
@@ -378,7 +387,9 @@ const AddExistingCustomer = () => {
               </div>
 
               <div className="">
-                <label className="font-semibold mb-2">NIC rear copy </label>
+                <label className="font-semibold mb-2">
+                  NIC rear copy (Required)
+                </label>
                 <input
                   type="file"
                   onChange={handleNICRearCopyChange}
@@ -387,7 +398,9 @@ const AddExistingCustomer = () => {
               </div>
 
               <div className="">
-                <label className="font-semibold mb-2">Customer photo</label>
+                <label className="font-semibold mb-2">
+                  Customer photo (Required)
+                </label>
                 <input
                   type="file"
                   onChange={handleCustomerPhotoChange}
@@ -427,7 +440,7 @@ const AddExistingCustomer = () => {
 
               <div className="">
                 <label className="font-semibold mb-2">
-                  Guarantor NIC front copy{" "}
+                  Guarantor NIC front copy (Required)
                 </label>
                 <input
                   type="file"
@@ -438,7 +451,7 @@ const AddExistingCustomer = () => {
 
               <div className="">
                 <label className="font-semibold mb-2">
-                  Guarantor NIC rear copy{" "}
+                  Guarantor NIC rear copy (Required)
                 </label>
                 <input
                   type="file"
@@ -466,6 +479,11 @@ const AddExistingCustomer = () => {
                   <p className="text-white uppercase font-bold">add customer</p>
                 )}
               </button>
+              {message && (
+                <div className="w-full border border-orange rounded-lg p-3 mt-5">
+                  <p className="text-orange text-center">{message}</p>
+                </div>
+              )}
             </div>
           </Form>
         </div>

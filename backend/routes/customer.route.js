@@ -10,6 +10,7 @@ const {
   getPaymentOfCustomer,
   topUpLoan,
   addExisitngCustomer,
+  getGuarantorIDs,
 } = require("../controllers/customer.controller");
 const { uploader } = require("../config/multer.config");
 
@@ -58,6 +59,14 @@ router.get(
     checkPermission(["admin", "collector"]),
   ],
   getPaymentOfCustomer
+);
+router.get(
+  "/guarantors/ids",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  getGuarantorIDs
 );
 router.delete(
   "/:id",

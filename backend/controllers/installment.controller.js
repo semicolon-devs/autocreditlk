@@ -1,43 +1,50 @@
 const Customer = require("../models/customer.model");
 const Installment = require("../models/installment.model");
+const User = require("../models/user.model");
 const { sendDailySMS } = require("../services/sms.service");
 
 exports.addPayment = async (req, res) => {
   const { customerID, amount, paidDate, collectedBy } = req.body;
-  // might need collector_id verification, before adding to the database...
 
   try {
-    await Installment.create({
-      customerID,
-      amount,
-      paidDate: new Date(paidDate),
-      collectedBy,
-    });
+    const user = await User.findById(collectedBy)
+      .then(async (user) => {
+        await Installment.create({
+          customerID,
+          amount,
+          paidDate: new Date(paidDate),
+          collectedBy,
+        });
 
-    const filter = { customerID: customerID };
+        const filter = { customerID: customerID };
 
-    try {
-      const customer = await Customer.findOne(filter);
+        try {
+          const customer = await Customer.findOne(filter);
 
-      await Customer.findOneAndUpdate(filter, {
-        paidAmount: customer.paidAmount + parseInt(amount),
+          await Customer.findOneAndUpdate(filter, {
+            paidAmount: customer.paidAmount + parseInt(amount),
+          });
+
+          const smsPayload = {
+            to: customer.phone,
+            customerId: customer.customerID,
+            customerName: customer.name,
+            collectorName: user.name,
+            amountPaid: amount,
+            amountLeft: customer.loanAmount - customer.paidAmount,
+          };
+
+          await sendDailySMS(smsPayload);
+          res.status(200).json({ customers: customer });
+        } catch (err) {
+          res.status(400).json({ message: err.message });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json({
+          message: "collector id invalid",
+        });
       });
-
-      const smsPayload = {
-        to: customer.phone,
-        customerId: customer.customerID,
-        customerName: customer.name,
-        collectorName: collectedBy,
-        amountPaid: amount,
-        amountLeft: customer.loanAmount - customer.paidAmount,
-      };
-
-      await sendDailySMS(smsPayload);
-
-      res.status(200).json({ customers: customer });
-    } catch (err) {
-      res.status(400).json({ message: err.message });
-    }
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

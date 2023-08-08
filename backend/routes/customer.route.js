@@ -8,7 +8,7 @@ const {
   deleteCustomer,
   updateCustomer,
   getPaymentOfCustomer,
-  topUpLoan,
+  changeLoanAmount,
   addExisitngCustomer,
 } = require("../controllers/customer.controller");
 const { uploader } = require("../config/multer.config");
@@ -76,12 +76,12 @@ router.put(
   updateCustomer
 );
 router.put(
-  "/topup/:id",
+  "/update-amount/:id",
   [
     passport.authenticate("jwt", { session: false }),
     checkPermission(["admin"]),
   ],
-  topUpLoan
+  changeLoanAmount
 );
 
 module.exports = router;

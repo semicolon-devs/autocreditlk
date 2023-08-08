@@ -1,5 +1,6 @@
 const Customer = require("../models/customer.model");
 const Installment = require("../models/installment.model");
+const User = require("../models/user.model");
 const { uploadFileToFirebaseStorage } = require("../utils/firebaseUpload");
 
 exports.addCustomer = async (req, res) => {
@@ -176,18 +177,16 @@ exports.addExisitngCustomer = async (req, res) => {
           customerID: result.customerID,
           amount: result.paidAmount,
           paidDate: new Date(result.paidAmountDate),
-          collectedBy: "Admin",
+          collectedBy: collectorId,
         })
           .then((installment) => {
             res.status(200).json({ result: result });
           })
           .catch((err) => {
-            res
-              .status(400)
-              .json({
-                message: "customer add but adding installment failed",
-                err: err.message,
-              });
+            res.status(400).json({
+              message: "customer add but adding installment failed",
+              err: err.message,
+            });
           });
       })
       .catch((err) => {
@@ -214,19 +213,46 @@ exports.getPaymentOfCustomer = async (req, res) => {
   const customerID = req.params.id;
 
   try {
-    const installments = await Installment.find({ customerID: customerID });
+    Installment.find({ customerID: customerID })
+      .then(async (installments) => {
+        const updatedInstallments = [];
 
-    if (req.user.role == "admin") {
-      const customer = await Customer.findOne({ customerID: customerID });
-      res.status(200).json({ payments: installments, customer: customer });
-    } else if (req.user.role == "collector") {
-      const customer = await Customer.findOne({
-        customerID: customerID,
-      }).select(
-        "customerID name NIC loanAmount arrears paidAmount phone phoneTwo"
-      );
-      res.status(200).json({ payments: installments, customer: customer });
-    }
+        // replace collectorid by collector name for all installments before send to client
+        await installments.forEach((installment) => {
+          User.findById(installment.collectedBy)
+            .then(async (user) => {
+              installment.collectedBy = user.name;
+              updatedInstallments.push(installment);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+
+        // limit data send to client based on user role
+        if (req.user.role == "admin") {
+          const customer = await Customer.findOne({
+            customerID: customerID,
+          });
+
+          res
+            .status(200)
+            .json({ payments: updatedInstallments, customer: customer });
+        } else if (req.user.role == "collector") {
+          const customer = await Customer.findOne({
+            customerID: customerID,
+          }).select(
+            "customerID name NIC loanAmount arrears paidAmount phone phoneTwo"
+          );
+
+          res
+            .status(200)
+            .json({ payments: updatedInstallments, customer: customer });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: err.message });
@@ -258,21 +284,17 @@ exports.deleteCustomer = async (req, res) => {
     });
 };
 
-exports.topUpLoan = async (req, res) => {
+exports.changeLoanAmount = async (req, res) => {
   const customerID = req.params.id;
-  const { topUpAmount, installmentsAdded, newInstallment } = req.body;
-
-  const customer = await Customer.findOne({ customerID: customerID });
+  const { newAmount } = req.body;
 
   const filter = { customerID: customerID };
   const updateCustomer = {
-    loanAmount: customer.loanAmount + topUpAmount,
-    installmentAmount: newInstallment,
-    noOfInstallments: customer.noOfInstallments + installmentsAdded,
+    loanAmount: newAmount,
   };
 
   Customer.findOneAndUpdate(filter, updateCustomer, { new: true })
-    .then(res.status(200).json({ message: "loan topup successfull" }))
+    .then(res.status(200).json({ message: "loan amount change successfull" }))
     .catch((err) => {
       res.status(400).json({ message: err.message });
     });
@@ -280,7 +302,6 @@ exports.topUpLoan = async (req, res) => {
 
 exports.updateCustomer = async (req, res) => {
   const customerID = req.params.id;
-  // console.log(req);
   const {
     name,
     NIC,

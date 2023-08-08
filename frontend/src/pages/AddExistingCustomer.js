@@ -482,8 +482,8 @@ const AddExistingCustomer = () => {
                 )}
               </button>
               {message && (
-                <div className="w-full border border-orange rounded-lg p-3 mt-5">
-                  <p className="text-orange text-center">{message}</p>
+                <div className="w-full border border-red rounded-lg p-3 mt-5">
+                  <p className="text-red text-center">{message}</p>
                 </div>
               )}
             </div>

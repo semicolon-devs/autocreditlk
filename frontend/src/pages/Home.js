@@ -4,7 +4,6 @@ import axios from "axios";
 import HomePageCard from "../components/HomePageCard";
 // import AddPaymentModal from "../components/AddPaymentModal";
 
-import { customerArr } from "../data/SampleData";
 import { SearchIcon } from "../Icons/Icon";
 
 import Cookies from "universal-cookie";

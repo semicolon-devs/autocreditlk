@@ -23,6 +23,14 @@ const HomePageCard = ({ customer }) => {
     setAddPaymentModalShow(true);
   };
 
+  const isAdmin = () => {
+    if (JSON.parse(localStorage.getItem("userRole")) === "admin") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <div className="bg-white w-full drop-shadow-lg p-3 rounded-lg flex flex-col justify-between">
       <div className="">
@@ -36,18 +44,20 @@ const HomePageCard = ({ customer }) => {
         <p className="">Mobile No. 2 - {phoneTwo}</p>
         {/* <p className="text-sm">{description}</p> */}
       </div>
-      <div className="flex ">
+      <div className="flex gap-3">
         <button
-          className="bg-orange hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg mr-3"
+          className="bg-orange hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg"
           onClick={() => handleAddPaymentClick(customer)}
         >
           <p className="text-white uppercase font-semibold">add payment</p>
         </button>
-        <Link to={`customer-details/${customerID.toString()}`}>
-          <button className="bg-maroon hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg">
-            <p className="text-white uppercase font-semibold">view details</p>
-          </button>
-        </Link>
+        {isAdmin() ? (
+          <Link to={`customer-details/${customerID.toString()}`}>
+            <button className="bg-maroon hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg">
+              <p className="text-white uppercase font-semibold">view details</p>
+            </button>
+          </Link>
+        ) : null}
       </div>
       {displayCustomer && (
         <AddPaymentModal

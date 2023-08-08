@@ -28,10 +28,10 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
 
   // console.log(userData);
 
-  const addPayment = ({ amount }) => {
+  const addPayment = (amount) => {
     const axiosConfig = {
       method: "post",
-      url: `${BASE_URL}installment//add-payment`,
+      url: `${BASE_URL}installment/add-payment`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -39,12 +39,14 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
         customerID: customer.customerID,
         amount: amount,
         paidDate: today,
-        collectedBy: userData._id,
+        collectedBy: userData.userID,
       },
     };
     axios(axiosConfig)
       .then((response) => {
         console.log(response);
+        setModalShow(false);
+        window.location.reload(false);
       })
       .catch((err) => {
         // setMessage(err.data.message);
@@ -113,12 +115,6 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
                     placeholder="Enter payment"
                   />
 
-                  {message && (
-                    <div className="">
-                      <p className="">{message}</p>
-                    </div>
-                  )}
-
                   <div className="flex">
                     <button className={primaryButtonClasses} type="submit">
                       <p className={buttonTextClasses}>add payment</p>
@@ -130,6 +126,12 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
                       <p className={buttonTextClasses}>cancel</p>
                     </button>
                   </div>
+
+                  {message && (
+                    <div className="border-red border rounded-lg p-3 text-center">
+                      <p className="text-red">{message}</p>
+                    </div>
+                  )}
                 </Form>
               </Formik>
             </Dialog.Panel>

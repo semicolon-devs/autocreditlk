@@ -53,8 +53,8 @@ exports.addPayment = async (req, res) => {
 exports.getPaymentInfo = async (req, res) => {
   const id = req.params.id;
   Installment.findById(id)
-    .then((Installment) => {
-      res.status(200).json({ payment: Installment });
+    .then(async (installment) => {
+      res.status(200).json({ payment: installment });
     })
     .catch((err) => {
       console.log(err);

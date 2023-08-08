@@ -259,6 +259,18 @@ exports.getPaymentOfCustomer = async (req, res) => {
   }
 };
 
+exports.getGuarantorIDs = async (req, res) => {
+  Customer.find({})
+    .select("guarantorNIC")
+    .distinct("guarantorNIC")
+    .then((idList) => {
+      res.status(200).json({ idList: idList });
+    })
+    .catch((err) => {
+      res.status(200).json({ message: err.message });
+    });
+};
+
 exports.deleteCustomer = async (req, res) => {
   const customerID = req.params.id;
 

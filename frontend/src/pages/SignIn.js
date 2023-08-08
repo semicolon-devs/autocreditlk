@@ -116,8 +116,8 @@ const SignIn = () => {
             </p>
 
             {message && (
-              <div className="w-full border border-orange rounded-lg p-3 mb-3">
-                <p className="text-orange">{message}</p>
+              <div className="w-full border border-red rounded-lg p-3 mb-3">
+                <p className="text-red">{message}</p>
               </div>
             )}
 

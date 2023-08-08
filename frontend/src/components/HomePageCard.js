@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
 import AddPaymentModal from "../modals/AddPaymentModal";
+import { CallNow } from "../Icons/Icon";
 
 const HomePageCard = ({ customer }) => {
   const [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
@@ -32,8 +32,8 @@ const HomePageCard = ({ customer }) => {
         <p className="">Total - {loanAmount}</p>
         <p className="">Total Paid - {paidAmount}</p>
         <p className="">Arrears - {arrears}</p>
-        <p className="">Mobile No. 1 - {phone}</p>
-        <p className="">Mobile No. 2 - {phoneTwo}</p>
+        <p className="">Mobile No. 1 - <CallNow /> <a  href={"tel:" + phone}>{phone}</a></p>
+        <p className="">Mobile No. 2 - <CallNow /><a  href={"tel:" + phoneTwo}>{phoneTwo}</a></p>
         {/* <p className="text-sm">{description}</p> */}
       </div>
       <div className="flex ">

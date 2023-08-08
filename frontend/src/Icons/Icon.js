@@ -20,11 +20,12 @@ import FiberManualRecordRoundedIcon from "@mui/icons-material/FiberManualRecordR
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import DoDisturbRoundedIcon from "@mui/icons-material/DoDisturbRounded";
-
+import CallIcon from '@mui/icons-material/Call';
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export {
+  CallIcon as CallNow,
   MenuRoundedIcon as MenuIcon,
   HomeRoundedIcon as HomeIcon,
   SettingsRoundedIcon as SettingsIcon,

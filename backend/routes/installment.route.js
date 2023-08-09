@@ -5,7 +5,8 @@ const { checkPermission } = require("../middleware/userAuth");
 const {
   addPayment,
   deletePayment,
-  updatePayment
+  updatePayment,
+  filterByDate
 } = require("../controllers/installment.controller");
 
 router.post(
@@ -33,6 +34,15 @@ router.put(
     checkPermission(["admin"]),
   ],
   updatePayment
+);
+
+router.get(
+  "/:date",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  filterByDate
 );
 
 module.exports = router;

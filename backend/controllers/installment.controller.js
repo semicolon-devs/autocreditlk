@@ -21,9 +21,13 @@ exports.addPayment = async (req, res) => {
         try {
           const customer = await Customer.findOne(filter);
 
-          await Customer.findOneAndUpdate(filter, {
-            paidAmount: customer.paidAmount + parseInt(amount),
-          });
+          const updatedCustomer = await Customer.findOneAndUpdate(
+            filter,
+            {
+              paidAmount: customer.paidAmount + parseInt(amount),
+            },
+            { new: true }
+          );
 
           const smsPayload = {
             to: customer.phone,
@@ -31,7 +35,7 @@ exports.addPayment = async (req, res) => {
             customerName: customer.name,
             collectorName: user.name,
             amountPaid: amount,
-            amountLeft: customer.loanAmount - customer.paidAmount,
+            amountLeft: updatedCustomer.loanAmount - updatedCustomer.paidAmount,
           };
 
           await sendDailySMS(smsPayload);
@@ -64,114 +68,114 @@ exports.getPaymentInfo = async (req, res) => {
 
 exports.deletePayment = async (req, res) => {
   const id = req.params.id;
-  const timeNow = new Date();
-  const dateString = timeNow.toLocaleDateString("es-CL", {
-    timeZone: "Asia/Colombo",
-  });
-  const dayStartTime = new Date(dateString + "T00:00:00+05:30");
-  const dayEndTime = new Date(dateString + "T23:59:59+05:30");
 
-  const installment = await Installment.findOne(filter);
+  await Installment.findOne({ _id: id })
+    .then((installment) => {
+      const allowedLastTime = new Date(installment.paidDate);
+      allowedLastTime.setUTCDate(allowedLastTime.getUTCDate() + 1);
 
-  if (
-    installment.paidDate <= dayEndTime &&
-    installment.paidDate >= dayStartTime
-  ) {
-    Installment.findByIdAndDelete(id)
-      .then(async (result) => {
-        const installment = await Installment.findById(id);
-        filter = {
-          customerID: result.customerID,
-        };
-        const update = {
-          paidAmount: installment.paidAmount - result.paidAmount,
-        };
-        Customer.findOneAndUpdate(filter, update)
-          .then((result) => {
-            res.status(200).json({ message: "payment  deleted successfully" });
+      if (new Date() < allowedLastTime) {
+        Installment.findByIdAndDelete(id)
+          .then(async (result) => {
+            const customer = await Customer.findOne({
+              customerID: result.customerID,
+            });
+            filter = {
+              customerID: result.customerID,
+            };
+            const update = {
+              paidAmount: customer.paidAmount - result.amount,
+            };
+            Customer.findOneAndUpdate(filter, update)
+              .then((result) => {
+                res
+                  .status(200)
+                  .json({ message: "payment  deleted successfully" });
+              })
+              .catch((err) => {
+                console.log(err);
+                res.status(400).json({
+                  message:
+                    "payment deleted but not updated in customer details",
+                  error: err.message,
+                });
+              });
           })
           .catch((err) => {
-            res.status(400).json({
-              message: "payment deleted but not updated in customer details",
-              error: err.message,
-            });
+            console.log(err);
+            res.status(400).json({ message: err.message });
           });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(400).json({ message: err.message });
-      });
-  } else {
-    res.status(400).json({
-      message:
-        "update installment function only allowed for the date that installment is made",
+      } else {
+        res.status(400).json({
+          message:
+            "delete installment function only allowed for 24 Hours since payment made",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ message: "installment with givan id not found" });
     });
-  }
 };
 
 exports.updatePayment = async (req, res) => {
   const id = req.params.id;
-  const timeNow = new Date();
-  const dateString = timeNow.toLocaleDateString("es-CL", {
-    timeZone: "Asia/Colombo",
-  });
-  const dayStartTime = new Date(dateString + "T00:00:00+05:30");
-  const dayEndTime = new Date(dateString + "T23:59:59+05:30");
-
-  const filter = {
-    _id: id,
-  };
 
   const update = {
     amount: req.body.amount,
   };
 
-  const installment = await Installment.findOne(filter);
+  await Installment.findOne({ _id: id })
+    .then((installment) => {
+      const allowedLastTime = new Date(installment.paidDate);
+      allowedLastTime.setUTCDate(allowedLastTime.getUTCDate() + 1);
 
-  if (
-    installment.paidDate <= dayEndTime &&
-    installment.paidDate >= dayStartTime
-  ) {
-    Installment.findOneAndUpdate(filter, update)
-      .then((result) => {
-        Customer.findOne({ customerID: result.customerID })
-          .then((customer) => {
-            const filter = {
-              _id: customer.id,
-            };
-            const update = {
-              paidAmount:
-                parseInt(customer.paidAmount) -
-                parseInt(result.amount) +
-                parseInt(req.body.amount),
-            };
+      if (new Date() < allowedLastTime) {
+        Installment.findOneAndUpdate({_id: id}, update)
+          .then((result) => {
+            Customer.findOne({ customerID: result.customerID })
+              .then((customer) => {
+                const filter = {
+                  _id: customer._id,
+                };
+                const update = {
+                  paidAmount:
+                    parseInt(customer.paidAmount) -
+                    parseInt(result.amount) +
+                    parseInt(req.body.amount),
+                };
 
-            if (update.paidAmount < 0) {
-              update.paidAmount = 0;
-            }
+                if (update.paidAmount < 0) {
+                  update.paidAmount = 0;
+                }
 
-            Customer.findOneAndUpdate(filter, update)
-              .then((result) => {
-                res
-                  .status(200)
-                  .json({ message: "payment updated successfully" });
+                Customer.findOneAndUpdate(filter, update)
+                  .then((result) => {
+                    res
+                      .status(200)
+                      .json({ message: "payment updated successfully" });
+                  })
+                  .catch((err) => {
+                    res.status(400).json({ message: err.message });
+                  });
               })
               .catch((err) => {
-                res.status(400).json({ message: err.message });
+                res.status(200).json({ message: err.message });
               });
           })
           .catch((err) => {
-            res.status(200).json({ message: err.message });
+            console.log(err);
+            res.status(400).json({ message: err.message });
           });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(400).json({ message: err.message });
-      });
-  } else {
-    res.status(400).json({
-      message:
-        "update installment function only allowed for the date that installment is made",
+      } else {
+        res.status(400).json({
+          message:
+            "update installment function only allowed for the date that installment is made",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ message: "installment with givan id not found" });
     });
-  }
 };

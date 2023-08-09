@@ -71,7 +71,7 @@ const CustomerSchema = new mongoose.Schema(
       required: true,
     },
     nextBillingDate: {
-      type: String,
+      type: Date,
       required: true,
     },
     collectorId: {

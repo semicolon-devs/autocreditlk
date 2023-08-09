@@ -211,23 +211,22 @@ exports.getCustomers = async (req, res) => {
 
 exports.getPaymentOfCustomer = async (req, res) => {
   const customerID = req.params.id;
+  const updatedInstallments = [];
 
   try {
-    Installment.find({ customerID: customerID })
+    Installment.find({ customerID: customerID }).sort({paidDate: -1})
       .then(async (installments) => {
-        const updatedInstallments = [];
 
-        // replace collectorid by collector name for all installments before send to client
-        await installments.forEach((installment) => {
-          User.findById(installment.collectedBy)
-            .then(async (user) => {
+        for (const installment of installments) {
+          await User.findById(installment.collectedBy)
+            .then((user) => {
               installment.collectedBy = user.name;
               updatedInstallments.push(installment);
             })
             .catch((err) => {
               console.log(err);
             });
-        });
+        }
 
         // limit data send to client based on user role
         if (req.user.role == "admin") {

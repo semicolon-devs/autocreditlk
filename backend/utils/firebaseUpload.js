@@ -24,3 +24,23 @@ exports.uploadFileToFirebaseStorage = async (fileType, customerID, file) => {
     return null;
   }
 };
+
+exports.reportUpload = async (date, file) => {
+  const fileRef = ref(
+    storage,
+    `reports/${date +"-" + file.originalname}`
+  );
+
+  const metadata = {
+    contentType: file.mimetype,
+  };
+
+  try {
+    const snapshot = await uploadBytesResumable(fileRef, file.buffer, metadata);
+    const url = await getDownloadURL(fileRef);
+    return url;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};

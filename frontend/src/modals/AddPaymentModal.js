@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 
 import { TextInput } from "../components/FormikElements";
 import {
@@ -19,6 +20,7 @@ const cookies = new Cookies();
 
 const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
   const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const today = new Date();
 
@@ -29,6 +31,7 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
   // console.log(userData);
 
   const addPayment = (amount) => {
+    setLoading(true);
     const axiosConfig = {
       method: "post",
       url: `${BASE_URL}installment/add-payment`,
@@ -45,12 +48,15 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
     axios(axiosConfig)
       .then((response) => {
         console.log(response);
-        setModalShow(false);
+        // setModalShow(false);
         window.location.reload(false);
       })
       .catch((err) => {
         // setMessage(err.data.message);
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -103,9 +109,10 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
                     .positive("Amount must be a positive number")
                     .integer("Amount must be an integer"),
                 })}
-                onSubmit={(values, { setSubmitting }) => {
+                onSubmit={(values, { setSubmitting, resetForm }) => {
                   addPayment(values.amount);
                   setSubmitting(false);
+                  resetForm({});
                 }}
               >
                 <Form className="flex flex-col w-full mt-3">
@@ -117,7 +124,20 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
 
                   <div className="flex">
                     <button className={primaryButtonClasses} type="submit">
-                      <p className={buttonTextClasses}>add payment</p>
+                      {loading ? (
+                        <ThreeDots
+                          height="40"
+                          width="40"
+                          radius="9"
+                          color="white"
+                          ariaLabel="three-dots-loading"
+                          wrapperStyle={{}}
+                          wrapperClassName=""
+                          visible={true}
+                        />
+                      ) : (
+                        <p className={buttonTextClasses}>add payment</p>
+                      )}
                     </button>
                     <button
                       className={`ms-3 ${secondaryButtonClasses}`}

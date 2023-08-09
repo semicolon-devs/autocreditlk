@@ -2,6 +2,8 @@ import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 
 import { TextInput } from "../components/FormikElements";
 import {
@@ -10,11 +12,43 @@ import {
   buttonTextClasses,
 } from "../data/Classes";
 
+import Cookies from "universal-cookie";
+
+import BASE_URL from "../config/ApiConfig";
+
+const cookies = new Cookies();
+
 const EditPaymentModal = ({ modalShow, setModalShow, paymentEntry }) => {
   const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const editPaymentButtonClick = () => {
-    console.log("edit payment");
+  const token = cookies.get("autoCreditCookie");
+
+  const editPayment = (amount) => {
+    setLoading(true);
+    const axiosConfig = {
+      method: "PUT",
+      url: `${BASE_URL}installment/${paymentEntry._id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        amount: amount,
+      },
+    };
+    axios(axiosConfig)
+      .then((response) => {
+        console.log(response);
+        // setModalShow(false);
+        window.location.reload(false);
+      })
+      .catch((err) => {
+        // setMessage(err.data.message);
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -67,9 +101,10 @@ const EditPaymentModal = ({ modalShow, setModalShow, paymentEntry }) => {
                     .positive("Amount must be a positive number")
                     .integer("Amount must be an integer"),
                 })}
-                onSubmit={(values, { setSubmitting }) => {
-                  // signIn(values.email, values.password);
+                onSubmit={(values, { setSubmitting, resetForm }) => {
+                  editPayment(values.newAmount);
                   setSubmitting(false);
+                  resetForm({});
                 }}
               >
                 <Form className="flex flex-col w-full mt-3">
@@ -86,11 +121,21 @@ const EditPaymentModal = ({ modalShow, setModalShow, paymentEntry }) => {
                   )}
 
                   <div className="flex">
-                    <button
-                      className={primaryButtonClasses}
-                      onClick={editPaymentButtonClick}
-                    >
-                      <p className={buttonTextClasses}>edit payment</p>
+                    <button type="submit" className={primaryButtonClasses}>
+                      {loading ? (
+                        <ThreeDots
+                          height="40"
+                          width="40"
+                          radius="9"
+                          color="white"
+                          ariaLabel="three-dots-loading"
+                          wrapperStyle={{}}
+                          wrapperClassName=""
+                          visible={true}
+                        />
+                      ) : (
+                        <p className={buttonTextClasses}>edit payment</p>
+                      )}
                     </button>
                     <button
                       className={`ms-3 ${secondaryButtonClasses}`}

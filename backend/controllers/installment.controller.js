@@ -2,32 +2,38 @@ const Customer = require("../models/customer.model");
 const Installment = require("../models/installment.model");
 const User = require("../models/user.model");
 const { sendDailySMS } = require("../services/sms.service");
+const { calculateNextBillingDate } = require("../utils/calculateDays");
 
 exports.addPayment = async (req, res) => {
-  const { customerID, amount, paidDate, collectedBy } = req.body;
-
+  const { customerID, amount, paidDate, collectedBy, paidAmountDate } = req.body;
+  // TODO: check amount agains arrears amount... for accurate calculation
   try {
     const user = await User.findById(collectedBy)
       .then(async (user) => {
-        await Installment.create({
-          customerID,
-          amount,
-          paidDate: new Date(paidDate),
-          collectedBy,
-        });
-
-        const filter = { customerID: customerID };
 
         try {
+          const filter = { customerID: customerID };
+          
           const customer = await Customer.findOne(filter);
+          // TODO: once arrears calculation is done, modify this to update the nextBilling date to correct date...
+          const nextPayment  = calculateNextBillingDate(customer.nextBillingDate, customer.billingCycle);
+          console.log(nextPayment)
 
-          const updatedCustomer = await Customer.findOneAndUpdate(
-            filter,
-            {
-              paidAmount: customer.paidAmount + parseInt(amount),
-            },
-            { new: true }
-          );
+          const update = {
+            paidAmount: customer.paidAmount + parseInt(amount),
+            paidAmountDate : (paidAmountDate ? new Date(paidAmountDate) : new Date()),
+            nextBillingDate : nextPayment
+          };
+
+          const updatedCustomer = await Customer.findOneAndUpdate(filter, update, { new: true });
+
+          await Installment.create({
+            customerID,
+            amount,
+            paidDate: new Date(paidDate),
+            collectedBy,
+            dueDate: new Date(customer.nextBillingDate)
+          });
 
           const smsPayload = {
             to: customer.phone,
@@ -46,7 +52,8 @@ exports.addPayment = async (req, res) => {
       })
       .catch((err) => {
         res.status(400).json({
-          message: "collector id invalid",
+          message: err.message,
+          // error : err
         });
       });
   } catch (err) {

@@ -23,6 +23,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    workingDays:  [{
+      type: String
+    }]
   },
   {
     timestamps: true,

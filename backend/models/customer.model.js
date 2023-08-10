@@ -99,6 +99,9 @@ const CustomerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    collectedDates: [{
+      type: Date
+    }]
   },
   {
     timestamps: true,

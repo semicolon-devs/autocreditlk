@@ -137,7 +137,10 @@ const addReportToDatabase = async (filePath, date) => {
   try {
     const file = fs.readFileSync(filePath);
 
-    const downloadURL = await reportUpload(file);
+    const downloadURL = await reportUpload(
+      file,
+      date.toLocaleDateString("en-CA", { timeZone: "Asia/Colombo" })
+    );
 
     await Report.create({
       downloadURL,
@@ -219,35 +222,4 @@ exports.reportGenerateAndSend = () => {
     .catch((err) => {
       console.log(err);
     });
-
-  // const records = [{
-  //   "name": "Nilesh",
-  //   "id": "RDTC",
-  //   "collector": "A",
-  //   "amount": "1000"
-  // }, {
-  //   "name": "Nilesh",
-  //   "id": "RDTC",
-  //   "collector": "B",
-  //   "amount": "2000"
-  // }, {
-  //   "name": "Nilesh",
-  //   "id": "RDTC",
-  //   "collector": "B",
-  //   "amount": "3000"
-  // }];
-
-  // console.log(records);
-
-  // generateDailyReport(records, filePath);
-
-  // const payload = {
-  //   to: process.env.ADMIN_EMAIL,
-  //   fileName: fileName,
-  //   filePath: filePath,
-  //   reportType: reportType,
-  //   date: getDate(),
-  // };
-
-  // sendMail(payload);
 };

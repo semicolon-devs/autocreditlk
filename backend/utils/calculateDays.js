@@ -1,4 +1,4 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 function calculateNextBillingDate(date, billingCycle) {
   let currentDate = moment(new Date(date));
@@ -13,13 +13,14 @@ function calculateNextBillingDate(date, billingCycle) {
       break;
     
     case "Weekly" : 
-      currentDate.add(7, "days");
+      currentDate.add(7, "weeks");
 
     default:
       break;
   }
 
-  return currentDate.format();
+  
+  return currentDate.tz("Asia/Colombo").startOf('day').format();
 }
 
 module.exports = {

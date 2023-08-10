@@ -1,21 +1,25 @@
-const fs = require('fs');
-const nodemailer = require('nodemailer');
-const moment = require('moment')
+const fs = require("fs");
+const nodemailer = require("nodemailer");
+const moment = require("moment");
+const Installment = require("../models/installment.model");
+const Customer = require("../models/customer.model");
+const User = require("../models/user.model");
+const { reportUpload } = require("../utils/firebaseUpload");
+const Report = require("../models/report.model");
 
-
-// TODO: remove hardcoded values on stag
-const EMAIL_ADDRESS = process.env.EMAIL_ADDRESS || "morning123lucifer@gmail.com";
-const EMAIL_PROVIDER = process.env.EMAIL_PROVIDER || "gmail";
-const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD || "ypgdraaoruolsgek";
+const EMAIL_ADDRESS = process.env.EMAIL_ADDRESS;
+const EMAIL_PROVIDER = process.env.EMAIL_PROVIDER;
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 const COMPANY_NAME = "Auto Credit";
 const FILE_EXTENSION = "xls";
 
 function getMailOptions(payload) {
-  const from = COMPANY_NAME + '<' + EMAIL_ADDRESS + '>';
+  const from = COMPANY_NAME + "<" + EMAIL_ADDRESS + ">";
   const to = payload.to;
-  const subject = payload.date + ' -' + COMPANY_NAME + payload.reportType + 'Report';
-  const text = 'File Attached for : ' + payload.date;
-  const html = '';
+  const subject =
+    payload.date + " -" + COMPANY_NAME + payload.reportType + "Report";
+  const text = "File Attached for : " + payload.date;
+  const html = "";
 
   var mailOption = {
     from: from,
@@ -23,16 +27,18 @@ function getMailOptions(payload) {
     subject: subject,
     text: text,
     html: html,
-    attachments: [{
-      filename: payload.fileName,
-      path: payload.filePath
-    }]
-  }
+    attachments: [
+      {
+        filename: payload.fileName,
+        path: payload.filePath,
+      },
+    ],
+  };
   return mailOption;
 }
 
 function getDate() {
-  return moment().format("MMM Do YY");
+  return moment().format("YYYY-MM-DD");
 }
 
 function getMonth() {
@@ -40,31 +46,33 @@ function getMonth() {
 }
 
 function getWeek() {
-  return moment().startOf("week").format("MMMM YYYY") + " to " + moment().endOf("week").format("MMMM YYYY");
+  return (
+    moment().startOf("week").format("MMMM YYYY") +
+    " to " +
+    moment().endOf("week").format("MMMM YYYY")
+  );
 }
 
-function generateDailyReport(records, filePath) {
-  generateReport(records, filePath, "DAILY REPORT", getDate());
-}
+const generateDailyReport = async (records, filePath) => {
+  await generateReport(records, filePath, "DAILY REPORT", getDate());
+};
 
-function generateMonthlyReport(records, filePath) {
-  generateReport(records, filePath, "MONTHLY REPORT", getMonth());
-}
+const generateMonthlyReport = async (records, filePath) => {
+  await generateReport(records, filePath, "MONTHLY REPORT", getMonth());
+};
 
 function generateWeeklyReport(records, filePath) {
   generateReport(records, filePath, "WEEKLY REPORT", getWeek());
 }
 
-function generateReport(records, filePath, reportType, date) {
-  let data = reportType + '\n' +
-    'Auto Credit' + '\n' +
-    date + '\n' + '\n';
+const generateReport = async (records, filePath, reportType, date) => {
+  let data = reportType + "\n" + "Auto Credit" + "\n" + date + "\n" + "\n";
 
   // extract the list of collectors
   let collectors = new Set();
   records.forEach((record) => {
-    collectors.add(record.collector)
-  })
+    collectors.add(record.collector);
+  });
 
   // TODO: if the report needs a list of every collector, fetch it from db.
   let total = {};
@@ -74,27 +82,40 @@ function generateReport(records, filePath, reportType, date) {
 
   records.forEach((record) => {
     total[record.collector] += Number(record.amount);
-    data += record.id + '\t' + record.name + '\t' + record.collector + '\t' + record.amount + '\n';
+    data +=
+      record.customerID +
+      "\t" +
+      record.customerName +
+      "\t" +
+      record.amount +
+      "\t" +
+      record.collectedBy +
+      "\t" +
+      new Date(record.paidDate).toLocaleString("en-US", {
+        timeZone: "Asia/colombo",
+      }) +
+      "\n";
   });
 
-  data += '\n' + '\n' + '\n';
-
+  data += "\n" + "\n" + "\n";
 
   const collectorNames = Object.keys(total);
   for (const name of collectorNames) {
-    data += "Collected Amount by " + name + '\t' + total[name] + '\n'
+    data += "Collected Amount by " + name + "\t" + total[name] + "\n";
   }
 
-  fs.writeFile(filePath, data, (err) => {
-    if (err) {
-      throw err
-    };
+  try {
+    fs.writeFile(filePath, data, (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-    console.log('File created');
-  });
-}
-
-function sendMail(payload) {
+const sendMail = async (payload) => {
   let transporter = nodemailer.createTransport({
     service: EMAIL_PROVIDER,
     auth: {
@@ -105,72 +126,128 @@ function sendMail(payload) {
 
   const mailOptions = getMailOptions(payload);
 
-
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
     }
   });
+};
 
-}
+const addReportToDatabase = async (filePath, date) => {
+  try {
+    const file = fs.readFileSync(filePath);
 
+    const downloadURL = await reportUpload(file);
 
+    await Report.create({
+      downloadURL,
+      date,
+    })
+      .then((result) => {
+        console.log("report added to mongo");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-//fetch today entries from db
-
-// var start = new Date();
-// start.setHours(0,0,0,0);
-
-// var end = new Date();
-// end.setHours(23,59,59,999);
-
-// var todayJSN = db.posts.find({created_on: {$gte: start, $lt: end}});
-
-// fetch(url)
-//   .then(function(res) {
-//     // handle the response
-//   })
-//   .catch(function(err) {
-//     // handle the error
-//   });
-
-
-function main() {
-  const records = [{
-    "name": "Nilesh",
-    "id": "RDTC",
-    "collector": "A",
-    "amount": "1000"
-  }, {
-    "name": "Nilesh",
-    "id": "RDTC",
-    "collector": "B",
-    "amount": "2000"
-  }, {
-    "name": "Nilesh",
-    "id": "RDTC",
-    "collector": "B",
-    "amount": "3000"
-  }];
-
+exports.reportGenerateAndSend = () => {
+  const records = [];
 
   const reportType = "Weelkly";
-  const fileName = getDate() + ' - Auto Credit ' + reportType + ' Report' + '.' + FILE_EXTENSION
+  const fileName =
+    getDate() +
+    " - Auto Credit " +
+    reportType +
+    " Report" +
+    "." +
+    FILE_EXTENSION;
   const filePath = "./reports/" + fileName;
 
-  const payload = {
-    to: "supuledirisinghe@gmail.com",
-    fileName: fileName,
-    filePath: filePath,
-    reportType: reportType,
-    date: getDate()
-  };
+  const dayStartTime = new Date(
+    moment().utcOffset("+05:30").format("YYYY-MM-DD") + "T00:00:00+05:30"
+  );
+  dayStartTime.setUTCDate(dayStartTime.getUTCDay() - 1);
 
-  generateWeeklyReport(records, filePath);
+  const dayEndTime = new Date(
+    moment().utcOffset("+05:30").format("YYYY-MM-DD") + "T23:59:59+05:30"
+  );
+  dayEndTime.setUTCDate(dayEndTime.getUTCDate() - 1);
 
-  sendMail(payload)
-}
+  Installment.find({
+    paidDate: { $gte: dayStartTime, $lt: dayEndTime },
+  })
+    .then(async (installments) => {
+      for (const installment of installments) {
+        await User.findById(installment.collectedBy)
+          .then(async (user) => {
+            installment.collectedBy = user.name;
 
-main();
+            await Customer.findOne({ customerID: installment.customerID })
+              .then((customer) => {
+                installment._doc.customerName = customer.name;
+                records.push(installment._doc);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+
+      // TODO shedule generate and send report at 23:59:59 today
+      await generateDailyReport(records, filePath);
+
+      // upload generated file to firebase
+      await addReportToDatabase(filePath, dayStartTime);
+
+      const payload = {
+        to: process.env.ADMIN_EMAIL,
+        fileName: fileName,
+        filePath: filePath,
+        reportType: reportType,
+        date: getDate(),
+      };
+
+      await sendMail(payload);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  // const records = [{
+  //   "name": "Nilesh",
+  //   "id": "RDTC",
+  //   "collector": "A",
+  //   "amount": "1000"
+  // }, {
+  //   "name": "Nilesh",
+  //   "id": "RDTC",
+  //   "collector": "B",
+  //   "amount": "2000"
+  // }, {
+  //   "name": "Nilesh",
+  //   "id": "RDTC",
+  //   "collector": "B",
+  //   "amount": "3000"
+  // }];
+
+  // console.log(records);
+
+  // generateDailyReport(records, filePath);
+
+  // const payload = {
+  //   to: process.env.ADMIN_EMAIL,
+  //   fileName: fileName,
+  //   filePath: filePath,
+  //   reportType: reportType,
+  //   date: getDate(),
+  // };
+
+  // sendMail(payload);
+};

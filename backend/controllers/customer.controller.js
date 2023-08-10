@@ -1,6 +1,7 @@
 const Customer = require("../models/customer.model");
 const Installment = require("../models/installment.model");
 const User = require("../models/user.model");
+const { reportGenerateAndSend } = require("../services/report.service");
 const { uploadFileToFirebaseStorage } = require("../utils/firebaseUpload");
 
 exports.addCustomer = async (req, res) => {

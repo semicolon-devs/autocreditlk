@@ -9,8 +9,8 @@ import DeleteCustomerModal from "../modals/DeleteCustomerModal";
 import SendReminderModal from "../modals/SendReminderModal";
 import AddPaymentModal from "../modals/AddPaymentModal";
 import EditPaymentModal from "../modals/EditPaymentModal";
+import DeletePaymentModal from "../modals/DeletePaymentModal";
 
-// import { customerArr, paymentsArr } from "../data/SampleData";
 import { EditIcon, DeleteIcon } from "../Icons/Icon";
 import {
   buttonClasses,
@@ -38,6 +38,8 @@ const CustomerDetails = () => {
   const [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
   const [editPaymentModalShow, setEditPaymentModalShow] = useState(false);
   const [displayEditPayment, setDisplayEditPayment] = useState(null);
+  const [deletePaymentModalShow, setDeletePaymentModalShow] = useState(false);
+  const [displayDeletePayment, setDisplayDeletePayment] = useState(null);
   const [customer, setCustomer] = useState(null);
   const [customerPayments, setCustomerPayments] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -67,7 +69,8 @@ const CustomerDetails = () => {
           setCustomerPayments(response.data.payments);
         })
         .catch((err) => {
-          setMessage(err.data.message);
+          // setMessage(err.data.message);
+          console.log(err);
         })
         .finally(() => {
           setLoading(false);
@@ -82,10 +85,15 @@ const CustomerDetails = () => {
     setEditPaymentModalShow(true);
   };
 
+  const deletePaymentButtonClick = (payment) => {
+    setDisplayDeletePayment(payment);
+    setDeletePaymentModalShow(true);
+  };
+
   return (
     <div className="w-full">
       <SectionTitle title="customer details" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* <div className=""> */}
         <div className="">
           <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5">
@@ -146,7 +154,7 @@ const CustomerDetails = () => {
                   </p>
 
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 my-3">
-                    <div className="bg-yellow p-3 rounded-lg">
+                    <div className="bg-yellow p-3 rounded-lg flex flex-col justify-between">
                       <p className="font-semibold capitalize">loan amount</p>
                       <p className="">
                         {customer.loanAmount &&
@@ -155,7 +163,7 @@ const CustomerDetails = () => {
                       </p>
                     </div>
 
-                    <div className="bg-yellow p-3 rounded-lg">
+                    <div className="bg-yellow p-3 rounded-lg flex flex-col justify-between">
                       <p className="font-semibold capitalize">
                         installment amount
                       </p>
@@ -166,7 +174,7 @@ const CustomerDetails = () => {
                       </p>
                     </div>
 
-                    <div className="bg-pink p-3 rounded-lg">
+                    <div className="bg-pink p-3 rounded-lg flex flex-col justify-between">
                       <p className="font-semibold capitalize">
                         arrears as at{" "}
                         {today.toLocaleDateString("en-GB", {
@@ -468,7 +476,10 @@ const CustomerDetails = () => {
                             }
                           )}{" "}
                           {new Date(payment.paidDate).toLocaleTimeString(
-                            "en-US"
+                            "en-US",
+                            {
+                              timeZone: "Asia/Colombo",
+                            }
                           )}
                         </p>
                         <p className="">
@@ -490,7 +501,7 @@ const CustomerDetails = () => {
                         </button>
                         <button
                           className="bg-orange flex rounded-lg px-3 py-1"
-                          onClick={() => editPaymentButtonClick(payment)}
+                          onClick={() => deletePaymentButtonClick(payment)}
                         >
                           <DeleteIcon className="text-white" fontSize="small" />
                           <p className="text-white uppercase font-semibold ms-2 text-sm">
@@ -505,6 +516,13 @@ const CustomerDetails = () => {
                     modalShow={editPaymentModalShow}
                     setModalShow={setEditPaymentModalShow}
                     paymentEntry={displayEditPayment}
+                  />
+                )}
+                {displayDeletePayment && (
+                  <DeletePaymentModal
+                    modalShow={deletePaymentModalShow}
+                    setModalShow={setDeletePaymentModalShow}
+                    paymentEntry={displayDeletePayment}
                   />
                 )}
               </div>

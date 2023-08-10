@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import AddPaymentModal from "../modals/AddPaymentModal";
 import { CallNow } from "../Icons/Icon";
 
+import { CurrencyFormatter } from "../utils/CurrencyFormatter";
+
 const HomePageCard = ({ customer }) => {
   const [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
   const [displayCustomer, setDisplayCustomer] = useState(null);
@@ -37,11 +39,21 @@ const HomePageCard = ({ customer }) => {
         <p className="font-bold mb-2 text-purple-950">{customerID}</p>
         <p className="font-bold text-xl">{name}</p>
         <p className="font-semibold">{NIC}</p>
-        <p className="">Total - {loanAmount}</p>
-        <p className="">Total Paid - {paidAmount}</p>
-        <p className="">Arrears - {arrears}</p>
-        <p className="">Mobile No. 1 - <CallNow /> <a  href={"tel:" + phone}>{phone}</a></p>
-        <p className="">Mobile No. 2 - <CallNow /><a  href={"tel:" + phoneTwo}>{phoneTwo}</a></p>
+        <p className="">
+          Total - {loanAmount && CurrencyFormatter(loanAmount)} LKR
+        </p>
+        <p className="">
+          Total Paid - {paidAmount && CurrencyFormatter(paidAmount)} LKR
+        </p>
+        <p className="">
+          Arrears - {arrears && CurrencyFormatter(arrears)} LKR
+        </p>
+        <p className="">
+          Mobile No. 1 - <CallNow /> <a href={"tel:" + phone}>{phone}</a>
+        </p>
+        <p className="">
+          Mobile No. 2 - <CallNow /> <a href={"tel:" + phoneTwo}>{phoneTwo}</a>
+        </p>
         {/* <p className="text-sm">{description}</p> */}
       </div>
       <div className="flex gap-3">

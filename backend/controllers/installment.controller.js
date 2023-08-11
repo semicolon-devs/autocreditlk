@@ -2,11 +2,11 @@ const Customer = require("../models/customer.model");
 const Installment = require("../models/installment.model");
 const User = require("../models/user.model");
 const { sendDailySMS } = require("../services/sms.service");
+const { amountToPay } = require("../utils/amountToPay");
 const { calculateNextBillingDate } = require("../utils/calculateDays");
 
 exports.addPayment = async (req, res) => {
   const { customerID, amount, paidDate, collectedBy, paidAmountDate } = req.body;
-  // TODO: check amount agains arrears amount... for accurate calculation
   try {
     const user = await User.findById(collectedBy)
       .then(async (user) => {
@@ -15,9 +15,12 @@ exports.addPayment = async (req, res) => {
           const filter = { customerID: customerID };
           
           const customer = await Customer.findOne(filter);
-          // TODO: once arrears calculation is done, modify this to update the nextBilling date to correct date...
           const nextPayment  = calculateNextBillingDate(customer.nextBillingDate, customer.billingCycle);
-          console.log(nextPayment)
+          // console.log(nextPayment)
+
+          // if(customer.paidAmount + parseInt(amount) <= customer.loanAmount) {
+
+          // }
 
           const update = {
             paidAmount: customer.paidAmount + parseInt(amount),

@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     workingDays:  [{
-      type: String
+      type: Date
     }]
   },
   {

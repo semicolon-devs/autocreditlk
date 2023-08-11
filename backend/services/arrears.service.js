@@ -5,6 +5,7 @@ const moment = require('moment-timezone');
 const {
   calculateNextBillingDate
 } = require("../utils/calculateDays");
+const { amountToPay } = require("../utils/amountToPay");
 
 
 async function startCollecting(collectorId, date) {
@@ -105,9 +106,24 @@ async function calculateArrears(customerID) {
     const workingDays = await getWorkingDays(collectorId);
 
     // TODO: Calculate arrears when no one collected for the duration of the cycle : Especially in daily case
+    let currentDueDate = dueDate;
+    let nextDueDate = calculateNextBillingDate(dueDate, billingCycle);
+
+    let dateRange = getDateRange(workingDays, currentDueDate, nextDueDate);
+
+    while (moment(nextDueDate).isSameOrBefore(today)) {
+      if (dateRange && dateRange.length > 0) {
+        break;
+      } else {
+        nextDueDate = currentDueDate ;
+        currentDueDate = calculateNextBillingDate(nextDueDate, billingCycle);
+        dateRange = getDateRange(workingDays, currentDueDate, nextDueDate);
+        
+        noOfCyclesBehind--;
+      }
+    }
+
     return amountToPay(customer.loanAmount, customer.installmentAmount, customer.paidAmount, noOfCyclesBehind);
-
-
 
   } catch (err) {
     return {
@@ -115,6 +131,14 @@ async function calculateArrears(customerID) {
       error: err.message
     }
   }
+}
+
+function getDateRange(arr, begin, end) {
+  let result = arr.filter(function (item) {
+    return moment(item).isSameOrAfter(moment(begin)) && moment(item).isSameOrBefore(moment(end));
+  });
+
+  return result;
 }
 
 function noOfDaysAndCycles(today, dueDate, billingCycle) {
@@ -145,16 +169,6 @@ function noOfDaysAndCycles(today, dueDate, billingCycle) {
   };
 }
 
-function amountToPay(loanAmount, installmentAmount, paidAmount, noOfCyclesBehind) {
-  noOfCyclesBehind++;
-
-  const amountLeft = loanAmount - paidAmount;
-  const arrears = installmentAmount * noOfCyclesBehind;
-
-  let toPay = (amountLeft >= arrears ? arrears : amountLeft);
-
-  return toPay;
-}
 
 async function getWorkingDays(collectorId) {
   return User.findById(collectorId)

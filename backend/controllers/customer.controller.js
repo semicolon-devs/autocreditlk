@@ -1,6 +1,7 @@
 const Customer = require("../models/customer.model");
 const Installment = require("../models/installment.model");
 const User = require("../models/user.model");
+const { calculateArrears } = require("../services/arrears.service");
 const { reportGenerateAndSend } = require("../services/report.service");
 const { uploadFileToFirebaseStorage } = require("../utils/firebaseUpload");
 
@@ -89,7 +90,6 @@ exports.addCustomer = async (req, res) => {
         res.status(400).json({ message: err.message });
       });
   } catch (e) {
-    console.log("running");
     res.status(400).json({ message: e.message });
   }
 };
@@ -202,8 +202,21 @@ exports.getCustomers = async (req, res) => {
   Customer.find()
     .sort({ customerID: -1 })
     .select("customerID name NIC loanAmount arrears paidAmount phone phoneTwo")
-    .then((customers) => {
-      res.status(200).json({ customers: customers });
+    .then(async (customers) => {
+      const updatedList = [];
+      for (const customer of customers) {
+
+        // for show in homepage
+        await calculateArrears(customer.customerID)
+          .then((arrears) => {
+            customer._doc.arrears = arrears;
+            updatedList.push(customer);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      res.status(200).json({ customers: updatedList });
     })
     .catch((err) => {
       console.log(err);
@@ -212,7 +225,7 @@ exports.getCustomers = async (req, res) => {
 };
 
 exports.getPaymentOfCustomer = async (req, res) => {
-  reportGenerateAndSend();
+  // reportGenerateAndSend();
   const customerID = req.params.id;
   const updatedInstallments = [];
 
@@ -233,13 +246,28 @@ exports.getPaymentOfCustomer = async (req, res) => {
 
         // limit data send to client based on user role
         if (req.user.role == "admin") {
-          const customer = await Customer.findOne({
+          await Customer.findOne({
             customerID: customerID,
-          });
-
-          res
-            .status(200)
-            .json({ payments: updatedInstallments, customer: customer });
+          })
+            .then(async (customer) => {
+              await calculateArrears(customer.customerID)
+                .then((arrears) => {
+                  customer._doc.arrears = arrears;
+                  res
+                    .status(200)
+                    .json({
+                      payments: updatedInstallments,
+                      customer: customer,
+                    });
+                })
+                .catch((err) => {
+                  console.log(err);
+                  res.status(400).json({ message: err.message });
+                });
+            })
+            .catch((err) => {
+              res.status(400).json({ message: err.message });
+            });
         } else if (req.user.role == "collector") {
           const customer = await Customer.findOne({
             customerID: customerID,

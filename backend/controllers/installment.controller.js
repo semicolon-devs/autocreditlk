@@ -1,6 +1,7 @@
 const Customer = require("../models/customer.model");
 const Installment = require("../models/installment.model");
 const User = require("../models/user.model");
+const { startCollecting, collectedBySomeoneElse } = require("../services/arrears.service");
 const { sendDailySMS } = require("../services/sms.service");
 const { amountToPay } = require("../utils/amountToPay");
 const { calculateNextBillingDate } = require("../utils/calculateDays");
@@ -8,13 +9,18 @@ const { calculateNextBillingDate } = require("../utils/calculateDays");
 exports.addPayment = async (req, res) => {
   const { customerID, amount, paidDate, collectedBy, paidAmountDate } = req.body;
   try {
-    const user = await User.findById(collectedBy)
+    startCollecting(collectedBy, new Date());
+
+    await User.findById(collectedBy)
       .then(async (user) => {
 
         try {
           const filter = { customerID: customerID };
           
           const customer = await Customer.findOne(filter);
+          if (customer.collectorID != collectedBy) {
+            collectedBySomeoneElse(customerID, new Date());
+          }
           const nextPayment  = calculateNextBillingDate(customer.nextBillingDate, customer.billingCycle);
           // console.log(nextPayment)
 

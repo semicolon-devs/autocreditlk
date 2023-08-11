@@ -38,7 +38,6 @@ async function startCollecting(collectorId, date) {
 }
 
 
-
 async function collectedBySomeoneElse(customerID, date) {
   const filter = {
     customerID: customerID
@@ -126,6 +125,7 @@ async function calculateArrears(customerID) {
     return amountToPay(customer.loanAmount, customer.installmentAmount, customer.paidAmount, noOfCyclesBehind);
 
   } catch (err) {
+    console.log(err);
     return {
       message: "Error",
       error: err.message

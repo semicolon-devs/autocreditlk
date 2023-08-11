@@ -6,11 +6,12 @@ const passport = require("passport");
 const passportConfig = require("./config/passport.config");
 const dbConnect = require("./config/dbConnect");
 
-const authRouter = require('./routes/auth.route')
-const customerRouter = require('./routes/customer.route')
-const installmentRouter = require('./routes/installment.route')
-const smsRouter = require('./routes/sms.route')
-const userRouter = require('./routes/user.route')
+const authRouter = require("./routes/auth.route");
+const customerRouter = require("./routes/customer.route");
+const installmentRouter = require("./routes/installment.route");
+const smsRouter = require("./routes/sms.route");
+const userRouter = require("./routes/user.route");
+const reportRouter = require("./routes/report.route");
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -51,11 +52,11 @@ app.use("/api/v1/customers", customerRouter);
 app.use("/api/v1/installment", installmentRouter);
 app.use("/api/v1/sms", smsRouter);
 app.use("/api/v1/collector", userRouter);
+app.use("/api/v1/report", reportRouter);
 
-
-app.get('/', (req, res) => {
-  res.send('hello world')
-})
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
 
 // server listening to requests on port on env file
 app.listen(PORT, () => {

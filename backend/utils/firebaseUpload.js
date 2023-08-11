@@ -25,10 +25,10 @@ exports.uploadFileToFirebaseStorage = async (fileType, customerID, file) => {
   }
 };
 
-exports.reportUpload = async (date, file) => {
+exports.reportUpload = async (file, date) => {
   const fileRef = ref(
     storage,
-    `reports/${date +"-" + file.originalname}`
+    `reports/AutoCreditLk-Report-${date}.xls`
   );
 
   const metadata = {

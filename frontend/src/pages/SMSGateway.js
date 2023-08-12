@@ -13,14 +13,11 @@ const SMSGateway = () => {
   const [accBalance, setAccBalance] = useState();
   const [loading, setLoading] = useState(false);
 
-  const USER_ID = "25328";
-  const API_KEY = "J7rQbn0yVeUY7dpqwS4G";
-
   const SMSGatewayRefresh = async () => {
     setLoading(true);
     const config = {
       method: "post",
-      url: `https://app.notify.lk/api/v1/status?user_id=${USER_ID}&api_key=${API_KEY}`,
+      url: `https://app.notify.lk/api/v1/status?user_id=${process.env.REACT_APP_USER_ID}&api_key=${process.env.REACT_APP_API_KEY}`,
     };
 
     await axios(config)
@@ -36,9 +33,9 @@ const SMSGateway = () => {
       });
   };
 
-    useEffect(() => {
-      SMSGatewayRefresh();
-    }, []);
+  useEffect(() => {
+    SMSGatewayRefresh();
+  }, []);
 
   const goToNotifylk = () => {
     window.open("https://app.notify.lk/", "_blank");
@@ -97,7 +94,9 @@ const SMSGateway = () => {
                   {isActive ? (
                     <>
                       <DotIcon className="text-[#149c6c]" />
-                      <p className="text-[#149c6c] font-semibold ms-3">Active</p>
+                      <p className="text-[#149c6c] font-semibold ms-3">
+                        Active
+                      </p>
                     </>
                   ) : (
                     <>

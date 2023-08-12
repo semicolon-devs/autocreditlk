@@ -199,6 +199,7 @@ exports.addExisitngCustomer = async (req, res) => {
 
 exports.getCustomers = async (req, res) => {
   Customer.find()
+    .sort({ customerID: -1 })
     .select("customerID name NIC loanAmount arrears paidAmount phone phoneTwo")
     .then((customers) => {
       res.status(200).json({ customers: customers });
@@ -214,9 +215,9 @@ exports.getPaymentOfCustomer = async (req, res) => {
   const updatedInstallments = [];
 
   try {
-    Installment.find({ customerID: customerID }).sort({paidDate: -1})
+    Installment.find({ customerID: customerID })
+      .sort({ paidDate: -1 })
       .then(async (installments) => {
-
         for (const installment of installments) {
           await User.findById(installment.collectedBy)
             .then((user) => {

@@ -233,7 +233,7 @@ const CustomerDetails = () => {
                   </p>
 
                   <p className="">
-                    <span className="font-semibold capitalize">loan ID : </span>
+                    <span className="font-semibold capitalize">customer ID : </span>
                     {customer.customerID}
                   </p>
 

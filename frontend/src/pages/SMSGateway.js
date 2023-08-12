@@ -33,12 +33,12 @@ const SMSGateway = () => {
 
     await axios(config)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setIsActive(res.data.status.data.active);
         setAccBalance(res.data.status.data.acc_balance);
       })
       .catch((res) => {
-        console.log(res);
+        // console.log(res);
       })
       .finally(() => {
         setLoading(false);

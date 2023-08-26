@@ -1,21 +1,40 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
-import Cookies from "universal-cookie";
 import { ThreeDots } from "react-loader-spinner";
 
 import { TextInput } from "../components/FormikElements";
 import SectionTitle from "../components/SectionTitle";
 
+import BASE_URL from "../config/ApiConfig";
+
 const RecoverAccount = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
-  const [mobileNumberAreaShow, setMobileNumberAreaShow] = useState(false);
 
-  const handleResetRequest = () => {
-    // axios here
+  const handleResetRequest = async (email) => {
+    setLoading(true);
+    const config = {
+      method: "post",
+      url: `${BASE_URL}auth/forget-password-request`,
+      data: {
+        email: email,
+      },
+    };
+
+    await axios(config)
+      .then((res) => {
+        localStorage.setItem("resetPasswordEmail", email);
+        console.log(res);
+      })
+      .catch((res) => {
+        setMessage(res.response.data);
+        console.log(res);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -36,7 +55,7 @@ const RecoverAccount = () => {
               .required("Required"),
           })}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            // handleResetRequest(values.email);
+            handleResetRequest(values.email);
             setSubmitting(false);
             resetForm({});
           }}
@@ -77,18 +96,10 @@ const RecoverAccount = () => {
             )}
           </Form>
         </Formik>
-        {/* {mobileNumberAreaShow && ( */}
-        <div className="mt-3">
-          <p className="">
-            An OTP will be sent to your mobile number{" "}
-            <span className="">*******739</span>. Please enter the received OTP
-          </p>
-          <input
-            type="number"
-            className="w-full max-w-sm border-darkGrey border rounded-lg text-center mt-3 p-2"
-          />
-        </div>
-        {/* )} */}
+        <p className="text-grey italic mt-3">
+          Click here to reset your password your account. An auto-generated
+          password will be sent to your mobile number.
+        </p>
       </div>
     </div>
   );

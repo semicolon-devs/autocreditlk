@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import Cookies from "universal-cookie";
 import { ThreeDots } from "react-loader-spinner";
 
 import { TextInput } from "../components/FormikElements";
@@ -11,23 +10,17 @@ import logo from "../assets/AutoCreditLogo.png";
 
 import BASE_URL from "../config/ApiConfig";
 
-const cookies = new Cookies();
-
 const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
-  const pendingUserToken = JSON.parse(localStorage.getItem("pendingUserToken"));
-
-  const resetPassword = async (password) => {
+  const resetPassword = async (tempPassword, password) => {
     setLoading(true);
     const config = {
       method: "post",
       url: `${BASE_URL}auth/temp-password-reset`,
-      headers: {
-        Authorization: `Bearer ${pendingUserToken}`,
-      },
       data: {
+        tempPassword: tempPassword,
         newPassword: password,
       },
     };
@@ -47,6 +40,10 @@ const ResetPassword = () => {
       });
   };
 
+  const checkForEmail = () => {
+    // if (localStorage.getItem("resetPasswordEmail"))
+  }
+
   return (
     <div className=" bg-light flex justify-center items-center w-screen h-screen p-5">
       <div className="bg-white p-5 rounded-xl drop-shadow-lg w-full max-w-sm">
@@ -61,10 +58,12 @@ const ResetPassword = () => {
         </p>
         <Formik
           initialValues={{
+            tempPassword: "",
             password: "",
             confirmPassword: "",
           }}
           validationSchema={Yup.object({
+            tempPassword: Yup.string().required("Required"),
             password: Yup.string()
               .required("Required")
               .min(8, "Your password is too short.")
@@ -78,12 +77,18 @@ const ResetPassword = () => {
           })}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             // handlePasswordReset(values.password);
-            resetPassword(values.password);
+            resetPassword(values.tempPassword, values.password);
             setSubmitting(false);
             resetForm({});
           }}
         >
           <Form>
+            <TextInput
+              name="tempPassword"
+              type="password"
+              placeholder="Enter auto-generated password"
+            />
+
             <TextInput
               name="password"
               type="password"

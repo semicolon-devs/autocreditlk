@@ -233,7 +233,9 @@ const CustomerDetails = () => {
                   </p>
 
                   <p className="">
-                    <span className="font-semibold capitalize">customer ID : </span>
+                    <span className="font-semibold capitalize">
+                      customer ID :{" "}
+                    </span>
                     {customer.customerID}
                   </p>
 
@@ -260,13 +262,6 @@ const CustomerDetails = () => {
                     <span className="font-semibold capitalize">address : </span>
                     {customer.address}
                   </p>
-
-                  {/* <p className="">
-                  <span className="font-semibold capitalize">
-                    No of installments :{" "}
-                  </span>
-                  {customer.noOfInstallments}
-                </p> */}
 
                   <p className="">
                     <span className="font-semibold capitalize">

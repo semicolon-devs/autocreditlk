@@ -8,22 +8,34 @@ import SectionSubtitle from "../components/SectionSubtitle";
 import notifylkLogo from "../assets/notifylkLogo.png";
 import { RefreshIcon, DotIcon } from "../Icons/Icon";
 
+import Cookies from "universal-cookie";
+
+import BASE_URL from "../config/ApiConfig";
+
+const cookies = new Cookies();
+
 const SMSGateway = () => {
   const [isActive, setIsActive] = useState();
   const [accBalance, setAccBalance] = useState();
   const [loading, setLoading] = useState(false);
 
+  const token = cookies.get("autoCreditCookie");
+
   const SMSGatewayRefresh = async () => {
     setLoading(true);
     const config = {
-      method: "post",
-      url: `https://app.notify.lk/api/v1/status?user_id=${process.env.REACT_APP_USER_ID}&api_key=${process.env.REACT_APP_API_KEY}`,
+      method: "get",
+      url: `${BASE_URL}sms/status`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     };
 
     await axios(config)
       .then((res) => {
-        setIsActive(res.data.data.active);
-        setAccBalance(res.data.data.acc_balance);
+        console.log(res);
+        setIsActive(res.data.status.data.active);
+        setAccBalance(res.data.status.data.acc_balance);
       })
       .catch((res) => {
         console.log(res);

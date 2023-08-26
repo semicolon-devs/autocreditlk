@@ -142,6 +142,38 @@ If you received this message by mistake, please ignore this message.
   return await sendOneSMS(to, message);
 }
 
+async function getSMSGatewayStatus() {
+  const res = await axios
+    .post(
+      `https://app.notify.lk/api/v1/status?user_id=${process.env.SMS_SENDER_USER_ID}&api_key=${process.env.SMS_SENDER_API_KEY}`
+    )
+    .then((res) => {
+      // if successful
+      // send record to database ? if needed
+      // console.log(res)
+      return res.data;
+    })
+    .catch((error) => {
+      er = {};
+      if (error.response) {
+        er.message = error.response.data.errors;
+        er.status = error.response.status;
+      } else if (error.request) {
+        // The request was made but no response was received
+        er.status = "444";
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log("Error", error.message);
+        er.message = error.message;
+        er.status = "503"; // service unavailable
+      }
+
+      return er;
+    });
+
+  return res;
+}
+
 module.exports = {
   sendDailySMS,
   sendUserAddedSMS,
@@ -149,4 +181,5 @@ module.exports = {
   sendLoanOverdueSMS,
   sendFirstTimeOTP,
   sendResetOTP,
+  getSMSGatewayStatus,
 };

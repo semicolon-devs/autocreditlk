@@ -5,7 +5,6 @@ require("dotenv").config();
 const passport = require("passport");
 const passportConfig = require("./config/passport.config");
 const dbConnect = require("./config/dbConnect");
-const schedule = require('node-schedule');
 
 
 const authRouter = require("./routes/auth.route");

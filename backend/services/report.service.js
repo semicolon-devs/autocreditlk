@@ -6,6 +6,7 @@ const Customer = require("../models/customer.model");
 const User = require("../models/user.model");
 const { reportUpload } = require("../utils/firebaseUpload");
 const Report = require("../models/report.model");
+const schedule = require('node-schedule');
 
 const EMAIL_ADDRESS = process.env.EMAIL_ADDRESS;
 const EMAIL_PROVIDER = process.env.EMAIL_PROVIDER;
@@ -156,6 +157,17 @@ const addReportToDatabase = async (filePath, date) => {
     console.log(error);
   }
 };
+
+// Triggering reportGenerateAndSend() everyday at 00:00:00
+const rule = new schedule.RecurrenceRule();
+  rule.hour = 0;
+  rule.minute = 0;
+  rule.second = 0;
+  rule.tz = "Asia/colombo"
+
+  schedule.scheduleJob(rule, function(){
+    reportGenerateAndSend()
+  })
 
 exports.reportGenerateAndSend = () => {
   const records = [];

@@ -70,13 +70,15 @@ async function sendDailySMS(payload) {
     amountLeft,
   } = payload;
 
-  message = `Payment Recieved : 
+  message = `Payment Recieved. 
 Name : ${customerName}
 ID : ${customerId}
 Collector : ${collectorName}
 Payment : ${amountPaid} LKR
+Arrears :  LKR
 Remaining : ${amountLeft} LKR
 
+Contact Number - 075 6041 078
 @Autocredit
 `;
   return await sendOneSMS(to, message);
@@ -95,6 +97,7 @@ ID : ${customerId}
 Toal Amount : ${totalAmount} LKR
 Issue Date : ${issueDate}
 
+Contact Number - 075 6041 078
 @Autocredit
 `;
 

@@ -203,11 +203,12 @@ exports.getCustomers = async (req, res) => {
     .select("customerID name NIC loanAmount arrears paidAmount phone phoneTwo")
     .then(async (customers) => {
       const updatedList = [];
-      for (const customer of customers) {
+      for (var customer of customers) {
 
         // for show in homepage
         await calculateArrears(customer.customerID)
           .then((arrears) => {
+            console.log(arrears);
             customer._doc.arrears = arrears;
             updatedList.push(customer);
           })

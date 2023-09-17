@@ -9,7 +9,7 @@ const { calculateNextBillingDate } = require("../utils/calculateDays");
 exports.addPayment = async (req, res) => {
   const { customerID, amount, paidDate, collectedBy, paidAmountDate } = req.body;
   try {
-    startCollecting(collectedBy, new Date());
+    startCollecting(collectedBy);
 
     await User.findById(collectedBy)
       .then(async (user) => {

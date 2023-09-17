@@ -1,50 +1,52 @@
 const Customer = require("../models/customer.model");
 const Installment = require("../models/installment.model");
 const User = require("../models/user.model");
-const moment = require('moment-timezone');
-const {
-  calculateNextBillingDate
-} = require("../utils/calculateDays");
-const { amountToPay } = require("../utils/amountToPay");
-
+const moment = require("moment-timezone");
 
 async function startCollecting(collectorId, date) {
-  const user = User.findById(collectorId);
-  let workingDays = user.workingDays;
-
-  if (!workingDays) workingDays = [];
-
-  const day = moment((date ? new Date(date) : new Date())).tz("Asia/Colombo").startOf('day').format();
-  workingDays.push(day);
-
-  // removes duplicates by converting into a set
-  const updatedWorkingDays = Array.from(new Set(workingDays));
-
-  return User.findByIdAndUpdate(collectorId, {
-      workingDays: updatedWorkingDays
-    })
+  User.findById(collectorId)
     .then((user) => {
-      return {
-        "status": "Success"
-      };
+      let workingDays = user.workingDays;
+
+      if (!workingDays) workingDays = [];
+
+      const day = moment(date ? new Date(date) : new Date())
+        .tz("Asia/Colombo")
+        .startOf("day")
+        .format();
+      workingDays.push(day);
+
+      // removes duplicates by converting into a set
+      const updatedWorkingDays = Array.from(new Set(workingDays));
+
+      return User.findByIdAndUpdate(collectorId, {
+        $addToSet: { workingDays: updatedWorkingDays },
+      })
+        .then((user) => {
+          return {
+            status: "Success",
+          };
+        })
+        .catch((err) => {
+          return {
+            status: "Failed",
+            message: err.message,
+          };
+        });
     })
     .catch((err) => {
-      return {
-        "status": "Failed",
-        "message": err.message
-      };
+      console.log(err);
+      return err;
     });
-
 }
-
 
 async function collectedBySomeoneElse(customerID, date) {
   const filter = {
-    customerID: customerID
+    customerID: customerID,
   };
 
   const update = {
-    collectedDates: (date ? Date(date) : Date())
+    collectedDates: date ? Date(date) : Date(),
   };
 
   const customer = await Customer.findOne(filter);
@@ -52,24 +54,27 @@ async function collectedBySomeoneElse(customerID, date) {
 
   if (!collectedDates) collectedDates = [];
 
-  const day = moment((date ? new Date(date) : new Date())).tz("Asia/Colombo").startOf('day').format();
+  const day = moment(date ? new Date(date) : new Date())
+    .tz("Asia/Colombo")
+    .startOf("day")
+    .format();
   collectedDates.push(day);
 
   // removes duplicates by converting into a set
   const updatedCollectedDates = Array.from(new Set(collectedDates));
 
   return Customer.findOneAndUpdate(filter, {
-      collectedDates: updatedCollectedDates
-    })
+    collectedDates: updatedCollectedDates,
+  })
     .then((customer) => {
       return {
-        "status": "Success"
+        status: "Success",
       };
     })
     .catch((err) => {
       return {
-        "status": "Failed",
-        "message": err.message
+        status: "Failed",
+        message: err.message,
       };
     });
 }
@@ -77,72 +82,71 @@ async function collectedBySomeoneElse(customerID, date) {
 async function calculateArrears(customerID) {
   const today = moment(new Date());
 
-  const filter = {
-    customerID: customerID
-  };
-
   try {
-    const customer = await Customer.findOne(filter);
+    const filter = {
+      customerID: customerID,
+    };
+    var finalArries = 0;
+    await Customer.findOne(filter)
+      .then(async (customer) => {
+        const noOfPayments = Math.floor(
+          customer.paidAmount / customer.installmentAmount
+        );
+        // calculate last billing date
+        var lastBillingDate = moment(new Date(customer.startDate));
+        switch (customer.billingCycle) {
+          case "Daily":
+            lastBillingDate = lastBillingDate.add(noOfPayments, "d");
+            break;
+          case "Weekly":
+            lastBillingDate = lastBillingDate.add(noOfPayments, "w");
+            break;
+          case "Monthly":
+            lastBillingDate = lastBillingDate.add(noOfPayments, "M");
+        }
 
-    const collectorId = customer.collectorId;
-    const dueDate = moment(new Date(customer.nextBillingDate));
-    const billingCycle = customer.billingCycle;
+        const days = await getWorkingDays(customer.collectorId);
+        const arriesDays = getDateRange(days, lastBillingDate, today);
 
-    if (today.isBefore(dueDate)) { // if before -> no arrears
-      return 0;
+        const noOfArriesPayments = arriesDays.length;
 
-    } else if (today.isSame(dueDate)) { // on date -> one installment
-      return amountToPay(customer.loanAmount, customer.installmentAmount, customer.paidAmount, 0);
-    }
+        const arries =
+          (noOfPayments + noOfArriesPayments) * customer.installmentAmount -
+          customer.paidAmount;
 
-    // when overdue 
-
-    let {
-      noOfCyclesBehind,
-      noOfDaysBehind
-    } = noOfDaysAndCycles(today, dueDate, billingCycle);
-
-    const workingDays = await getWorkingDays(collectorId);
-
-    // TODO: Calculate arrears when no one collected for the duration of the cycle : Especially in daily case
-    let currentDueDate = dueDate;
-    let nextDueDate = calculateNextBillingDate(dueDate, billingCycle);
-
-    let dateRange = getDateRange(workingDays, currentDueDate, nextDueDate);
-
-    while (moment(nextDueDate).isSameOrBefore(today)) {
-      if (dateRange && dateRange.length > 0) {
-        break;
-      } else {
-        nextDueDate = currentDueDate ;
-        currentDueDate = calculateNextBillingDate(nextDueDate, billingCycle);
-        dateRange = getDateRange(workingDays, currentDueDate, nextDueDate);
-        
-        noOfCyclesBehind--;
-      }
-    }
-
-    return amountToPay(customer.loanAmount, customer.installmentAmount, customer.paidAmount, noOfCyclesBehind);
-
+        if (arries + customer.paidAmount >= customer.loadAmount) {
+          finalArries = customer.loadAmount - customer.paidAmount;
+        } else {
+          finalArries = arries;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+    return finalArries;
   } catch (err) {
     console.log(err);
     return {
       message: "Error",
-      error: err.message
-    }
+      error: err.message,
+    };
   }
 }
 
 function getDateRange(arr, begin, end) {
   let result = arr.filter(function (item) {
-    return moment(item).isSameOrAfter(moment(begin)) && moment(item).isSameOrBefore(moment(end));
+    return (
+      moment(item).isSameOrAfter(moment(begin)) &&
+      moment(item).isSameOrBefore(moment(end))
+    );
   });
 
   return result;
 }
 
 function noOfDaysAndCycles(today, dueDate, billingCycle) {
-  const noOfDaysBehind = today.diff(dueDate, 'days');
+  const noOfDaysBehind = today.diff(dueDate, "days");
   let noOfCyclesBehind = 0;
 
   switch (billingCycle) {
@@ -151,11 +155,11 @@ function noOfDaysAndCycles(today, dueDate, billingCycle) {
       break;
 
     case "Weekly":
-      noOfCyclesBehind = today.diff(dueDate, 'weeks');
+      noOfCyclesBehind = today.diff(dueDate, "weeks");
       break;
 
     case "Monthly":
-      noOfCyclesBehind = today.diff(dueDate, 'months');
+      noOfCyclesBehind = today.diff(dueDate, "months");
       break;
 
     default:
@@ -165,10 +169,9 @@ function noOfDaysAndCycles(today, dueDate, billingCycle) {
 
   return {
     noOfCyclesBehind,
-    noOfDaysBehind
+    noOfDaysBehind,
   };
 }
-
 
 async function getWorkingDays(collectorId) {
   return User.findById(collectorId)
@@ -177,13 +180,11 @@ async function getWorkingDays(collectorId) {
     })
     .catch((err) => {
       return null;
-
-    })
+    });
 }
-
 
 module.exports = {
   calculateArrears,
   startCollecting,
-  collectedBySomeoneElse
+  collectedBySomeoneElse,
 };

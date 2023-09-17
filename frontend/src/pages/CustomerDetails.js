@@ -64,7 +64,6 @@ const CustomerDetails = () => {
       };
       axios(axiosConfig)
         .then((response) => {
-          // console.log(response);
           setCustomer(response.data.customer);
           setCustomerPayments(response.data.payments);
         })

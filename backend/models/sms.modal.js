@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const SMSSchema = new mongoose.Schema({
-    // jobId: {
-    //     type: String,
-    //     required: true,
-    //     unique: true,
-    // },
     to: {
         type: String,
         required: true

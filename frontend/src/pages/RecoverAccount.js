@@ -25,12 +25,11 @@ const RecoverAccount = () => {
 
     await axios(config)
       .then((res) => {
-        localStorage.setItem("resetPasswordEmail", email);
-        console.log(res);
+        localStorage.setItem("forgotPasswordEmail", email);
+        window.location.href = "/forgot-password-reset";
       })
       .catch((res) => {
-        setMessage(res.response.data);
-        console.log(res);
+        setMessage(res.response.data.message);
       })
       .finally(() => {
         setLoading(false);
@@ -67,6 +66,12 @@ const RecoverAccount = () => {
               placeholder="Enter your email"
             />
 
+            {message && (
+              <div className="border border-red p-3 rounded-lg mb-3">
+                <p className="text-red">{message}</p>
+              </div>
+            )}
+
             <button
               type="submit"
               className="bg-maroon rounded-lg py-2 px-3 flex items-center justify-center"
@@ -88,12 +93,6 @@ const RecoverAccount = () => {
                 </p>
               )}
             </button>
-
-            {message && (
-              <div className="">
-                <p className="">{message}</p>
-              </div>
-            )}
           </Form>
         </Formik>
         <p className="text-grey italic mt-3">

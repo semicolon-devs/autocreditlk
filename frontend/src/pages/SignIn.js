@@ -31,7 +31,6 @@ const SignIn = () => {
 
     await axios(config)
       .then((res) => {
-        console.log(res);
         if (res.data.role == "pending") {
           if (res.data.token) {
             localStorage.setItem(
@@ -39,7 +38,7 @@ const SignIn = () => {
               JSON.stringify(res.data.token)
             );
             localStorage.setItem("userRole", JSON.stringify(res.data.role));
-            window.location.href = "/reset-password";
+            window.location.href = "/signin-password-change";
           } else {
             setMessage(res.data.message);
           }

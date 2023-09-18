@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const { sendResetOTP, sendFirstTimeOTP } = require("../services/sms.service");
 const { generatePassword } = require("../utils/passwordGenerate");
+const { json } = require("express");
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -116,7 +117,9 @@ exports.tempPasswordReset = async (req, res) => {
         // role: "collector",
       };
 
-      req.user.role == "admin" ? update.role = "admin" : update.role = "collector";
+      req.user.role == "admin"
+        ? (update.role = "admin")
+        : (update.role = "collector");
 
       // saving user data to database
       User.findOneAndUpdate(user, update, { new: true })
@@ -128,9 +131,6 @@ exports.tempPasswordReset = async (req, res) => {
           } else {
             res.status(201).send({
               message: "User Registerd Successfully",
-              // userData: {
-              //   email: result.email
-              // }
             });
           }
         })
@@ -197,8 +197,8 @@ exports.addUser = async (req, res) => {
 exports.forgetPasswordReset = async (req, res) => {
   const { tempPassword, email, newPassword } = req.body;
 
-  User.findOne({ email: email }),
-    then(async (user) => {
+  User.findOne({ email: email })
+    .then(async (user) => {
       const isMatch = await bcrypt.compare(tempPassword, user.tempPassword);
 
       if (isMatch) {
@@ -215,21 +215,10 @@ exports.forgetPasswordReset = async (req, res) => {
             };
 
             User.findOneAndUpdate(user, update)
-              .then(async (result) => {
-                if (!result) {
-                  res.status(500).send({
-                    message: "otp generate failed",
-                  });
-                } else {
-                  // temp password (password) need to send via sms here
-                  // phone -> user.phone
-                  await sendResetOTP(user.phone, `use OTP - ${password}`);
-
-                  res.status(201).send({
-                    message: "User Password reset Successfull",
-                    result,
-                  });
-                }
+              .then((result) => {
+                res.status(201).send({
+                  message: "User Password reset Successfull",
+                });
               })
               .catch((error) => {
                 res.status(500).send({
@@ -247,7 +236,8 @@ exports.forgetPasswordReset = async (req, res) => {
       } else {
         res.status(400).json({ message: "temp passpord does not match" });
       }
-    }).catch((err) => {
+    })
+    .catch((err) => {
       res.status(400).json({ message: "user with given email not found" });
     });
 };
@@ -272,11 +262,15 @@ exports.forgetPasswordRequest = async (req, res) => {
               message: "user with given email not found",
             });
           } else {
-            console.log(tempPassword);
-
             // temp password (password) need to send via sms here
             // phone -> user.phone
-            await sendResetOTP(user.phone, password);
+            User.findOne(user)
+              .then(async (user) => {
+                await sendResetOTP(user.phone, tempPassword);
+              })
+              .catch((err) => {
+                res.status(400).json({ message: err.message });
+              });
 
             res.status(201).send({
               message: "User Password reset Successfull",
@@ -285,6 +279,7 @@ exports.forgetPasswordRequest = async (req, res) => {
           }
         })
         .catch((error) => {
+          console.log(error);
           res.status(500).send({
             message: "Error resetting password",
             // error,

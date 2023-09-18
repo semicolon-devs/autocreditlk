@@ -9,7 +9,8 @@ import RootLayout from "./layouts/RootLayout";
 
 import SignIn from "./pages/SignIn";
 import RecoverAccount from "./pages/RecoverAccount";
-import ResetPassword from "./pages/ResetPassword";
+import ForgotPasswordReset from "./pages/ForgotPasswordReset";
+import SignInPasswordReset from "./pages/SignInPasswordReset";
 import Home from "./pages/Home";
 import CustomerDetails from "./pages/CustomerDetails";
 import AddCustomer from "./pages/AddCustomer";
@@ -42,7 +43,8 @@ const router = createBrowserRouter(
     <>
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/recover-account" element={<RecoverAccount />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/forgot-password-reset" element={<ForgotPasswordReset />} />
+      <Route path="/signin-password-change" element={<SignInPasswordReset />} />
       <Route
         path="/"
         element={

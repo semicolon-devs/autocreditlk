@@ -39,9 +39,17 @@ router.get(
   getUserData
 );
 router.post(
-  "/temp-password-reset",
+  "/signin-password-reset",
   [
     passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin", "collector", "pending"]),
+  ],
+  tempPasswordReset
+);
+router.post(
+  "/account-password-reset",
+  [
+    passport.authenticate("local", { session: false }),
     checkPermission(["admin", "collector", "pending"]),
   ],
   tempPasswordReset

@@ -22,6 +22,7 @@ const AccountSettings = () => {
   const [resetPasswordModalShow, setResetPasswordModalShow] = useState(null);
   const [userdata, setUserdata] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const token = cookies.get("autoCreditCookie");
 
@@ -32,15 +33,17 @@ const AccountSettings = () => {
     }
   }, []);
 
-  const changePassword = async (password) => {
+  const changePassword = async (currentPassword, password) => {
     setLoading(true);
     const config = {
       method: "post",
-      url: `${BASE_URL}auth/temp-password-reset`,
+      url: `${BASE_URL}auth/account-password-reset`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
       data: {
+        email: userdata.email,
+        password: currentPassword,
         newPassword: password,
       },
     };
@@ -53,7 +56,12 @@ const AccountSettings = () => {
         window.location.href = "/";
       })
       .catch((res) => {
-        console.log(res);
+        // console.log(res);
+        if (res.response.data == "Unauthorized") {
+          setMessage("current password is incorrect");
+        } else {
+          setMessage(res.response.data);
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -104,12 +112,12 @@ const AccountSettings = () => {
           <SectionSubtitle title="change password" />
           <Formik
             initialValues={{
-              // currentPassword: "",
+              currentPassword: "",
               newPassword: "",
               confirmPassword: "",
             }}
             validationSchema={Yup.object({
-              // currentPassword: Yup.string().required("Required"),
+              currentPassword: Yup.string().required("Required"),
               newPassword: Yup.string()
                 .required("Required")
                 .min(8, "Your password is too short.")
@@ -122,17 +130,17 @@ const AccountSettings = () => {
                 .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
             })}
             onSubmit={(values, { setSubmitting, resetForm }) => {
-              changePassword(values.newPassword);
+              changePassword(values.currentPassword, values.newPassword);
               setSubmitting(false);
               resetForm({});
             }}
           >
             <Form className="w-full max-w-sm">
-              {/* <TextInput
+              <TextInput
                 name="currentPassword"
                 type="password"
                 placeholder="Enter current password"
-              /> */}
+              />
 
               <TextInput
                 name="newPassword"
@@ -145,6 +153,12 @@ const AccountSettings = () => {
                 type="password"
                 placeholder="Confirm new password"
               />
+
+              {message && (
+                <div className="border border-red rounded-lg p-3">
+                  <p className="text-red">{message}</p>
+                </div>
+              )}
 
               <button
                 type="submit"

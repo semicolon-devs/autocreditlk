@@ -10,16 +10,19 @@ import logo from "../assets/AutoCreditLogo.png";
 
 import BASE_URL from "../config/ApiConfig";
 
-const ResetPassword = () => {
+const ForgotPasswordReset = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+
+  const email = localStorage.getItem("forgotPasswordEmail");
 
   const resetPassword = async (tempPassword, password) => {
     setLoading(true);
     const config = {
       method: "post",
-      url: `${BASE_URL}auth/temp-password-reset`,
+      url: `${BASE_URL}auth/forget-password-reset`,
       data: {
+        email: email,
         tempPassword: tempPassword,
         newPassword: password,
       },
@@ -42,7 +45,7 @@ const ResetPassword = () => {
 
   const checkForEmail = () => {
     // if (localStorage.getItem("resetPasswordEmail"))
-  }
+  };
 
   return (
     <div className=" bg-light flex justify-center items-center w-screen h-screen p-5">
@@ -135,4 +138,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ForgotPasswordReset;

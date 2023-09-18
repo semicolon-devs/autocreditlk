@@ -19,13 +19,18 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    tempPassword: {
+      type: String,
+    },
     role: {
       type: String,
       required: true,
     },
-    workingDays:  [{
-      type: Date
-    }]
+    workingDays: [
+      {
+        type: Date,
+      },
+    ],
   },
   {
     timestamps: true,

@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -24,6 +24,10 @@ const EditPaymentModal = ({ modalShow, setModalShow, paymentEntry }) => {
 
   const token = cookies.get("autoCreditCookie");
 
+  useEffect(() => {
+    setMessage(null);
+  }, [paymentEntry]);
+
   const editPayment = (amount) => {
     setLoading(true);
     const axiosConfig = {
@@ -43,8 +47,8 @@ const EditPaymentModal = ({ modalShow, setModalShow, paymentEntry }) => {
         window.location.reload(false);
       })
       .catch((err) => {
-        // setMessage(err.data.message);
-        console.log(err);
+        setMessage(err.response.data.message);
+        // console.log(err);
       })
       .finally(() => {
         setLoading(false);
@@ -81,10 +85,10 @@ const EditPaymentModal = ({ modalShow, setModalShow, paymentEntry }) => {
           >
             <Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-3">
               <Dialog.Title className="text-2xl font-semibold mb-3">
-                Edit Payment
+                Edit Installment
               </Dialog.Title>
               <Dialog.Description>
-                Edit payment ID :{" "}
+                Edit installment ID :{" "}
                 <span className="font-semibold italic ">
                   {paymentEntry.paymentId}
                 </span>
@@ -115,8 +119,8 @@ const EditPaymentModal = ({ modalShow, setModalShow, paymentEntry }) => {
                   />
 
                   {message && (
-                    <div className="">
-                      <p className="">{message}</p>
+                    <div className="border border-red p-3 rounded-lg mb-3">
+                      <p className="text-red">{message}</p>
                     </div>
                   )}
 
@@ -134,7 +138,7 @@ const EditPaymentModal = ({ modalShow, setModalShow, paymentEntry }) => {
                           visible={true}
                         />
                       ) : (
-                        <p className={buttonTextClasses}>edit payment</p>
+                        <p className={buttonTextClasses}>edit installment</p>
                       )}
                     </button>
                     <button

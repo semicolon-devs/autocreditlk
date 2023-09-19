@@ -61,7 +61,7 @@ const HomePageCard = ({ customer }) => {
           className="bg-orange hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg"
           onClick={() => handleAddPaymentClick(customer)}
         >
-          <p className="text-white uppercase font-semibold">add payment</p>
+          <p className="text-white uppercase font-semibold">add installment</p>
         </button>
         {isAdmin() ? (
           <Link to={`customer-details/${customerID.toString()}`}>

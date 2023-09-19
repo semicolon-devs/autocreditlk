@@ -90,12 +90,12 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
           >
             <Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-3">
               <Dialog.Title className="text-2xl font-semibold mb-3">
-                Add Payment
+                Add Installment
               </Dialog.Title>
               <Dialog.Description>
                 Add{" "}
                 <span className="font-semibold italic ">{customer.name}'s</span>{" "}
-                payment
+                installment
               </Dialog.Description>
 
               <Formik
@@ -119,7 +119,7 @@ const AddPaymentModal = ({ modalShow, setModalShow, customer }) => {
                   <TextInput
                     name="amount"
                     type="number"
-                    placeholder="Enter payment"
+                    placeholder="Enter installment amount"
                   />
 
                   <div className="flex">

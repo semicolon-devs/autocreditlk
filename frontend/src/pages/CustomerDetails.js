@@ -407,7 +407,7 @@ const CustomerDetails = () => {
                 className={secondaryButtonClasses}
                 onClick={() => setAddPaymentModalShow(true)}
               >
-                <p className={buttonTextClasses}>add payment</p>
+                <p className={buttonTextClasses}>add installment</p>
               </button>
               <button
                 className={`${primaryButtonClasses}`}
@@ -433,7 +433,7 @@ const CustomerDetails = () => {
             />
           )}
           <div className="bg-white drop-shadow-lg rounded-lg p-3">
-            <SectionSubtitle title="payment history" />
+            <SectionSubtitle title="installment history" />
             {loading ? (
               <div className="w-full flex items-center justify-center">
                 <ThreeDots
@@ -460,7 +460,7 @@ const CustomerDetails = () => {
                         payment Id : {payment.paymentId}
                       </p> */}
                         <p className="">
-                          Payment on :{" "}
+                          Installment on :{" "}
                           {new Date(payment.paidDate).toLocaleDateString(
                             "en-GB",
                             {

@@ -1,6 +1,8 @@
 const axios = require("axios");
 // const { response } = require("express");
 require("dotenv").config();
+const { calculateArrears } = require("../services/arrears.service");
+
 const {
   parseMobileNumber,
   validateMobileNumber,
@@ -10,6 +12,8 @@ const SMS_SENDER_HOST = process.env.SMS_SENDER_ENDPOINT;
 const SMS_SENDER_UID = process.env.SMS_SENDER_USER_ID;
 const SMS_SENDER_API_KEY = process.env.SMS_SENDER_API_KEY;
 const SMS_SENDER_SID = process.env.SMS_SENDER_SID;
+
+
 
 async function sendOneSMS(to, message) {
   to = parseMobileNumber(to);
@@ -70,12 +74,14 @@ async function sendDailySMS(payload) {
     amountLeft,
   } = payload;
 
+  const arrears = await calculateArrears(customerId)
+  
   message = `Payment Recieved. 
 Name : ${customerName}
 ID : ${customerId}
 Collector : ${collectorName}
 Payment : ${amountPaid} LKR
-Arrears :  LKR
+Arrears : ${arrears} LKR
 Remaining : ${amountLeft} LKR
 
 Contact Number - 075 6041 078
@@ -98,7 +104,7 @@ Toal Amount : ${totalAmount} LKR
 Issue Date : ${issueDate}
 
 Contact Number - 075 6041 078
-@Autocredit
+@AutoCredit
 `;
 
   return await sendOneSMS(to, message);
@@ -128,7 +134,7 @@ async function sendResetOTP(to, OTP) {
 Use this to reset your password.
 If you received this message by mistake, please ignore this message.
 
-@Autocredit
+@AutoCredit
 `;
 
   return await sendOneSMS(to, message);
@@ -139,7 +145,7 @@ async function sendFirstTimeOTP(to, OTP) {
 Use it to log into the autocredit portal for the first time.
 If you received this message by mistake, please ignore this message.
 
-@Autocredit
+@AutoCredit
 `;
 
   return await sendOneSMS(to, message);

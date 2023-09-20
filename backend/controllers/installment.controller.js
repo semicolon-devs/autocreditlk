@@ -49,6 +49,7 @@ exports.addPayment = async (req, res) => {
             customerId: customer.customerID,
             customerName: customer.name,
             collectorName: user.name,
+            arrears:customer.arrears,
             amountPaid: amount,
             amountLeft: updatedCustomer.loanAmount - updatedCustomer.paidAmount,
           };

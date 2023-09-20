@@ -88,7 +88,9 @@ async function calculateArrears(customerID) {
     };
     var finalArries = 0;
     await Customer.findOne(filter)
-      .then(async (customer) => {
+    .then(async (customer) => {
+      const days = await getWorkingDays(customer.collectorId);
+      const arriesDays = getDateRange(days, customer.startDate, today);
         const noOfPayments = Math.floor(
           customer.paidAmount / customer.installmentAmount
         );
@@ -105,10 +107,8 @@ async function calculateArrears(customerID) {
             lastBillingDate = lastBillingDate.add(noOfPayments, "M");
         }
 
-        const days = await getWorkingDays(customer.collectorId);
-        const arriesDays = getDateRange(days, lastBillingDate, today);
 
-        const noOfArriesPayments = arriesDays.length;
+        const noOfArriesPayments = arriesDays - noOfPayments;
 
         const arries =
           (noOfPayments + noOfArriesPayments) * customer.installmentAmount -

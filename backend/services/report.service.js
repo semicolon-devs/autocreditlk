@@ -6,6 +6,7 @@ const Customer = require("../models/customer.model");
 const User = require("../models/user.model");
 const { reportUpload } = require("../utils/firebaseUpload");
 const Report = require("../models/report.model");
+const schedule = require('node-schedule');
 
 const EMAIL_ADDRESS = process.env.EMAIL_ADDRESS;
 const EMAIL_PROVIDER = process.env.EMAIL_PROVIDER;
@@ -157,7 +158,9 @@ const addReportToDatabase = async (filePath, date) => {
   }
 };
 
-exports.reportGenerateAndSend = () => {
+
+
+const reportGenerateAndSend = () => {
   const records = [];
 
   const reportType = "Weelkly";
@@ -210,7 +213,7 @@ exports.reportGenerateAndSend = () => {
       await addReportToDatabase(filePath, dayStartTime);
 
       const payload = {
-        to: process.env.ADMIN_EMAIL,
+        to: "autocreditlk@gmail.com",
         fileName: fileName,
         filePath: filePath,
         reportType: reportType,
@@ -223,3 +226,17 @@ exports.reportGenerateAndSend = () => {
       console.log(err);
     });
 };
+
+
+
+
+// Triggering reportGenerateAndSend() everyday at 00:00:00
+const rule = new schedule.RecurrenceRule();
+  rule.hour = 2;
+  rule.minute = 34;
+  rule.second = 0;
+  rule.tz = "Asia/colombo"
+
+  schedule.scheduleJob(rule, function(){
+    reportGenerateAndSend()
+  })

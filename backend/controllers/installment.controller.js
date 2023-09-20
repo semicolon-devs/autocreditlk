@@ -221,7 +221,7 @@ exports.updatePayment = async (req, res) => {
       } else {
         res.status(400).json({
           message:
-            "update installment function only allowed for the date that installment is made",
+            "Update installment function only allowed for the date that installment is made",
         });
       }
     })

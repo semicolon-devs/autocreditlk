@@ -8,37 +8,45 @@ import SectionSubtitle from "../components/SectionSubtitle";
 import notifylkLogo from "../assets/notifylkLogo.png";
 import { RefreshIcon, DotIcon } from "../Icons/Icon";
 
+import Cookies from "universal-cookie";
+
+import BASE_URL from "../config/ApiConfig";
+
+const cookies = new Cookies();
+
 const SMSGateway = () => {
   const [isActive, setIsActive] = useState();
   const [accBalance, setAccBalance] = useState();
   const [loading, setLoading] = useState(false);
 
-  const USER_ID = "25328";
-  const API_KEY = "J7rQbn0yVeUY7dpqwS4G";
+  const token = cookies.get("autoCreditCookie");
 
   const SMSGatewayRefresh = async () => {
     setLoading(true);
     const config = {
-      method: "post",
-      url: `https://app.notify.lk/api/v1/status?user_id=${USER_ID}&api_key=${API_KEY}`,
+      method: "get",
+      url: `${BASE_URL}sms/status`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     };
 
     await axios(config)
       .then((res) => {
-        setIsActive(res.data.data.active);
-        setAccBalance(res.data.data.acc_balance);
+        setIsActive(res.data.status.data.active);
+        setAccBalance(res.data.status.data.acc_balance);
       })
       .catch((res) => {
-        console.log(res);
+        // console.log(res);
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
-    useEffect(() => {
-      SMSGatewayRefresh();
-    }, []);
+  useEffect(() => {
+    SMSGatewayRefresh();
+  }, []);
 
   const goToNotifylk = () => {
     window.open("https://app.notify.lk/", "_blank");
@@ -97,7 +105,9 @@ const SMSGateway = () => {
                   {isActive ? (
                     <>
                       <DotIcon className="text-[#149c6c]" />
-                      <p className="text-[#149c6c] font-semibold ms-3">Active</p>
+                      <p className="text-[#149c6c] font-semibold ms-3">
+                        Active
+                      </p>
                     </>
                   ) : (
                     <>

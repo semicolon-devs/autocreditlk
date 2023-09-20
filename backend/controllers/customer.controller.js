@@ -200,6 +200,7 @@ exports.addExisitngCustomer = async (req, res) => {
 
 exports.getCustomers = async (req, res) => {
   Customer.find()
+    .sort({ customerID: -1 })
     .select("customerID name NIC loanAmount arrears paidAmount phone phoneTwo")
     .then(async (customers) => {
       const updatedList = [];

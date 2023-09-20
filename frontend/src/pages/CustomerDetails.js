@@ -232,7 +232,9 @@ const CustomerDetails = () => {
                   </p>
 
                   <p className="">
-                    <span className="font-semibold capitalize">loan ID : </span>
+                    <span className="font-semibold capitalize">
+                      customer ID :{" "}
+                    </span>
                     {customer.customerID}
                   </p>
 
@@ -259,13 +261,6 @@ const CustomerDetails = () => {
                     <span className="font-semibold capitalize">address : </span>
                     {customer.address}
                   </p>
-
-                  {/* <p className="">
-                  <span className="font-semibold capitalize">
-                    No of installments :{" "}
-                  </span>
-                  {customer.noOfInstallments}
-                </p> */}
 
                   <p className="">
                     <span className="font-semibold capitalize">
@@ -411,7 +406,7 @@ const CustomerDetails = () => {
                 className={secondaryButtonClasses}
                 onClick={() => setAddPaymentModalShow(true)}
               >
-                <p className={buttonTextClasses}>add payment</p>
+                <p className={buttonTextClasses}>add installment</p>
               </button>
               <button
                 className={`${primaryButtonClasses}`}
@@ -437,7 +432,7 @@ const CustomerDetails = () => {
             />
           )}
           <div className="bg-white drop-shadow-lg rounded-lg p-3">
-            <SectionSubtitle title="payment history" />
+            <SectionSubtitle title="installment history" />
             {loading ? (
               <div className="w-full flex items-center justify-center">
                 <ThreeDots
@@ -464,7 +459,7 @@ const CustomerDetails = () => {
                         payment Id : {payment.paymentId}
                       </p> */}
                         <p className="">
-                          Payment on :{" "}
+                          Installment on :{" "}
                           {new Date(payment.paidDate).toLocaleDateString(
                             "en-GB",
                             {

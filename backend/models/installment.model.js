@@ -16,7 +16,7 @@ const InstallmentsSchema = new mongoose.Schema(
     },
     dueDate: {
       type: Date,
-      required: true
+      required: true,
     },
     collectedBy: {
       type: String,

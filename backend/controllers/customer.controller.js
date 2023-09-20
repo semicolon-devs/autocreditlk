@@ -208,7 +208,6 @@ exports.getCustomers = async (req, res) => {
         // for show in homepage
         await calculateArrears(customer.customerID)
           .then((arrears) => {
-            console.log(arrears);
             customer._doc.arrears = arrears;
             updatedList.push(customer);
           })

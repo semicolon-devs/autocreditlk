@@ -116,7 +116,9 @@ exports.tempPasswordReset = async (req, res) => {
         // role: "collector",
       };
 
-      req.user.role == "admin" ? update.role = "admin" : update.role = "collector";
+      req.user.role == "admin"
+        ? (update.role = "admin")
+        : (update.role = "collector");
 
       // saving user data to database
       User.findOneAndUpdate(user, update, { new: true })
@@ -216,20 +218,10 @@ exports.forgetPasswordReset = async (req, res) => {
 
             User.findOneAndUpdate(user, update)
               .then(async (result) => {
-                if (!result) {
-                  res.status(500).send({
-                    message: "otp generate failed",
-                  });
-                } else {
-                  // temp password (password) need to send via sms here
-                  // phone -> user.phone
-                  await sendResetOTP(user.phone, `use OTP - ${password}`);
-
-                  res.status(201).send({
-                    message: "User Password reset Successfull",
-                    result,
-                  });
-                }
+                res.status(201).send({
+                  message: "User Password reset Successfull",
+                  result,
+                });
               })
               .catch((error) => {
                 res.status(500).send({

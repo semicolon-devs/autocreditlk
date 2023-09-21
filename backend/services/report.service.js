@@ -233,7 +233,7 @@ const reportGenerateAndSend = (reportTypeSent , dayCount) => {
 // Triggering reportGenerateAndSend() everyday at 00:00:00
 const rule = new schedule.RecurrenceRule();
   rule.hour = 21;
-  rule.minute = 0;
+  rule.minute = 6;
   rule.second = 0;
   rule.tz = "Asia/colombo"
 

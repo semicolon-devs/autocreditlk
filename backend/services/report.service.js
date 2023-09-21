@@ -207,7 +207,7 @@ const reportGenerateAndSend = (reportTypeSent , dayCount) => {
       }
 
       // TODO shedule generate and send report at 23:59:59 today
-      await generateDailyReport(records, filePath);
+      setTimeout(await generateDailyReport(records, filePath), 15000);
 
       // upload generated file to firebase
       await addReportToDatabase(filePath, dayStartTime);
@@ -233,7 +233,7 @@ const reportGenerateAndSend = (reportTypeSent , dayCount) => {
 // Triggering reportGenerateAndSend() everyday at 00:00:00
 const rule = new schedule.RecurrenceRule();
   rule.hour = 21;
-  rule.minute = 6;
+  rule.minute = 12;
   rule.second = 0;
   rule.tz = "Asia/colombo"
 

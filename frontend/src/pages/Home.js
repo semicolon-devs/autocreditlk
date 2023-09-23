@@ -63,16 +63,23 @@ const Home = () => {
   return (
     <div className="bg-light">
       <div className="">
-        <div className="flex max-w-xs">
-          <input
-            type="string"
-            className="bg-white drop-shadow-lg rounded-md p-3 font-semibold outline-none border-none w-full"
-            placeholder="Search"
-            value={searchField}
-            onChange={(e) => setSearchField(e.target.value)}
-          />
-          <div className="bg-maroon drop-shadow-lg rounded-md p-3 ml-2 flex justify-center items-center">
-            <SearchIcon className="text-white" />
+        <div className="grid sm:grid-cols-2 gird-cols-1 gap-3">
+          <div className="flex sm:max-w-xs w-full">
+            <input
+              type="string"
+              className="bg-white drop-shadow-lg rounded-md p-3 font-semibold outline-none border-none w-full"
+              placeholder="Search"
+              value={searchField}
+              onChange={(e) => setSearchField(e.target.value)}
+            />
+            <div className="bg-maroon drop-shadow-lg rounded-md p-3 ml-2 flex justify-center items-center">
+              <SearchIcon className="text-white" />
+            </div>
+          </div>
+          <div className="flex justify-end items-center">
+            <div className="bg-white drop-shadow-lg rounded-md p-3 font-semibold sm:w-max w-full">
+              <p className="">{customers.length} Customers</p>
+            </div>
           </div>
         </div>
         <div className="">

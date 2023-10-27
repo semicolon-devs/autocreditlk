@@ -85,7 +85,7 @@ Arrears : ${arrears} LKR
 Remaining : ${amountLeft} LKR
 
 Contact Number - 075 6041 078
-@Autocredit
+
 `;
   return await sendOneSMS(to, message);
 }

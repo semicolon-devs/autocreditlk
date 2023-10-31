@@ -114,8 +114,6 @@ async function calculateArrears(customerID) {
           ((noOfPayments + noOfArriesPayments) * customer.installmentAmount )-
           customer.paidAmount;
 
-        console.log(noOfArriesPayments);
-      
         if (arries + customer.paidAmount >= customer.loanAmount) {
           finalArries = customer.loanAmount - customer.paidAmount;
         } else {

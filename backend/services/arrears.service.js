@@ -109,14 +109,15 @@ async function calculateArrears(customerID) {
         const arriesDays = getDateRange(days, lastBillingDate, today);
 
         const noOfArriesPayments = arriesDays.length;
-
+       
         const arries =
-          (noOfPayments + noOfArriesPayments) * customer.installmentAmount -
+          ((noOfPayments + noOfArriesPayments) * customer.installmentAmount )-
           customer.paidAmount;
 
         console.log(noOfArriesPayments);
-        if (arries + customer.paidAmount >= customer.loadAmount) {
-          finalArries = customer.loadAmount - customer.paidAmount;
+      
+        if (arries + customer.paidAmount >= customer.loanAmount) {
+          finalArries = customer.loanAmount - customer.paidAmount;
         } else {
           finalArries = arries;
         }
@@ -125,6 +126,7 @@ async function calculateArrears(customerID) {
         console.log(err);
         return err;
       });
+    
     return finalArries;
   } catch (err) {
     console.log(err);
@@ -177,6 +179,7 @@ function noOfDaysAndCycles(today, dueDate, billingCycle) {
 async function getWorkingDays(collectorId) {
   return User.findById(collectorId)
     .then((user) => {
+     
       return user.workingDays ? user.workingDays : null;
     })
     .catch((err) => {

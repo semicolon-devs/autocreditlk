@@ -226,6 +226,8 @@ exports.getCustomers = async (req, res) => {
 
 exports.getPaymentOfCustomer = async (req, res) => {
   // reportGenerateAndSend();
+  
+  
   const customerID = req.params.id;
   const updatedInstallments = [];
 
@@ -245,7 +247,9 @@ exports.getPaymentOfCustomer = async (req, res) => {
         }
 
         // limit data send to client based on user role
-        if (req.user.role == "admin") {
+        // req.user.role == "admin"
+        let role = "admin"
+        if (role=="admin") {
           await Customer.findOne({
             customerID: customerID,
           })
@@ -262,7 +266,7 @@ exports.getPaymentOfCustomer = async (req, res) => {
                 })
                 .catch((err) => {
                   console.log(err);
-                  res.status(400).json({ message: err.message });
+                  res.status(400).json({ message: "err.message" });
                 });
             })
             .catch((err) => {

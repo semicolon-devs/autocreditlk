@@ -58,7 +58,9 @@ router.get(
     passport.authenticate("jwt", { session: false }),
     checkPermission(["admin", "collector"]),
   ],
+  
   getPaymentOfCustomer
+
 );
 router.get(
   "/guarantors/ids",

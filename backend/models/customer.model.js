@@ -99,16 +99,17 @@ const CustomerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    customerAdditionalDocumentLink:
-    {
-      type:String
-    }
-    ,guarantorAdditionalDocumentLink:{
-      type:String
+    customerAdditionalDocumentLink: {
+      type: String,
     },
-    collectedDates: [{
-      type: Date
-    }]
+    guarantorAdditionalDocumentLink: {
+      type: String,
+    },
+    collectedDates: [
+      {
+        type: Date,
+      },
+    ],
   },
   {
     timestamps: true,

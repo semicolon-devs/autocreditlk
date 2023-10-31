@@ -360,7 +360,10 @@ const CustomerDetails = () => {
                   <div
                     className="bg-pink w-max px-4 py-1 rounded-md mt-2 cursor-pointer"
                     onClick={() =>
-                      window.open(customer.guarantorAdditionalPhotoLink, "_blank")
+                      window.open(
+                        customer.guarantorAdditionalDocumentLink,
+                        "_blank"
+                      )
                     }
                   >
                     <p className="capitalize text-white">

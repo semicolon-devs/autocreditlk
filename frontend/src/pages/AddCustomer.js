@@ -27,9 +27,12 @@ const AddCustomer = () => {
   const [NICRearCopy, setNICRearCopy] = useState([]);
   const [guarantorNICFrontCopy, setGuarantorNICFrontCopy] = useState([]);
   const [guarantorNICRearCopy, setGuarantorNICRearCopy] = useState([]);
-  const [guarantorAdditionalDetails,setGuarantorAdditionalDetails] = useState();
+  const [guarantorAdditionalDocument, setGuarantorAdditionalDocument] =
+    useState([]);
   const [customerPhoto, setCustomerPhoto] = useState();
-  const [customerAdditionalPhoto, setCustomerAdditionalPhoto] = useState();
+  const [customerAdditionalDocument, setCustomerAdditionalDocument] = useState(
+    []
+  );
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [message, setMessage] = useState(null);
 
@@ -101,8 +104,8 @@ const AddCustomer = () => {
     formData.append("NICFrontCopy", NICFrontCopy);
     formData.append("NICRearCopy", NICRearCopy);
     formData.append("customerPhoto", customerPhoto);
-    formData.append("customerAdditionalPhoto", customerAdditionalPhoto);
-    formData.append("guarantorAdditionalDetails", guarantorAdditionalDetails);
+    formData.append("customerAdditionalDocument", customerAdditionalDocument);
+    formData.append("guarantorAdditionalDocument", guarantorAdditionalDocument);
     formData.append("guarantor", guarantorName);
     formData.append("guarantorMobile", guarantorMobileNo);
     formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
@@ -125,7 +128,7 @@ const AddCustomer = () => {
       // setGuarantorNICFrontCopy(null);
       // setGuarantorNICRearCopy(null);
     } catch (err) {
-      console.log(err);
+      console.log("here"+err);
       setMessage(
         "Error adding the customer. Please check if all required feilds are filled. And submit the form again"
       );
@@ -146,10 +149,9 @@ const AddCustomer = () => {
     setCustomerPhoto(e.target.files[0]);
   };
 
-  const handleACustomerdditionalPhotoChange = (e) => {
-    setCustomerAdditionalPhoto(e.target.files[0]);
+  const handleACustomerdditionalDocumentChange = (e) => {
+    setCustomerAdditionalDocument(e.target.files[0]);
   };
-
 
   const handleGuarantorNICFrontCopyChange = (e) => {
     setGuarantorNICFrontCopy(e.target.files[0]);
@@ -159,9 +161,9 @@ const AddCustomer = () => {
     setGuarantorNICRearCopy(e.target.files[0]);
   };
 
-  const handleGuarantorAdditionalDetails = (e) => {
-      setGuarantorAdditionalDetails(e.target.files[0]);
-    };
+  const handleGuarantorAdditionalDocumentChange = (e) => {
+    setGuarantorAdditionalDocument(e.target.files[0]);
+  };
 
   const validationSchema = Yup.object({
     customerId: Yup.string()
@@ -390,12 +392,10 @@ const AddCustomer = () => {
               </div>
 
               <div className="">
-                <label className="font-semibold mb-2">
-                  Additional details
-                </label>
+                <label className="font-semibold mb-2">Additional details</label>
                 <input
                   type="file"
-                  onChange={handleACustomerdditionalPhotoChange}
+                  onChange={handleACustomerdditionalDocumentChange}
                   className="w-full rounded-lg p-2 mb-8 outline-none border border-grey"
                 />
               </div>
@@ -460,7 +460,7 @@ const AddCustomer = () => {
                 </label>
                 <input
                   type="file"
-                  onChange={handleGuarantorAdditionalDetails}
+                  onChange={handleGuarantorAdditionalDocumentChange}
                   className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
                 />
               </div>

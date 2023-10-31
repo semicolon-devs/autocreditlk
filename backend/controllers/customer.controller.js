@@ -33,10 +33,13 @@ exports.addCustomer = async (req, res) => {
     const customerPhoto = req.files["customerPhoto"][0];
     const guarantorNICFrontCopy = req.files["guarantorNICFrontCopy"][0];
     const guarantorNICRearCopy = req.files["guarantorNICRearCopy"][0];
-    const customerAdditionalDocument =
-      req.files["customerAdditionalDocument"][0];
-    const guarantorAdditionalDocument =
-      req.files["guarantorAdditionalDocument"][0];
+    const customerAdditionalDocument = req.files["customerAdditionalDocument"]
+      ? req.files["customerAdditionalDocument"][0]
+      : null;
+
+    const guarantorAdditionalDocument = req.files["guarantorAdditionalDocument"]
+      ? req.files["guarantorAdditionalDocument"][0]
+      : null;
 
     const [
       NICFrontCopyLink,
@@ -60,16 +63,20 @@ exports.addCustomer = async (req, res) => {
         customerID,
         guarantorNICRearCopy
       ),
-      uploadFileToFirebaseStorage(
-        "customerAdditionalDocument",
-        customerID,
-        customerAdditionalDocument
-      ),
-      uploadFileToFirebaseStorage(
-        "guarantorAdditionalDocument",
-        customerID,
-        guarantorAdditionalDocument
-      ),
+      customerAdditionalDocument
+        ? uploadFileToFirebaseStorage(
+            "customerAdditionalDocument",
+            customerID,
+            customerAdditionalDocument
+          )
+        : null,
+      guarantorAdditionalDocument
+        ? uploadFileToFirebaseStorage(
+            "guarantorAdditionalDocument",
+            customerID,
+            guarantorAdditionalDocument
+          )
+        : null,
     ]);
 
     Customer.create({
@@ -108,6 +115,7 @@ exports.addCustomer = async (req, res) => {
         res.status(400).json({ message: err.message });
       });
   } catch (e) {
+    console.log(e);
     res.status(400).json({ message: e.message });
   }
 };
@@ -141,10 +149,13 @@ exports.addExisitngCustomer = async (req, res) => {
     const customerPhoto = req.files["customerPhoto"][0];
     const guarantorNICFrontCopy = req.files["guarantorNICFrontCopy"][0];
     const guarantorNICRearCopy = req.files["guarantorNICRearCopy"][0];
-    const customerAdditionalDocument =
-      req.files["customerAdditionalDocument"][0];
-    const guarantorAdditionalDocument =
-      req.files["guarantorAdditionalDocument"][0];
+    const customerAdditionalDocument = req.files["customerAdditionalDocument"]
+      ? req.files["customerAdditionalDocument"][0]
+      : null;
+
+    const guarantorAdditionalDocument = req.files["guarantorAdditionalDocument"]
+      ? req.files["guarantorAdditionalDocument"][0]
+      : null;
 
     const [
       NICFrontCopyLink,
@@ -168,16 +179,20 @@ exports.addExisitngCustomer = async (req, res) => {
         customerID,
         guarantorNICRearCopy
       ),
-      uploadFileToFirebaseStorage(
-        "customerAdditionalDocument",
-        customerID,
-        customerAdditionalDocument
-      ),
-      uploadFileToFirebaseStorage(
-        "guarantorAdditionalDocument",
-        customerID,
-        guarantorAdditionalDocument
-      ),
+      customerAdditionalDocument
+        ? uploadFileToFirebaseStorage(
+            "customerAdditionalDocument",
+            customerID,
+            customerAdditionalDocument
+          )
+        : null,
+      guarantorAdditionalDocument
+        ? uploadFileToFirebaseStorage(
+            "guarantorAdditionalDocument",
+            customerID,
+            guarantorAdditionalDocument
+          )
+        : null,
     ]);
 
     Customer.create({

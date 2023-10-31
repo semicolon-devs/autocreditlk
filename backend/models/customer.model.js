@@ -103,7 +103,7 @@ const CustomerSchema = new mongoose.Schema(
     {
       type:String
     }
-    ,guarantorAdditionalDocument:{
+    ,guarantorAdditionalDocumentLink:{
       type:String
     },
     collectedDates: [{

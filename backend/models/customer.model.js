@@ -99,6 +99,13 @@ const CustomerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    customerAdditionalDocumentLink:
+    {
+      type:String
+    }
+    ,guarantorAdditionalDocument:{
+      type:String
+    },
     collectedDates: [{
       type: Date
     }]

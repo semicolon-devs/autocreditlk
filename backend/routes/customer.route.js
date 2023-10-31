@@ -25,6 +25,8 @@ router.post(
       { name: "customerPhoto", maxCount: 1 },
       { name: "guarantorNICFrontCopy", maxCount: 1 },
       { name: "guarantorNICRearCopy", maxCount: 1 },
+      {name:"customerAdditionalDocument",maxCount:1},
+      { name: "guarantorAdditionalDocument",maxCount:1 },
     ]),
   ],
   addCustomer
@@ -40,6 +42,8 @@ router.post(
       { name: "customerPhoto", maxCount: 1 },
       { name: "guarantorNICFrontCopy", maxCount: 1 },
       { name: "guarantorNICRearCopy", maxCount: 1 },
+      { name: "customerAdditionalDocument", maxCount: 1 },
+      { name: "guarantorAdditionalDocument", maxCount: 1 },
     ]),
   ],
   addExisitngCustomer

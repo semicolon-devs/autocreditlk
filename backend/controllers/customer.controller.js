@@ -33,6 +33,10 @@ exports.addCustomer = async (req, res) => {
     const customerPhoto = req.files["customerPhoto"][0];
     const guarantorNICFrontCopy = req.files["guarantorNICFrontCopy"][0];
     const guarantorNICRearCopy = req.files["guarantorNICRearCopy"][0];
+    const customerAdditionalDocument =
+      req.files["customerAdditionalDocument"][0];
+    const guarantorAdditionalDocument =
+      req.files["guarantorAdditionalDocument"][0];
 
     const [
       NICFrontCopyLink,
@@ -40,6 +44,8 @@ exports.addCustomer = async (req, res) => {
       customerPhotoLink,
       guarantorNICFrontCopyLink,
       guarantorNICRearCopyLink,
+      customerAdditionalDocumentLink,
+      guarantorAdditionalDocumentLink,
     ] = await Promise.all([
       uploadFileToFirebaseStorage("NICFrontCopy", customerID, NICFrontCopy),
       uploadFileToFirebaseStorage("NICRearCopy", customerID, NICRearCopy),
@@ -53,6 +59,16 @@ exports.addCustomer = async (req, res) => {
         "guarantorNICRearCopy",
         customerID,
         guarantorNICRearCopy
+      ),
+      uploadFileToFirebaseStorage(
+        "customerAdditionalDocument",
+        customerID,
+        customerAdditionalDocument
+      ),
+      uploadFileToFirebaseStorage(
+        "guarantorAdditionalDocument",
+        customerID,
+        guarantorAdditionalDocument
       ),
     ]);
 
@@ -80,8 +96,10 @@ exports.addCustomer = async (req, res) => {
       NICFrontCopyLink,
       NICRearCopyLink,
       customerPhotoLink,
+      customerAdditionalDocumentLink,
       guarantorNICFrontCopyLink,
       guarantorNICRearCopyLink,
+      guarantorAdditionalDocumentLink,
     })
       .then((result) => {
         res.status(200).json({ result: result });
@@ -123,6 +141,10 @@ exports.addExisitngCustomer = async (req, res) => {
     const customerPhoto = req.files["customerPhoto"][0];
     const guarantorNICFrontCopy = req.files["guarantorNICFrontCopy"][0];
     const guarantorNICRearCopy = req.files["guarantorNICRearCopy"][0];
+    const customerAdditionalDocument =
+      req.files["customerAdditionalDocument"][0];
+    const guarantorAdditionalDocument =
+      req.files["guarantorAdditionalDocument"][0];
 
     const [
       NICFrontCopyLink,
@@ -130,6 +152,8 @@ exports.addExisitngCustomer = async (req, res) => {
       customerPhotoLink,
       guarantorNICFrontCopyLink,
       guarantorNICRearCopyLink,
+      customerAdditionalDocumentLink,
+      guarantorAdditionalDocumentLink,
     ] = await Promise.all([
       uploadFileToFirebaseStorage("NICFrontCopy", customerID, NICFrontCopy),
       uploadFileToFirebaseStorage("NICRearCopy", customerID, NICRearCopy),
@@ -143,6 +167,16 @@ exports.addExisitngCustomer = async (req, res) => {
         "guarantorNICRearCopy",
         customerID,
         guarantorNICRearCopy
+      ),
+      uploadFileToFirebaseStorage(
+        "customerAdditionalDocument",
+        customerID,
+        customerAdditionalDocument
+      ),
+      uploadFileToFirebaseStorage(
+        "guarantorAdditionalDocument",
+        customerID,
+        guarantorAdditionalDocument
       ),
     ]);
 
@@ -170,8 +204,10 @@ exports.addExisitngCustomer = async (req, res) => {
       NICFrontCopyLink,
       NICRearCopyLink,
       customerPhotoLink,
+      customerAdditionalDocumentLink,
       guarantorNICFrontCopyLink,
       guarantorNICRearCopyLink,
+      guarantorAdditionalDocumentLink,
     })
       .then((result) => {
         Installment.create({
@@ -205,7 +241,6 @@ exports.getCustomers = async (req, res) => {
     .then(async (customers) => {
       const updatedList = [];
       for (var customer of customers) {
-
         // for show in homepage
         await calculateArrears(customer.customerID)
           .then((arrears) => {
@@ -245,8 +280,8 @@ exports.getPaymentOfCustomer = async (req, res) => {
         }
 
         // limit data send to client based on user role
-        // 
-       
+        //
+
         if (req.user.role == "admin") {
           await Customer.findOne({
             customerID: customerID,
@@ -255,12 +290,10 @@ exports.getPaymentOfCustomer = async (req, res) => {
               await calculateArrears(customer.customerID)
                 .then((arrears) => {
                   customer._doc.arrears = arrears;
-                  res
-                    .status(200)
-                    .json({
-                      payments: updatedInstallments,
-                      customer: customer,
-                    });
+                  res.status(200).json({
+                    payments: updatedInstallments,
+                    customer: customer,
+                  });
                 })
                 .catch((err) => {
                   console.log(err);

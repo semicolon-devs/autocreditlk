@@ -245,6 +245,8 @@ exports.getPaymentOfCustomer = async (req, res) => {
         }
 
         // limit data send to client based on user role
+        // 
+       
         if (req.user.role == "admin") {
           await Customer.findOne({
             customerID: customerID,

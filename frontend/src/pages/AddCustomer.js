@@ -27,7 +27,9 @@ const AddCustomer = () => {
   const [NICRearCopy, setNICRearCopy] = useState([]);
   const [guarantorNICFrontCopy, setGuarantorNICFrontCopy] = useState([]);
   const [guarantorNICRearCopy, setGuarantorNICRearCopy] = useState([]);
+  const [guarantorAdditionalDetails,setGuarantorAdditionalDetails] = useState();
   const [customerPhoto, setCustomerPhoto] = useState();
+  const [customerAdditionalPhoto, setCustomerAdditionalPhoto] = useState();
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [message, setMessage] = useState(null);
 
@@ -99,6 +101,8 @@ const AddCustomer = () => {
     formData.append("NICFrontCopy", NICFrontCopy);
     formData.append("NICRearCopy", NICRearCopy);
     formData.append("customerPhoto", customerPhoto);
+    formData.append("customerAdditionalPhoto", customerAdditionalPhoto);
+    formData.append("guarantorAdditionalDetails", guarantorAdditionalDetails);
     formData.append("guarantor", guarantorName);
     formData.append("guarantorMobile", guarantorMobileNo);
     formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
@@ -142,6 +146,11 @@ const AddCustomer = () => {
     setCustomerPhoto(e.target.files[0]);
   };
 
+  const handleACustomerdditionalPhotoChange = (e) => {
+    setCustomerAdditionalPhoto(e.target.files[0]);
+  };
+
+
   const handleGuarantorNICFrontCopyChange = (e) => {
     setGuarantorNICFrontCopy(e.target.files[0]);
   };
@@ -149,6 +158,10 @@ const AddCustomer = () => {
   const handleGuarantorNICRearCopyChange = (e) => {
     setGuarantorNICRearCopy(e.target.files[0]);
   };
+
+  const handleGuarantorAdditionalDetails = (e) => {
+      setGuarantorAdditionalDetails(e.target.files[0]);
+    };
 
   const validationSchema = Yup.object({
     customerId: Yup.string()
@@ -372,6 +385,17 @@ const AddCustomer = () => {
                 <input
                   type="file"
                   onChange={handleCustomerPhotoChange}
+                  className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
+                />
+              </div>
+
+              <div className="">
+                <label className="font-semibold mb-2">
+                  Additional details
+                </label>
+                <input
+                  type="file"
+                  onChange={handleACustomerdditionalPhotoChange}
                   className="w-full rounded-lg p-2 mb-8 outline-none border border-grey"
                 />
               </div>
@@ -426,6 +450,17 @@ const AddCustomer = () => {
                 <input
                   type="file"
                   onChange={handleGuarantorNICRearCopyChange}
+                  className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
+                />
+              </div>
+
+              <div className="">
+                <label className="font-semibold mb-2">
+                  Guarantor Additional details
+                </label>
+                <input
+                  type="file"
+                  onChange={handleGuarantorAdditionalDetails}
                   className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
                 />
               </div>

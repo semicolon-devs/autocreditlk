@@ -357,6 +357,16 @@ const CustomerDetails = () => {
                       Guarantor NIC rear copy
                     </p>
                   </div>
+                  <div
+                    className="bg-pink w-max px-4 py-1 rounded-md mt-2 cursor-pointer"
+                    onClick={() =>
+                      window.open(customer.guarantorAdditionalPhotoLink, "_blank")
+                    }
+                  >
+                    <p className="capitalize text-white">
+                      Guarantor Additional Photo
+                    </p>
+                  </div>
 
                   <div className="flex flex-col gap-3 mt-4">
                     <button
@@ -365,6 +375,7 @@ const CustomerDetails = () => {
                     >
                       <p className={buttonTextClasses}>change details</p>
                     </button>
+
                     <button
                       className={`${primaryButtonClasses} w-full`}
                       onClick={() => setDeleteCustomerModalShow(true)}

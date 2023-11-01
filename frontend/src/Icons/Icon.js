@@ -23,6 +23,7 @@ import DoDisturbRoundedIcon from "@mui/icons-material/DoDisturbRounded";
 import CallIcon from '@mui/icons-material/Call';
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
 
 export {
   CallIcon as CallNow,
@@ -50,4 +51,5 @@ export {
   DoDisturbRoundedIcon as DeniedIcon,
   ArrowBackIcon,
   ArrowRightOutlinedIcon as ArrowIcon,
+  CreditScoreIcon as SetteledLoanIcon,
 };

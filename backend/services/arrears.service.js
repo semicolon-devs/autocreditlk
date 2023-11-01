@@ -7,7 +7,7 @@ async function startCollecting(collectorId, date) {
   User.findById(collectorId)
     .then((user) => {
       let workingDays = user.workingDays;
-
+      
       if (!workingDays) workingDays = [];
 
       const day = moment(date ? new Date(date) : new Date())
@@ -23,6 +23,7 @@ async function startCollecting(collectorId, date) {
         $addToSet: { workingDays: updatedWorkingDays },
       })
         .then((user) => {
+          
           return {
             status: "Success",
           };
@@ -109,9 +110,9 @@ async function calculateArrears(customerID) {
         const arriesDays = getDateRange(days, lastBillingDate, today);
 
         const noOfArriesPayments = arriesDays.length;
-       
+
         const arries =
-          ((noOfPayments + noOfArriesPayments) * customer.installmentAmount )-
+          (noOfPayments + noOfArriesPayments) * customer.installmentAmount -
           customer.paidAmount;
 
         if (arries + customer.paidAmount >= customer.loanAmount) {
@@ -124,7 +125,7 @@ async function calculateArrears(customerID) {
         console.log(err);
         return err;
       });
-    
+
     return finalArries;
   } catch (err) {
     console.log(err);
@@ -177,7 +178,6 @@ function noOfDaysAndCycles(today, dueDate, billingCycle) {
 async function getWorkingDays(collectorId) {
   return User.findById(collectorId)
     .then((user) => {
-     
       return user.workingDays ? user.workingDays : null;
     })
     .catch((err) => {

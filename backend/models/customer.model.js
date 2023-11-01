@@ -106,7 +106,7 @@ const CustomerSchema = new mongoose.Schema(
       type: String,
     },
     isSettled: {
-      type: Boolean,
+      type: String,
       required: true,
     },
     collectedDates: [

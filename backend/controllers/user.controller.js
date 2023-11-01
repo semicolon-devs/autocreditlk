@@ -1,7 +1,7 @@
 const User = require("../models/user.model");
 const {
   validateMobileNumber,
-  parseMobileNumber
+  parseMobileNumber,
 } = require("../utils/PhoneNumberValidation");
 
 exports.deleteUser = async (req, res) => {
@@ -9,12 +9,12 @@ exports.deleteUser = async (req, res) => {
     .then((user) => {
       if (user.role == "admin") {
         res.status(400).json({
-          message: "can not remove admin"
+          message: "can not remove admin",
         });
       } else {
         User.deleteOne({
-            email: user.email
-          })
+          email: user.email,
+        })
           .then((result) => {
             res.status(200).json({
               message: "user Removed Successfully",
@@ -30,19 +30,14 @@ exports.deleteUser = async (req, res) => {
     })
     .catch((err) => {
       res.status(400).json({
-        message: err.message
+        message: err.message,
       });
     });
 };
 
-
 exports.updateProfile = async (req, res) => {
   const id = req.params.id;
-  const {
-    name,
-    email,
-    phone
-  } = req.body;
+  const { name, email, phone } = req.body;
 
   let payload = {};
 
@@ -78,7 +73,6 @@ exports.updateProfile = async (req, res) => {
         error: err.message,
       });
     });
-
 };
 
 exports.getPendingUsers = async (req, res) => {
@@ -94,10 +88,9 @@ exports.getPendingUsers = async (req, res) => {
   }
 };
 
-
 exports.getCollectors = async (req, res) => {
   User.find({ role: "collector" })
-    .select("userID name email phone")
+    .select("userID name email phone workingDays")
     .then((users) => {
       res.status(200).json({ collectors: users });
     })
@@ -105,3 +98,5 @@ exports.getCollectors = async (req, res) => {
       res.status(400).json({ message: err.message });
     });
 };
+
+exports.markWorkingDay = async (req, res) => {};

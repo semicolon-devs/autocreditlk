@@ -105,6 +105,10 @@ const CustomerSchema = new mongoose.Schema(
     guarantorAdditionalDocumentLink: {
       type: String,
     },
+    isSettled: {
+      type: Boolean,
+      required: true,
+    },
     collectedDates: [
       {
         type: Date,

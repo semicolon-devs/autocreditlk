@@ -1,27 +1,33 @@
 const Customer = require("../models/customer.model");
 const Installment = require("../models/installment.model");
 const User = require("../models/user.model");
-const { startCollecting, collectedBySomeoneElse } = require("../services/arrears.service");
+const {
+  startCollecting,
+  collectedBySomeoneElse,
+} = require("../services/arrears.service");
 const { sendDailySMS } = require("../services/sms.service");
 const { amountToPay } = require("../utils/amountToPay");
 const { calculateNextBillingDate } = require("../utils/calculateDays");
 
 exports.addPayment = async (req, res) => {
-  const { customerID, amount, paidDate, collectedBy, paidAmountDate } = req.body;
+  const { customerID, amount, paidDate, collectedBy, paidAmountDate } =
+    req.body;
   try {
     startCollecting(collectedBy);
 
     await User.findById(collectedBy)
       .then(async (user) => {
-
         try {
           const filter = { customerID: customerID };
-          
+
           const customer = await Customer.findOne(filter);
           if (customer.collectorID != collectedBy) {
             collectedBySomeoneElse(customerID, new Date());
           }
-          const nextPayment  = calculateNextBillingDate(customer.nextBillingDate, customer.billingCycle);
+          const nextPayment = calculateNextBillingDate(
+            customer.nextBillingDate,
+            customer.billingCycle
+          );
           // console.log(nextPayment)
 
           // if(customer.paidAmount + parseInt(amount) <= customer.loanAmount) {
@@ -30,18 +36,25 @@ exports.addPayment = async (req, res) => {
 
           const update = {
             paidAmount: customer.paidAmount + parseInt(amount),
-            paidAmountDate : (paidAmountDate ? new Date(paidAmountDate) : new Date()),
-            nextBillingDate : nextPayment
+            paidAmountDate: paidAmountDate
+              ? new Date(paidAmountDate)
+              : new Date(),
+            nextBillingDate: nextPayment,
+            isSettled: customer.paidAmount === customer.loanAmount,
           };
 
-          const updatedCustomer = await Customer.findOneAndUpdate(filter, update, { new: true });
+          const updatedCustomer = await Customer.findOneAndUpdate(
+            filter,
+            update,
+            { new: true }
+          );
 
           await Installment.create({
             customerID,
             amount,
             paidDate: new Date(paidDate),
             collectedBy,
-            dueDate: new Date(customer.nextBillingDate)
+            dueDate: new Date(customer.nextBillingDate),
           });
 
           const smsPayload = {
@@ -49,7 +62,7 @@ exports.addPayment = async (req, res) => {
             customerId: customer.customerID,
             customerName: customer.name,
             collectorName: user.name,
-            arrears:customer.arrears,
+            arrears: customer.arrears,
             amountPaid: amount,
             amountLeft: updatedCustomer.loanAmount - updatedCustomer.paidAmount,
           };

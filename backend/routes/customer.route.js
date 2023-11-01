@@ -11,6 +11,8 @@ const {
   changeLoanAmount,
   addExisitngCustomer,
   getGuarantorIDs,
+  updateIsSettled,
+  getSettledCustomers,
 } = require("../controllers/customer.controller");
 const { uploader } = require("../config/multer.config");
 
@@ -56,6 +58,16 @@ router.get(
   ],
   getCustomers
 );
+
+router.get(
+  "/settled",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin", "collector"]),
+  ],
+  getSettledCustomers
+);
+
 router.get(
   "/:id",
   [
@@ -81,6 +93,16 @@ router.delete(
   ],
   deleteCustomer
 );
+
+router.put(
+  "/update-settled",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  updateIsSettled
+);
+
 router.put(
   "/:id",
   [

@@ -196,6 +196,80 @@ const Insights = () => {
           )}
         </div>
       </div>
+      <div className="bg-yellow drop-shadow-lg rounded-lg p-3 mb-5" >
+        <SectionSubtitle title="Unpaid Customers" />
+        <div className="hidden lg:grid lg:grid-cols-7 lg:border-y lg:border-grey lg:py-3 lg:my-3">
+          <p className="font-semibold col-span-2">Customer name</p>
+          <p className="font-semibold">Customer ID</p>
+          <p className="font-semibold">Collected by</p>
+          <p className="font-semibold col-span-2">Installment date</p>
+          <p className="font-semibold text-end">Installment amount</p>
+        </div>
+        <div className="overflow-y-auto max-h-96">
+          {loading ? (
+            <div className="w-full flex items-center justify-center">
+              <ThreeDots
+                height="40"
+                width="40"
+                radius="9"
+                color="#808080"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClassName=""
+                visible={true}
+              />
+            </div>
+          ) : (
+            installments &&
+            installments.map((installment) => {
+              const paidDate = new Date(installment.paidDate);
+              return (
+                <div
+                  className="bg-yellow p-3 rounded-lg mb-3 lg:bg-transparent lg:p-0 lg:rounded-none lg:mb-0 w-full grid grid-cols-2 lg:grid-cols-7"
+                  key={installment._id}
+                >
+                  <p className="flex gap-1 lg:col-span-2 capitalize font-semibold lg:font-normal">
+                    {installment.customerName}
+                  </p>
+                  <p className="flex gap-1 font-semibold lg:font-normal">
+                    <span className=" flex lg:hidden"> -</span>
+                    {installment.customerID}
+                  </p>
+                  <p className="flex gap-1 col-span-2 lg:col-span-1">
+                    <span className="flex lg:hidden">Collected by :</span>
+                    <span className="capitalize">
+                      {installment.collectedBy}
+                    </span>
+                  </p>
+                  <p className="flex gap-1 col-span-2">
+                    {new Date(installment.paidDate).toLocaleDateString(
+                      "en-GB",
+                      {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        timeZone: "Asia/Colombo",
+                      }
+                    )}{" "}
+                    {new Date(installment.paidDate).toLocaleTimeString(
+                      "en-US",
+                      {
+                        timeZone: "Asia/Colombo",
+                      }
+                    )}
+                  </p>
+                  <p className="gap-1 flex lg:justify-end col-span-2 lg:col-span-1">
+                    <span className="flex lg:hidden">Amount :</span>
+                    {installment.amount &&
+                      CurrencyFormatter(installment.amount)}{" "}
+                    LKR
+                  </p>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
     </>
   );
 };

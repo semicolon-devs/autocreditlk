@@ -1,7 +1,7 @@
 const User = require("../models/user.model");
 const moment = require("moment-timezone");
 
-async function markWorkingDay(collectorId, date) {
+async function markWorkingDay(collectorId) {
   try {
     const user = await User.findById(collectorId);
 
@@ -13,19 +13,16 @@ async function markWorkingDay(collectorId, date) {
     }
 
     const workingDays = user.workingDays || [];
+    const day = moment.tz("Asia/Colombo").startOf("day").format();
 
-    const day = moment(date ? new Date(date) : new Date())
-      .tz("Asia/Colombo")
-      .startOf("day")
-      .format();
-
-    // Check if the day is already in the workingDays array
     if (!workingDays.includes(day)) {
       workingDays.push(day);
     }
 
+    const updatedWorkingDays = Array.from(new Set(workingDays));
+
     await User.findByIdAndUpdate(collectorId, {
-      workingDays: workingDays,
+      $set: { workingDays: updatedWorkingDays },
     });
 
     return {

@@ -8,6 +8,7 @@ const {
 const { sendDailySMS } = require("../services/sms.service");
 const { amountToPay } = require("../utils/amountToPay");
 const { calculateNextBillingDate } = require("../utils/calculateDays");
+const { getCustomersToPay } = require("../utils/getCustomersToPay");
 
 exports.addPayment = async (req, res) => {
   const { customerID, amount, paidDate, collectedBy, paidAmountDate } =
@@ -96,39 +97,79 @@ exports.getPaymentInfo = async (req, res) => {
     });
 };
 
+// exports.filterByDate = async (req, res) => {
+//   const date = req.params.date;
+
+//   const dayStartTime = new Date(date + "T00:00:00+05:30");
+//   const dayEndTime = new Date(date + "T23:59:59+05:30");
+
+//   const customersTopay = getCustomersToPay(date);
+
+//   Installment.find({
+//     paidDate: { $gte: dayStartTime, $lt: dayEndTime },
+//   })
+//     .then(async (installments) => {
+//       const updatedList = [];
+//       for (const installment of installments) {
+//         await User.findById(installment.collectedBy)
+//           .then(async (user) => {
+//             installment.collectedBy = user.name;
+
+//             await Customer.findOne({ customerID: installment.customerID })
+//               .then((customer) => {
+//                 installment._doc.customerName = customer.name;
+//                 updatedList.push(installment._doc);
+//               })
+//               .catch((err) => {
+//                 res.status(400).json({ message: err.message });
+//               });
+//           })
+//           .catch((err) => {
+//             res.status(400).json({ message: err.message });
+//           });
+//       }
+//       res.status(200).json({ installments: updatedList });
+//     })
+//     .catch((err) => {
+//       res.status(400).json({ message: err.message });
+//     });
+// };
+
 exports.filterByDate = async (req, res) => {
   const date = req.params.date;
-
   const dayStartTime = new Date(date + "T00:00:00+05:30");
   const dayEndTime = new Date(date + "T23:59:59+05:30");
-  Installment.find({
-    paidDate: { $gte: dayStartTime, $lt: dayEndTime },
-  })
-    .then(async (installments) => {
-      const updatedList = [];
-      for (const installment of installments) {
-        await User.findById(installment.collectedBy)
-          .then(async (user) => {
-            installment.collectedBy = user.name;
 
-            await Customer.findOne({ customerID: installment.customerID })
-              .then((customer) => {
-                installment._doc.customerName = customer.name;
-                updatedList.push(installment._doc);
-              })
-              .catch((err) => {
-                res.status(400).json({ message: err.message });
-              });
-          })
-          .catch((err) => {
-            res.status(400).json({ message: err.message });
-          });
-      }
-      res.status(200).json({ installments: updatedList });
-    })
-    .catch((err) => {
-      res.status(400).json({ message: err.message });
+  const customersTopay = await getCustomersToPay(date);
+
+  try {
+    const installments = await Installment.find({
+      paidDate: { $gte: dayStartTime, $lt: dayEndTime },
     });
+
+    const paidCustomers = [];
+    const nonPaidCustomers = customersTopay.slice();
+
+    for (const installment of installments) {
+      if (
+        customersTopay.some(
+          (customer) => customer.customerID === installment.customerID
+        )
+      ) {
+        paidCustomers.push(installment);
+        const index = nonPaidCustomers.findIndex(
+          (customer) => customer.customerID === installment.customerID
+        );
+        if (index !== -1) {
+          nonPaidCustomers.splice(index, 1);
+        }
+      }
+    }
+
+    res.status(200).json({ installments: paidCustomers, nonPaidCustomers });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 };
 
 exports.deletePayment = async (req, res) => {

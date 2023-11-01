@@ -99,4 +99,5 @@ exports.getCollectors = async (req, res) => {
     });
 };
 
-exports.markWorkingDay = async (req, res) => {};
+
+

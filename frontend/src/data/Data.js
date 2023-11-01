@@ -49,4 +49,12 @@ export const sidebarItems = [
     path: "/account-settings",
     adminAccessOnly: false,
   },
+
+  {
+    id: 9,
+    name: "settled loans",
+    icon: "SetteledLoanIcon",
+    path: "/settled-loans",
+    adminAccessOnly: true,
+  },
 ];

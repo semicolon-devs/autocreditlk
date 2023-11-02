@@ -44,7 +44,6 @@ exports.login = async (req, res) => {
       role: req.user.role,
     };
     if (isWorkingDay) {
-      //markingWorkingDay
       markWorkingDay(req.user.id);
     }
 

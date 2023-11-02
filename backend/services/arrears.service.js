@@ -7,7 +7,7 @@ async function startCollecting(collectorId, date) {
   User.findById(collectorId)
     .then((user) => {
       let workingDays = user.workingDays;
-      
+
       if (!workingDays) workingDays = [];
 
       const day = moment(date ? new Date(date) : new Date())
@@ -23,7 +23,6 @@ async function startCollecting(collectorId, date) {
         $addToSet: { workingDays: updatedWorkingDays },
       })
         .then((user) => {
-          
           return {
             status: "Success",
           };

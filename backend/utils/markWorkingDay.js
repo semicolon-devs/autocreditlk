@@ -13,18 +13,26 @@ async function markWorkingDay(collectorId) {
     }
 
     const workingDays = user.workingDays || [];
-    const day = moment.tz("Asia/Colombo").startOf("day").format();
+    const trimmedWorkingDays = workingDays.map((day) =>
+      moment(day).format("YYYY-MM-DD")
+    );
 
-    if (!workingDays.includes(day)) {
-      workingDays.push(day);
+    const dayToSave = moment.tz("Asia/Colombo").format("YYYY-MM-DD");
+
+    if (!trimmedWorkingDays.includes(dayToSave)) {
+      workingDays.push(dayToSave);
     }
 
     const updatedWorkingDays = Array.from(new Set(workingDays));
 
+    // await User.findByIdAndUpdate(collectorId, {
+    //   $unset: { workingDays: 1 },
+    // });
+
     await User.findByIdAndUpdate(collectorId, {
       $set: { workingDays: updatedWorkingDays },
     });
-
+    console.log("saved");
     return {
       status: "Success",
     };

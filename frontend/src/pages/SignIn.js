@@ -17,9 +17,8 @@ const cookies = new Cookies();
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
-  const [isWorkingDay, setIsWorkingDay] = useState(false);
 
-  const signIn = async (email, password,isWorkingDay) => {
+  const signIn = async (email, password, isWorkingDay) => {
     setLoading(true);
     const config = {
       method: "post",
@@ -89,10 +88,10 @@ const SignIn = () => {
               .required("Required"),
             password: Yup.string().required("Required"),
           })}
-          onSubmit={ isWorkingDay ? (values, { setSubmitting }) => {
-            signIn(values.email, values.password ,values.isWorkingDay);
+          onSubmit={(values, { setSubmitting }) => {
+            signIn(values.email, values.password, values.isWorkingDay);
             setSubmitting(false);
-          } : null}
+          }}
         >
           <Form className="flex flex-col w-full ">
             <TextInput
@@ -107,14 +106,6 @@ const SignIn = () => {
               placeholder="Enter password"
             />
 
-
-            <div className="mb-3">
-              <Field type="checkbox" name="isWorkingDay" id="isWorkingDay" checked={isWorkingDay} onChange={() => setIsWorkingDay(!isWorkingDay)} />
-              <label htmlFor="isWorkingDay" className="ml-2">
-                Is today a working day?
-              </label>
-            </div>
-
             <p className="mb-3 italic">
               Forgot your password ?{" "}
               <Link to="/recover-account">
@@ -124,12 +115,16 @@ const SignIn = () => {
               </Link>
             </p>
 
-
             {message && (
               <div className="w-full border border-red rounded-lg p-3 mb-3">
                 <p className="text-red">{message}</p>
               </div>
             )}
+
+            <div className="mb-3">
+              <Field type="checkbox" name="isWorkingDay" id="isWorkingDay" />
+              <label htmlFor="isWorkingDay">Is Working Day</label>
+            </div>
 
             <button
               type="submit"

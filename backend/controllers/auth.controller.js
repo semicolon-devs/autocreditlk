@@ -28,6 +28,7 @@ exports.getUserData = async (req, res) => {
 
 exports.login = async (req, res) => {
   const isWorkingDay = req.body.isWorkingDay;
+
   const token = jwt.sign(
     {
       name: req.user.name,

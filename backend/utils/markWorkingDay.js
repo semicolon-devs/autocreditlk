@@ -32,7 +32,7 @@ async function markWorkingDay(collectorId) {
     await User.findByIdAndUpdate(collectorId, {
       $set: { workingDays: updatedWorkingDays },
     });
-    console.log("saved");
+   
     return {
       status: "Success",
     };

@@ -14,13 +14,19 @@ import logo from "../assets/AutoCreditLogo.png";
 
 const cookies = new Cookies();
 
+
+
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [isWorkingDay, setIsWorkingDay] = useState(false);
 
-  const signIn = async (email, password,isWorkingDay) => {
+
+ 
+
+  const signIn = async (email, password, isWorkingDay) => {
     setLoading(true);
+    console.log(isWorkingDay+ "when subm")
     const config = {
       method: "post",
       url: `${BASE_URL}auth/login`,
@@ -33,7 +39,7 @@ const SignIn = () => {
 
     await axios(config)
       .then((res) => {
-        if (res.data.role == "pending") {
+        if (res.data.role === "pending") {
           if (res.data.token) {
             localStorage.setItem(
               "pendingUserToken",
@@ -46,6 +52,7 @@ const SignIn = () => {
           }
         } else {
           if (res.data.token) {
+
             cookies.set("autoCreditCookie", res.data.token, {
               path: "/",
               maxAge: 60 * 60 * 24,
@@ -62,6 +69,7 @@ const SignIn = () => {
         console.log(res);
       })
       .finally(() => {
+
         setLoading(false);
       });
   };
@@ -89,10 +97,10 @@ const SignIn = () => {
               .required("Required"),
             password: Yup.string().required("Required"),
           })}
-          onSubmit={ isWorkingDay ? (values, { setSubmitting }) => {
-            signIn(values.email, values.password ,values.isWorkingDay);
+          onSubmit={(values, { setSubmitting }) => {
+            signIn(values.email, values.password, values.isWorkingDay);
             setSubmitting(false);
-          } : null}
+          }}
         >
           <Form className="flex flex-col w-full ">
             <TextInput
@@ -109,10 +117,14 @@ const SignIn = () => {
 
 
             <div className="mb-3">
-              <Field type="checkbox" name="isWorkingDay" id="isWorkingDay" checked={isWorkingDay} onChange={() => setIsWorkingDay(!isWorkingDay)} />
-              <label htmlFor="isWorkingDay" className="ml-2">
-                Is today a working day?
-              </label>
+              <Field
+                type="checkbox"
+                name="isWorkingDay"
+                id="isWorkingDay"
+                checked={isWorkingDay}
+                onChange={handleCheckBox(isWorkingDay)}
+              />
+              <label htmlFor="isWorkingDay">Is Working Day</label>
             </div>
 
             <p className="mb-3 italic">

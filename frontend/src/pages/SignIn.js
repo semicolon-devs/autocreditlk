@@ -11,6 +11,7 @@ import { TextInput } from "../components/FormikElements";
 import BASE_URL from "../config/ApiConfig";
 
 import logo from "../assets/AutoCreditLogo.png";
+import WorkingDayModal from "../modals/WorkingDayModal";
 
 const cookies = new Cookies();
 
@@ -18,16 +19,23 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
-  const signIn = async (email, password) => {
+  const [formValues , setFormValues] = useState({email:"", password: ""});
+
+  const [editWorkingDayModalShow, setWorkingDayModalShow] = useState(null);
+
+  const signIn = async (email, password ,isWorkingDay ) => {
     setLoading(true);
+    // console.log(isWorkingDay+ "when subm")
     const config = {
       method: "post",
       url: `${BASE_URL}auth/login`,
       data: {
         email: email,
         password: password,
+        isWorkingDay: isWorkingDay
       },
     };
+
 
     await axios(config)
       .then((res) => {
@@ -61,7 +69,11 @@ const SignIn = () => {
       })
       .finally(() => {
         setLoading(false);
-      });
+      }
+      
+      );
+
+
   };
 
   return (
@@ -70,9 +82,6 @@ const SignIn = () => {
         <div className="w-full flex items-center justify-center mb-3">
           <img src={logo} className="w-1/2" alt="Auto Credit LK logo" />
         </div>
-        {/* <h3 className="text-dark uppercase text-center text-4xl font-bold mb-1">
-          sign in
-        </h3> */}
         <p className="text-dark uppercase text-center font-semibold mb-3">
           sign in to view and manage customers
         </p>
@@ -88,7 +97,9 @@ const SignIn = () => {
             password: Yup.string().required("Required"),
           })}
           onSubmit={(values, { setSubmitting }) => {
-            signIn(values.email, values.password);
+            // signIn(values.email, values.password, values.isWorkingDay);
+            setFormValues(values);
+            setWorkingDayModalShow(true);
             setSubmitting(false);
           }}
         >
@@ -141,6 +152,17 @@ const SignIn = () => {
             </button>
           </Form>
         </Formik>
+        {editWorkingDayModalShow && (
+          <WorkingDayModal
+            modalShow={editWorkingDayModalShow}
+            setModalShow={setWorkingDayModalShow}
+            // checkingIn = {checkIn}
+            onModalButtonClicked={(isWorkingDay) => {
+              setWorkingDayModalShow(false); // Close the modal
+              signIn(formValues.email, formValues.password, isWorkingDay); // Call signIn with the chosen value
+            }}
+          />
+        )}
       </div>
     </div>
   );

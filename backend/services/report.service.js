@@ -7,6 +7,7 @@ const User = require("../models/user.model");
 const { reportUpload } = require("../utils/firebaseUpload");
 const Report = require("../models/report.model");
 const schedule = require('node-schedule');
+const  getInstallmentsForDate = require("./insight.service")
 
 const EMAIL_ADDRESS = process.env.EMAIL_ADDRESS;
 const EMAIL_PROVIDER = process.env.EMAIL_PROVIDER;
@@ -173,6 +174,16 @@ const reportGenerateAndSend = (reportTypeSent , dayCount) => {
     FILE_EXTENSION;
   const filePath = "./reports/" + fileName;
 
+
+// use following function to get installments and nonpaid customers for the day, and we can map them to the report
+
+//  const date = getDate;
+//    const { installments, nonPaidCustomers } = await getInstallmentsForDate(
+//       date
+//     );
+
+
+
   const dayStartTime = new Date(
     moment().utcOffset("+05:30").format("YYYY-MM-DD") + "T00:00:00+05:30"
   );
@@ -206,6 +217,9 @@ const reportGenerateAndSend = (reportTypeSent , dayCount) => {
           });
       }
 
+
+
+      
       // TODO shedule generate and send report at 23:59:59 today
       setTimeout(await generateDailyReport(records, filePath), 15000);
 

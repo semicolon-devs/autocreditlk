@@ -13,6 +13,7 @@ const {
   getGuarantorIDs,
   updateIsSettled,
   getSettledCustomers,
+  getTotalUnpaid,
 } = require("../controllers/customer.controller");
 const { uploader } = require("../config/multer.config");
 
@@ -69,6 +70,15 @@ router.get(
 );
 
 router.get(
+  "/total-unpaid",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin", "collector"]),
+  ],
+  getTotalUnpaid
+);
+
+router.get(
   "/:id",
   [
     passport.authenticate("jwt", { session: false }),
@@ -85,6 +95,9 @@ router.get(
   ],
   getGuarantorIDs
 );
+
+
+
 router.delete(
   "/:id",
   [
@@ -100,6 +113,7 @@ router.put(
     passport.authenticate("jwt", { session: false }),
     checkPermission(["admin"]),
   ],
+  
   updateIsSettled
 );
 

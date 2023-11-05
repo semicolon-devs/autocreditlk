@@ -14,7 +14,7 @@ exports.addPayment = async (req, res) => {
   const { customerID, amount, paidDate, collectedBy, paidAmountDate } =
     req.body;
   try {
-    startCollecting(collectedBy);
+    // startCollecting(collectedBy);
 
     await User.findById(collectedBy)
       .then(async (user) => {
@@ -41,7 +41,7 @@ exports.addPayment = async (req, res) => {
               ? new Date(paidAmountDate)
               : new Date(),
             nextBillingDate: nextPayment,
-            isSettled: customer.paidAmount === customer.loanAmount,
+            isSettled: paidAmount <= customer.loanAmount,
           };
 
           const updatedCustomer = await Customer.findOneAndUpdate(
@@ -97,43 +97,6 @@ exports.getPaymentInfo = async (req, res) => {
     });
 };
 
-// exports.filterByDate = async (req, res) => {
-//   const date = req.params.date;
-
-//   const dayStartTime = new Date(date + "T00:00:00+05:30");
-//   const dayEndTime = new Date(date + "T23:59:59+05:30");
-
-//   const customersTopay = getCustomersToPay(date);
-
-//   Installment.find({
-//     paidDate: { $gte: dayStartTime, $lt: dayEndTime },
-//   })
-//     .then(async (installments) => {
-//       const updatedList = [];
-//       for (const installment of installments) {
-//         await User.findById(installment.collectedBy)
-//           .then(async (user) => {
-//             installment.collectedBy = user.name;
-
-//             await Customer.findOne({ customerID: installment.customerID })
-//               .then((customer) => {
-//                 installment._doc.customerName = customer.name;
-//                 updatedList.push(installment._doc);
-//               })
-//               .catch((err) => {
-//                 res.status(400).json({ message: err.message });
-//               });
-//           })
-//           .catch((err) => {
-//             res.status(400).json({ message: err.message });
-//           });
-//       }
-//       res.status(200).json({ installments: updatedList });
-//     })
-//     .catch((err) => {
-//       res.status(400).json({ message: err.message });
-//     });
-// };
 
 exports.filterByDate = async (req, res) => {
   const date = req.params.date;
@@ -285,3 +248,5 @@ exports.updatePayment = async (req, res) => {
       res.status(400).json({ message: "installment with givan id not found" });
     });
 };
+
+

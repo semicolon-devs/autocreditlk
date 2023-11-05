@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Cookies from "universal-cookie";
 import { ThreeDots } from "react-loader-spinner";
@@ -14,34 +14,24 @@ import logo from "../assets/AutoCreditLogo.png";
 
 const cookies = new Cookies();
 
-
-
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
-<<<<<<< HEAD
-=======
-
- 
-
->>>>>>> bae18d5134c68ca7892bcb6b7740065652ec0ef3
-  const signIn = async (email, password, isWorkingDay) => {
+  const signIn = async (email, password) => {
     setLoading(true);
-    console.log(isWorkingDay+ "when subm")
     const config = {
       method: "post",
       url: `${BASE_URL}auth/login`,
       data: {
         email: email,
         password: password,
-        isWorkingDay: isWorkingDay,
       },
     };
 
     await axios(config)
       .then((res) => {
-        if (res.data.role === "pending") {
+        if (res.data.role == "pending") {
           if (res.data.token) {
             localStorage.setItem(
               "pendingUserToken",
@@ -54,7 +44,6 @@ const SignIn = () => {
           }
         } else {
           if (res.data.token) {
-
             cookies.set("autoCreditCookie", res.data.token, {
               path: "/",
               maxAge: 60 * 60 * 24,
@@ -71,7 +60,6 @@ const SignIn = () => {
         console.log(res);
       })
       .finally(() => {
-
         setLoading(false);
       });
   };
@@ -100,7 +88,7 @@ const SignIn = () => {
             password: Yup.string().required("Required"),
           })}
           onSubmit={(values, { setSubmitting }) => {
-            signIn(values.email, values.password, values.isWorkingDay);
+            signIn(values.email, values.password);
             setSubmitting(false);
           }}
         >
@@ -117,21 +105,6 @@ const SignIn = () => {
               placeholder="Enter password"
             />
 
-<<<<<<< HEAD
-=======
-
-            <div className="mb-3">
-              <Field
-                type="checkbox"
-                name="isWorkingDay"
-                id="isWorkingDay"
-                checked={isWorkingDay}
-                onChange={handleCheckBox(isWorkingDay)}
-              />
-              <label htmlFor="isWorkingDay">Is Working Day</label>
-            </div>
-
->>>>>>> bae18d5134c68ca7892bcb6b7740065652ec0ef3
             <p className="mb-3 italic">
               Forgot your password ?{" "}
               <Link to="/recover-account">
@@ -146,11 +119,6 @@ const SignIn = () => {
                 <p className="text-red">{message}</p>
               </div>
             )}
-
-            <div className="mb-3">
-              <Field type="checkbox" name="isWorkingDay" id="isWorkingDay" />
-              <label htmlFor="isWorkingDay">Is Working Day</label>
-            </div>
 
             <button
               type="submit"

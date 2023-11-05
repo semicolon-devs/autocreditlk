@@ -6,7 +6,8 @@ const {
     deleteUser,
     updateProfile,
     getPendingUsers,
-    getCollectors
+    getCollectors,
+    markWorkingDay
 } = require("../controllers/user.controller");
 
 router.delete(
@@ -31,6 +32,15 @@ router.post(
 
     updateProfile
 )
+
+router.post("/mark-working/:id", [
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  checkPermission(["admin", "collector"]),
+  markWorkingDay
+]);
+
 
 router.get(
     "/pending-users",

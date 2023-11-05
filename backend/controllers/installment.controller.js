@@ -8,7 +8,10 @@ const {
 const { sendDailySMS } = require("../services/sms.service");
 const { amountToPay } = require("../utils/amountToPay");
 const { calculateNextBillingDate } = require("../utils/calculateDays");
-const { getCustomersToPay } = require("../utils/getCustomersToPay");
+const {
+  getCustomersToPay,
+  getInstallmentsForDate,
+} = require("../services/insight.service");
 
 exports.addPayment = async (req, res) => {
   const { customerID, amount, paidDate, collectedBy, paidAmountDate } =
@@ -97,39 +100,14 @@ exports.getPaymentInfo = async (req, res) => {
     });
 };
 
-
 exports.filterByDate = async (req, res) => {
   const date = req.params.date;
-  const dayStartTime = new Date(date + "T00:00:00+05:30");
-  const dayEndTime = new Date(date + "T23:59:59+05:30");
-
-  const customersTopay = await getCustomersToPay(date);
 
   try {
-    const installments = await Installment.find({
-      paidDate: { $gte: dayStartTime, $lt: dayEndTime },
-    });
-
-    const paidCustomers = [];
-    const nonPaidCustomers = customersTopay.slice();
-
-    for (const installment of installments) {
-      if (
-        customersTopay.some(
-          (customer) => customer.customerID === installment.customerID
-        )
-      ) {
-        paidCustomers.push(installment);
-        const index = nonPaidCustomers.findIndex(
-          (customer) => customer.customerID === installment.customerID
-        );
-        if (index !== -1) {
-          nonPaidCustomers.splice(index, 1);
-        }
-      }
-    }
-
-    res.status(200).json({ installments: paidCustomers, nonPaidCustomers });
+    const { installments, nonPaidCustomers } = await getInstallmentsForDate(
+      date
+    );
+    res.status(200).json({ installments: installments, nonPaidCustomers });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -248,5 +226,3 @@ exports.updatePayment = async (req, res) => {
       res.status(400).json({ message: "installment with givan id not found" });
     });
 };
-
-

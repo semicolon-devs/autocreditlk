@@ -478,3 +478,33 @@ exports.getSettledCustomers = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+exports.getTotalUnpaid = async (req, res) => {
+  try {
+    const totalLoanAmount = await Customer.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalLoanAmount: { $sum: "$loanAmount" },
+        },
+      },
+    ]);
+
+    const totalPaidAmount = await Customer.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalPaidAmount: { $sum: "$paidAmount" },
+        },
+      },
+    ]);
+
+    const unpaidAmount =
+      totalLoanAmount[0].totalLoanAmount - totalPaidAmount[0].totalPaidAmount;
+
+    res.status(200).json({ totalUnpaid: unpaidAmount });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err.message });
+  }
+};

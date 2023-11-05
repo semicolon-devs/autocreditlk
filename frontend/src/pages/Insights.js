@@ -22,9 +22,11 @@ const Insights = () => {
 
   const [date, setDate] = useState(today);
   const [installments, setInstallments] = useState(null);
+  const [notPaid,setNotPaid]= useState(null);
   const [loading, setLoading] = useState(false);
   const [dailyTotal, setDailyTotal] = useState(0);
   const [dailyInstallments, setDailyInstallments] = useState(0);
+
 
   const token = cookies.get("autoCreditCookie");
 
@@ -45,6 +47,7 @@ const Insights = () => {
     axios(axiosConfig)
       .then((response) => {
         setInstallments(response.data.installments);
+        setNotPaid(response.data.nonPaidCustomers);
         setDailyTotal(
           response.data.installments.reduce((total, installment) => {
             return total + installment.amount;
@@ -55,6 +58,7 @@ const Insights = () => {
             return count + 1;
           }, 0)
         );
+        
       })
       .catch((err) => {
         // setMessage(err.data.message);
@@ -196,7 +200,7 @@ const Insights = () => {
           )}
         </div>
       </div>
-      <div className="bg-yellow drop-shadow-lg rounded-lg p-3 mb-5" >
+      <div className="bg-yellow drop-shadow-lg rounded-lg p-3 mb-5">
         <SectionSubtitle title="Unpaid Customers" />
         <div className="hidden lg:grid lg:grid-cols-7 lg:border-y lg:border-grey lg:py-3 lg:my-3">
           <p className="font-semibold col-span-2">Customer name</p>
@@ -220,8 +224,8 @@ const Insights = () => {
               />
             </div>
           ) : (
-            installments &&
-            installments.map((installment) => {
+            notPaid &&
+            notPaid.map((installment) => {
               const paidDate = new Date(installment.paidDate);
               return (
                 <div

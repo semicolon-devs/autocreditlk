@@ -15,12 +15,11 @@ import WorkingDayModal from "../modals/WorkingDayModal";
 
 const cookies = new Cookies();
 
-
-
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
+<<<<<<< HEAD
   const [editWorkingDayModalShow, setWorkingDayModalShow] = useState(null);
 
   // const [checkIn, setcheckIn] = useState(true);
@@ -29,20 +28,23 @@ const SignIn = () => {
   const signIn = async (email, password ,isWorkingDay ) => {
     setLoading(true);
     // console.log(isWorkingDay+ "when subm")
+=======
+  const signIn = async (email, password) => {
+    setLoading(true);
+>>>>>>> refs/remotes/origin/new_features
     const config = {
       method: "post",
       url: `${BASE_URL}auth/login`,
       data: {
         email: email,
         password: password,
-        isWorkingDay: isWorkingDay,
       },
     };
 
 
     await axios(config)
       .then((res) => {
-        if (res.data.role === "pending") {
+        if (res.data.role == "pending") {
           if (res.data.token) {
             localStorage.setItem(
               "pendingUserToken",
@@ -55,7 +57,6 @@ const SignIn = () => {
           }
         } else {
           if (res.data.token) {
-
             cookies.set("autoCreditCookie", res.data.token, {
               path: "/",
               maxAge: 60 * 60 * 24,
@@ -72,7 +73,6 @@ const SignIn = () => {
         console.log(res);
       })
       .finally(() => {
-
         setLoading(false);
       }
       
@@ -102,8 +102,12 @@ const SignIn = () => {
             password: Yup.string().required("Required"),
           })}
           onSubmit={(values, { setSubmitting }) => {
+<<<<<<< HEAD
             setWorkingDayModalShow(true);
             signIn(values.email, values.password, values.isWorkingDay);
+=======
+            signIn(values.email, values.password);
+>>>>>>> refs/remotes/origin/new_features
             setSubmitting(false);
           }}
         >

@@ -444,7 +444,7 @@ exports.updateIsSettled = async (req, res) => {
     const allCustomers = await Customer.find();
 
     const updatePromises = allCustomers.map(async (customer) => {
-      const isSettled = customer.paidAmount === customer.loanAmount;
+      const isSettled = customer.loanAmount <= customer.paidAmount;
 
       customer.set("isSettled", isSettled);
       const saveResult = await customer.save();
@@ -462,28 +462,19 @@ exports.updateIsSettled = async (req, res) => {
 };
 
 exports.getSettledCustomers = async (req, res) => {
-  Customer.find({ $expr: { $eq: ["$loanAmount", "$paidAmount"] } })
-    .sort({ customerID: -1 })
-    .select(
-      "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled"
-    )
-    .then(async (customers) => {
-      const updatedList = [];
-      for (var customer of customers) {
-        // for show in homepage
-        await calculateArrears(customer.customerID)
-          .then((arrears) => {
-            customer._doc.arrears = arrears;
-            updatedList.push(customer);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-      res.status(200).json({ customers: updatedList });
+  try {
+    console.log("here");
+    const settledCustomers = await Customer.find({
+      $expr: { $lte: ["$loanAmount", "$paidAmount"] },
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json({ message: err.message });
-    });
+      .sort({ customerID: -1 })
+      .select(
+        "customerID name NIC loanAmount paidAmount phone phoneTwo isSettled"
+      );
+
+    res.status(200).json({ customers: settledCustomers });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err.message });
+  }
 };

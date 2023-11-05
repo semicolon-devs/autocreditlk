@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const { sendResetOTP, sendFirstTimeOTP } = require("../services/sms.service");
-const { markWorkingDay } = require("../utils/markWorkingDay");
 const { generatePassword } = require("../utils/passwordGenerate");
 const { json } = require("express");
 
@@ -27,9 +26,12 @@ exports.getUserData = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+<<<<<<< HEAD
 
   const isWorkingDay = req.body.isWorkingDay;
   console.log(isWorkingDay)
+=======
+>>>>>>> refs/remotes/origin/new_features
   const token = jwt.sign(
     {
       name: req.user.name,
@@ -45,10 +47,6 @@ exports.login = async (req, res) => {
       token: token,
       role: req.user.role,
     };
-  
-    if (isWorkingDay) {
-      markWorkingDay(req.user.id);
-    }
 
     return res.status(200).send(resObject);
   } else if (req.user.role == "pending") {

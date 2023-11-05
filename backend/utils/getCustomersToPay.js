@@ -3,7 +3,6 @@ const Customer = require("../models/customer.model");
 const moment = require("moment-timezone");
 
 async function getWorkingUsers(date) {
-  // const selectedDate = new Date(date + "T00:00:00+05:30");
   const selectedDate = moment(date ? new Date(date) : new Date())
     .tz("Asia/Colombo")
     .startOf("day")
@@ -25,7 +24,6 @@ async function getWorkingUsers(date) {
 
 async function getCustomersToPay(date) {
   try {
-    // const startOfDay = new Date(date + "T00:00:00+05:30");
     const startOfDay = moment(date ? new Date(date) : new Date())
       .tz("Asia/Colombo")
       .startOf("day")
@@ -35,7 +33,9 @@ async function getCustomersToPay(date) {
     const customersToPay = await Customer.find({
       startDate: { $lte: startOfDay },
       collectorId: { $in: workingUserIds },
-    });
+    }).select(
+      "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId"
+    );
 
     return customersToPay;
   } catch (err) {

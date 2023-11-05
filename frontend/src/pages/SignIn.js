@@ -23,9 +23,6 @@ const SignIn = () => {
 
   const [editWorkingDayModalShow, setWorkingDayModalShow] = useState(null);
 
-  // const [checkIn, setcheckIn] = useState(true);
-  const checkIn = false;
-
   const signIn = async (email, password ,isWorkingDay ) => {
     setLoading(true);
     // console.log(isWorkingDay+ "when subm")

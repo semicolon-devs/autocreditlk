@@ -12,6 +12,20 @@ const cookies = new Cookies();
 
 const WorkingDayModal = ({ modalShow, setModalShow, onModalButtonClicked }) => {
 
+  const [isWorkingDay, setIsWorkigDay] = useState(true);
+
+  const handleYesClick = () => {
+    setIsWorkigDay(true);
+    onModalButtonClicked(true);
+    setModalShow(false);
+  }
+
+  const handleNoClick = () => {
+    setIsWorkigDay(false);
+    onModalButtonClicked(true);
+    setModalShow(false);
+  }
+
   return (
     <Transition show={modalShow} as={Fragment}>
       <Dialog
@@ -50,23 +64,23 @@ const WorkingDayModal = ({ modalShow, setModalShow, onModalButtonClicked }) => {
 
               <button
                 className={`w-full mt-3 ${secondaryButtonClasses}`}
-                onClick={() => {
-                  // setModalShow(false);
-                  // checkingIn = true;
-                  onModalButtonClicked(true);
-                  // console.log(checkingIn);
-                }}
+                // onClick={() => {
+                //   // onModalButtonClicked(true);
+                // }}
+                onClick={handleYesClick}
               >
                 <p className={buttonTextClasses}>Yes</p>
               </button>
               <button
                 className={`w-full mt-3 ${secondaryButtonClasses}`}
-                onClick={() => {
-                  // setModalShow(false);
-                  onModalButtonClicked(false);
-                  // checkingIn = false;
-                  // console.log(checkingIn);
-                }}
+                // onClick={() => {
+                //   // setModalShow(false);
+                //   // onModalButtonClicked(false);
+                //   // checkingIn = false;
+                //   // console.log(checkingIn);
+                // }}
+
+                onClick={handleNoClick}
               >
                 <p className={buttonTextClasses}>No</p>
               </button>

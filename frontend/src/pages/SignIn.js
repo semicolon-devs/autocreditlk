@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Cookies from "universal-cookie";
 import { ThreeDots } from "react-loader-spinner";
@@ -11,6 +11,7 @@ import { TextInput } from "../components/FormikElements";
 import BASE_URL from "../config/ApiConfig";
 
 import logo from "../assets/AutoCreditLogo.png";
+import WorkingDayModal from "../modals/WorkingDayModal";
 
 const cookies = new Cookies();
 
@@ -20,15 +21,14 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
-<<<<<<< HEAD
-=======
+  const [editWorkingDayModalShow, setWorkingDayModalShow] = useState(null);
 
- 
+  // const [checkIn, setcheckIn] = useState(true);
+  const checkIn = false;
 
->>>>>>> bae18d5134c68ca7892bcb6b7740065652ec0ef3
-  const signIn = async (email, password, isWorkingDay) => {
+  const signIn = async (email, password ,isWorkingDay ) => {
     setLoading(true);
-    console.log(isWorkingDay+ "when subm")
+    // console.log(isWorkingDay+ "when subm")
     const config = {
       method: "post",
       url: `${BASE_URL}auth/login`,
@@ -38,6 +38,7 @@ const SignIn = () => {
         isWorkingDay: isWorkingDay,
       },
     };
+
 
     await axios(config)
       .then((res) => {
@@ -73,7 +74,11 @@ const SignIn = () => {
       .finally(() => {
 
         setLoading(false);
-      });
+      }
+      
+      );
+
+
   };
 
   return (
@@ -82,9 +87,6 @@ const SignIn = () => {
         <div className="w-full flex items-center justify-center mb-3">
           <img src={logo} className="w-1/2" alt="Auto Credit LK logo" />
         </div>
-        {/* <h3 className="text-dark uppercase text-center text-4xl font-bold mb-1">
-          sign in
-        </h3> */}
         <p className="text-dark uppercase text-center font-semibold mb-3">
           sign in to view and manage customers
         </p>
@@ -100,6 +102,7 @@ const SignIn = () => {
             password: Yup.string().required("Required"),
           })}
           onSubmit={(values, { setSubmitting }) => {
+            setWorkingDayModalShow(true);
             signIn(values.email, values.password, values.isWorkingDay);
             setSubmitting(false);
           }}
@@ -117,21 +120,6 @@ const SignIn = () => {
               placeholder="Enter password"
             />
 
-<<<<<<< HEAD
-=======
-
-            <div className="mb-3">
-              <Field
-                type="checkbox"
-                name="isWorkingDay"
-                id="isWorkingDay"
-                checked={isWorkingDay}
-                onChange={handleCheckBox(isWorkingDay)}
-              />
-              <label htmlFor="isWorkingDay">Is Working Day</label>
-            </div>
-
->>>>>>> bae18d5134c68ca7892bcb6b7740065652ec0ef3
             <p className="mb-3 italic">
               Forgot your password ?{" "}
               <Link to="/recover-account">
@@ -146,11 +134,6 @@ const SignIn = () => {
                 <p className="text-red">{message}</p>
               </div>
             )}
-
-            <div className="mb-3">
-              <Field type="checkbox" name="isWorkingDay" id="isWorkingDay" />
-              <label htmlFor="isWorkingDay">Is Working Day</label>
-            </div>
 
             <button
               type="submit"
@@ -173,6 +156,13 @@ const SignIn = () => {
             </button>
           </Form>
         </Formik>
+        {editWorkingDayModalShow && (
+          <WorkingDayModal
+            modalShow={editWorkingDayModalShow}
+            setModalShow={setWorkingDayModalShow}
+            checkingIn = {checkIn}
+          />
+        )}
       </div>
     </div>
   );

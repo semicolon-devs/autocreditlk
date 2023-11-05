@@ -10,7 +10,7 @@ import {
 
 const cookies = new Cookies();
 
-const WorkingDayModal = ({ modalShow, setModalShow, checkingIn }) => {
+const WorkingDayModal = ({ modalShow, setModalShow, onModalButtonClicked }) => {
 
   return (
     <Transition show={modalShow} as={Fragment}>
@@ -51,9 +51,10 @@ const WorkingDayModal = ({ modalShow, setModalShow, checkingIn }) => {
               <button
                 className={`w-full mt-3 ${secondaryButtonClasses}`}
                 onClick={() => {
-                  setModalShow(false);
-                  checkingIn = true;
-                  console.log(checkingIn);
+                  // setModalShow(false);
+                  // checkingIn = true;
+                  onModalButtonClicked(true);
+                  // console.log(checkingIn);
                 }}
               >
                 <p className={buttonTextClasses}>Yes</p>
@@ -61,9 +62,10 @@ const WorkingDayModal = ({ modalShow, setModalShow, checkingIn }) => {
               <button
                 className={`w-full mt-3 ${secondaryButtonClasses}`}
                 onClick={() => {
-                  setModalShow(false);
-                  checkingIn = false;
-                  console.log(checkingIn);
+                  // setModalShow(false);
+                  onModalButtonClicked(false);
+                  // checkingIn = false;
+                  // console.log(checkingIn);
                 }}
               >
                 <p className={buttonTextClasses}>No</p>

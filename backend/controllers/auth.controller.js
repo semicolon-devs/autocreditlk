@@ -26,12 +26,6 @@ exports.getUserData = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-<<<<<<< HEAD
-
-  const isWorkingDay = req.body.isWorkingDay;
-  console.log(isWorkingDay)
-=======
->>>>>>> refs/remotes/origin/new_features
   const token = jwt.sign(
     {
       name: req.user.name,

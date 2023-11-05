@@ -19,7 +19,8 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
-<<<<<<< HEAD
+  const [formValues , setFormValues] = useState({email:"", password: ""});
+
   const [editWorkingDayModalShow, setWorkingDayModalShow] = useState(null);
 
   // const [checkIn, setcheckIn] = useState(true);
@@ -28,16 +29,13 @@ const SignIn = () => {
   const signIn = async (email, password ,isWorkingDay ) => {
     setLoading(true);
     // console.log(isWorkingDay+ "when subm")
-=======
-  const signIn = async (email, password) => {
-    setLoading(true);
->>>>>>> refs/remotes/origin/new_features
     const config = {
       method: "post",
       url: `${BASE_URL}auth/login`,
       data: {
         email: email,
         password: password,
+        isWorkingDay: isWorkingDay
       },
     };
 
@@ -102,12 +100,9 @@ const SignIn = () => {
             password: Yup.string().required("Required"),
           })}
           onSubmit={(values, { setSubmitting }) => {
-<<<<<<< HEAD
+            // signIn(values.email, values.password, values.isWorkingDay);
+            setFormValues(values);
             setWorkingDayModalShow(true);
-            signIn(values.email, values.password, values.isWorkingDay);
-=======
-            signIn(values.email, values.password);
->>>>>>> refs/remotes/origin/new_features
             setSubmitting(false);
           }}
         >
@@ -164,7 +159,11 @@ const SignIn = () => {
           <WorkingDayModal
             modalShow={editWorkingDayModalShow}
             setModalShow={setWorkingDayModalShow}
-            checkingIn = {checkIn}
+            // checkingIn = {checkIn}
+            onModalButtonClicked={(isWorkingDay) => {
+              setWorkingDayModalShow(false); // Close the modal
+              signIn(formValues.email, formValues.password, isWorkingDay); // Call signIn with the chosen value
+            }}
           />
         )}
       </div>

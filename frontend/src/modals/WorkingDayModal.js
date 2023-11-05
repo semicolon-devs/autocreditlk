@@ -1,30 +1,28 @@
-import { useState, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import axios from "axios"; // Import axios
 
-import Cookies from "universal-cookie";
+import BASE_URL from "../config/ApiConfig";
+import { secondaryButtonClasses, buttonTextClasses } from "../data/Classes";
 
-import {
-  secondaryButtonClasses,
-  buttonTextClasses,
-} from "../data/Classes";
-
-const cookies = new Cookies();
-
-const WorkingDayModal = ({ modalShow, setModalShow, onModalButtonClicked }) => {
-
-  const [isWorkingDay, setIsWorkigDay] = useState(true);
-
+const WorkingDayModal = ({
+  modalShow,
+  setModalShow,
+  onModalButtonClicked,
+  setIsWorkingDay,
+}) => {
   const handleYesClick = () => {
-    setIsWorkigDay(true);
+    console.log("here")
+    setIsWorkingDay(true);
     onModalButtonClicked(true);
     setModalShow(false);
-  }
+  };
 
   const handleNoClick = () => {
-    setIsWorkigDay(false);
+    setIsWorkingDay(false);
     onModalButtonClicked(true);
     setModalShow(false);
-  }
+  };
 
   return (
     <Transition show={modalShow} as={Fragment}>
@@ -64,22 +62,12 @@ const WorkingDayModal = ({ modalShow, setModalShow, onModalButtonClicked }) => {
 
               <button
                 className={`w-full mt-3 ${secondaryButtonClasses}`}
-                // onClick={() => {
-                //   // onModalButtonClicked(true);
-                // }}
                 onClick={handleYesClick}
               >
                 <p className={buttonTextClasses}>Yes</p>
               </button>
               <button
                 className={`w-full mt-3 ${secondaryButtonClasses}`}
-                // onClick={() => {
-                //   // setModalShow(false);
-                //   // onModalButtonClicked(false);
-                //   // checkingIn = false;
-                //   // console.log(checkingIn);
-                // }}
-
                 onClick={handleNoClick}
               >
                 <p className={buttonTextClasses}>No</p>

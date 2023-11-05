@@ -104,6 +104,8 @@ exports.markWorkingDay = async (req, res) => {
   try {
     const isWorkingDay = req.body.isWorkingDay;
     const collectorId = req.params.id;
+
+   
     if (isWorkingDay) {
       const user = await User.findById(collectorId);
 

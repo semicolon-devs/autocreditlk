@@ -35,7 +35,7 @@ async function getCustomersToPay(date) {
       startDate: { $lte: startOfDay },
       collectorId: { $in: workingUserIds },
     }).select(
-      "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId"
+      "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId installmentAmount"
     );
 
     return customersToPay;
@@ -50,7 +50,7 @@ async function getCustomersToPay(date) {
 async function getInstallmentsForDate(date) {
   const dayStartTime = new Date(date + "T00:00:00+05:30");
   const dayEndTime = new Date(date + "T23:59:59+05:30");
-  
+
   try {
     const installments = await Installment.find({
       paidDate: { $gte: dayStartTime, $lt: dayEndTime },

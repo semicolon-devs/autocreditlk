@@ -101,13 +101,13 @@ exports.getPaymentInfo = async (req, res) => {
 };
 
 exports.filterByDate = async (req, res) => {
-  const date = req.params.date;
-
   try {
+    const date = req.params.date;
     const { installments, nonPaidCustomers } = await getInstallmentsForDate(
       date
     );
-    res.status(200).json({ installments: installments, nonPaidCustomers });
+
+    res.status(200).json({ installments, nonPaidCustomers });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

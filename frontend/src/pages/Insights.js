@@ -253,7 +253,7 @@ const Insights = () => {
         <div className="hidden lg:grid lg:grid-cols-7 lg:border-y lg:border-grey lg:py-3 lg:my-3">
           <p className="font-semibold col-span-2">Customer name</p>
           <p className="font-semibold">Customer ID</p>
-          <p className="font-semibold">Customer Name</p>
+          <p className="font-semibold">Collector Name</p>
           <p className="font-semibold col-span-2"> Phone Number</p>
           <p className="font-semibold text-end">Installment amount</p>
         </div>
@@ -280,15 +280,15 @@ const Insights = () => {
                   key={customer._id}
                 >
                   <p className="flex gap-1 lg:col-span-2 capitalize font-semibold lg:font-normal">
-                    {customer.customerName}
+                    {customer.name}
                   </p>
                   <p className="flex gap-1 font-semibold lg:font-normal">
                     <span className=" flex lg:hidden"> -</span>
                     {customer.customerID}
                   </p>
                   <p className="flex gap-1 col-span-2 lg:col-span-1">
-                    <span className="flex lg:hidden">Customer Name :</span>
-                    <span className="capitalize">{customer.name}</span>
+                    <span className="flex lg:hidden">Collector Name :</span>
+                    <span className="capitalize">{customer.collectorName}</span>
                   </p>
                   <p className="flex gap-1 col-span-2">{customer.phone}</p>
                   <p className="gap-1 flex lg:justify-end col-span-2 lg:col-span-1">

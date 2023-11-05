@@ -47,44 +47,48 @@ async function getCustomersToPay(date) {
   }
 }
 
-async function getInstallmentsForDate(date) {
+const getInstallmentsForDate = async (date) => {
   const dayStartTime = new Date(date + "T00:00:00+05:30");
   const dayEndTime = new Date(date + "T23:59:59+05:30");
 
-  try {
-    const installments = await Installment.find({
-      paidDate: { $gte: dayStartTime, $lt: dayEndTime },
+  const customersToPay = await getCustomersToPay(date);
+
+  const installments = await Installment.find({
+    paidDate: { $gte: dayStartTime, $lt: dayEndTime },
+  });
+
+  const updatedList = [];
+  for (const installment of installments) {
+    const user = await User.findById(installment.collectedBy);
+    installment.collectedBy = user.name;
+
+    const customer = await Customer.findOne({
+      customerID: installment.customerID,
     });
+    installment._doc.customerName = customer.name;
 
-    const customersToPay = await getCustomersToPay(date);
-
-    const paidCustomers = [];
-    const nonPaidCustomers = customersToPay.slice();
-
-    for (const installment of installments) {
-      if (
-        customersToPay.some(
-          (customer) => customer.customerID === installment.customerID
-        )
-      ) {
-        paidCustomers.push(installment);
-        const index = nonPaidCustomers.findIndex(
-          (customer) => customer.customerID === installment.customerID
-        );
-        if (index !== -1) {
-          nonPaidCustomers.splice(index, 1);
-        }
-      }
-    }
-
-    return { installments: paidCustomers, nonPaidCustomers };
-  } catch (err) {
-    return {
-      status: "Failed",
-      message: err.message,
-    };
+    updatedList.push(installment._doc);
   }
-}
+
+  const nonPaidCustomers = customersToPay.filter((customer) => {
+    return !updatedList.some(
+      (installment) => installment.customerID === customer.customerID
+    );
+  });
+
+  const updatedNonPaidCustomers = [];
+
+  for (const customer of nonPaidCustomers) {
+    const user = await User.findById(customer.collectorId);
+    customer._doc.collectorName = user.name;
+    updatedNonPaidCustomers.push(customer._doc);
+  }
+
+  return {
+    installments: updatedList,
+    nonPaidCustomers: updatedNonPaidCustomers,
+  };
+};
 
 module.exports = {
   getCustomersToPay,

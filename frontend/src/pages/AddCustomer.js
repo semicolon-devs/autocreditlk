@@ -128,7 +128,7 @@ const AddCustomer = () => {
       // setGuarantorNICFrontCopy(null);
       // setGuarantorNICRearCopy(null);
     } catch (err) {
-      console.log("here"+err);
+      console.log("here" + err);
       setMessage(
         "Error adding the customer. Please check if all required feilds are filled. And submit the form again"
       );

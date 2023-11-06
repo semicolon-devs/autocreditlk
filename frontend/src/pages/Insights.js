@@ -20,6 +20,8 @@ const Insights = () => {
 
   //console.log(today);
 
+
+
   const [date, setDate] = useState(today);
   const [installments, setInstallments] = useState(null);
   const [notPaid, setNotPaid] = useState(null);
@@ -27,8 +29,18 @@ const Insights = () => {
   const [dailyTotal, setDailyTotal] = useState(0);
   const [dailyInstallments, setDailyInstallments] = useState(0);
   const [totalUnPaid, setTotalUnpaid] = useState(0);
+  const [userdata, setUserdata] = useState([]);
+
+  // const [isAdmin, setIsAdmin] = useState(false);
 
   const token = cookies.get("autoCreditCookie");
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("userData"));
+    if (data) {
+      setUserdata(data);
+    }
+  }, []);
 
   const getTotalUnpaid = () => {
     setLoading(true);
@@ -197,7 +209,7 @@ const Insights = () => {
                 visible={true}
               />
             </div>
-          ) : (
+          ) : ((userdata.role === "admin") ? (
             installments &&
             installments.map((installment) => {
               const paidDate = new Date(installment.paidDate);
@@ -245,7 +257,7 @@ const Insights = () => {
                 </div>
               );
             })
-          )}
+          ):null)}
         </div>
       </div>
       <div className="bg-yellow drop-shadow-lg rounded-lg p-3 mb-5">

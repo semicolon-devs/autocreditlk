@@ -23,7 +23,7 @@ import SMSGateway from "./pages/SMSGateway";
 import ReportsPage from "./pages/ReportsPage";
 import AccessDeniedPage from "./pages/AccessDeniedPage";
 import SetteledLoans from "./pages/SetteldLoans";
-import CollectorDetails from "./pages/CollectorDetails";
+
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -89,10 +89,7 @@ const router = createBrowserRouter(
           path="/settled-loans"
           element={isAdmin() ? <SetteledLoans /> : <AccessDeniedPage />}
         />
-        {/* <Route
-          path="/collector-details"
-          element={isAdmin() ? <CollectorDetails /> : <AccessDeniedPage />}
-        /> */}
+      
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </>

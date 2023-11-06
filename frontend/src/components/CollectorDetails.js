@@ -1,60 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { ThreeDots } from "react-loader-spinner";
-
-import SectionTitle from "../components/SectionTitle";
-import SectionSubtitle from "../components/SectionSubtitle";
+import SectionTitle from "./SectionTitle";
+import SectionSubtitle from "./SectionSubtitle";
 import { CurrencyFormatter } from "../utils/CurrencyFormatter";
 
-import Cookies from "universal-cookie";
 
-import BASE_URL from "../config/ApiConfig";
 
-const cookies = new Cookies();
+const CollectorDetails = ({ collectors }) => {
 
-const CollectorDetails = () => {
-  const today = new Date().toLocaleDateString("en-CA", {
-    timeZone: "Asia/Colombo",
-  });
-
-  //console.log(today);
-
-  const [date, setDate] = useState(today);
-  const [collectors, setCollector] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const token = cookies.get("autoCreditCookie");
-  const getCollectors = () => {
-    setLoading(true);
-
-    var modifiedDate = new Date(date).toLocaleDateString("en-CA", {
-      timeZone: "Asia/Colombo",
-    });
-    console.log(modifiedDate + "here");
-    const axiosConfig = {
-      method: "GET",
-      url: `${BASE_URL}collector/collectors/${modifiedDate}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    axios(axiosConfig)
-      .then((response) => {
-        setCollector(response.data.collectors);
-      })
-      .catch((err) => {
-        // setMessage(err.data.message);
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    getCollectors();
-  }, [date]);
-
+   const [loading, setLoading] = useState(false);
+   
   return (
     <>
       <SectionTitle title="Collector Details" />

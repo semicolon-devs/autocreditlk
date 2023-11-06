@@ -6,7 +6,7 @@ import SectionTitle from "../components/SectionTitle";
 import SectionSubtitle from "../components/SectionSubtitle";
 import MUIDatePicker from "../components/MUIDatePicker";
 import { CurrencyFormatter } from "../utils/CurrencyFormatter";
-import CollectorDetails from "./CollectorDetails";
+import CollectorDetails from "../components/CollectorDetails";
 
 import Cookies from "universal-cookie";
 
@@ -49,9 +49,7 @@ const Insights = () => {
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => {});
   };
 
   const getCollectors = () => {
@@ -179,29 +177,29 @@ const Insights = () => {
             )}
           </div>
           <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between">
-          <SectionSubtitle title="Daily count" />
-          {loading ? (
-            <div className="w-full flex items-center justify-center">
-              <ThreeDots
-                height="40"
-                width="40"
-                radius="9"
-                color="#808080"
-                ariaLabel="three-dots-loading"
-                wrapperStyle={{}}
-                wrapperClassName=""
-                visible={true}
-              />
-            </div>
-          ) : (
-            <p className="text-3xl font-semibold">
-              {dailyInstallments} Installments
-            </p>
-          )}
-        </div>
+            <SectionSubtitle title="Daily count" />
+            {loading ? (
+              <div className="w-full flex items-center justify-center">
+                <ThreeDots
+                  height="40"
+                  width="40"
+                  radius="9"
+                  color="#808080"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={true}
+                />
+              </div>
+            ) : (
+              <p className="text-3xl font-semibold">
+                {dailyInstallments} Installments
+              </p>
+            )}
+          </div>
         </div>
         <div className="w-full">
-          <CollectorDetails />
+          <CollectorDetails collectors={collectors} />
         </div>
       </div>
       <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5">

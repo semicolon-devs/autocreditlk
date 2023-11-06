@@ -69,9 +69,10 @@ const CollectorDetails = () => {
         <SectionSubtitle title="Daily transactions" />
         <div className="hidden lg:grid lg:grid-cols-7 lg:border-y lg:border-grey lg:py-3 lg:my-3">
           <p className="font-semibold col-span-2">Collector name</p>
-          <p className="font-semibold">Collector ID</p>
+          <p className="font-semibold">Collector Phone</p>
           <p className="font-semibold">Collected Amount</p>
-          <p className="font-semibold text-end">Workig Day</p>
+          <p className="font-semibold ">Status</p>
+          <p className="font-semibold text-end">Email</p>
         </div>
         <div className="overflow-y-auto max-h-96">
           {loading ? (
@@ -101,10 +102,9 @@ const CollectorDetails = () => {
                   </p>
                   <p className="flex gap-1 font-semibold lg:font-normal">
                     <span className=" flex lg:hidden"> -</span>
-                    {collector.id}
+                    {collector.phone}
                   </p>
                   <p className="flex gap-1 col-span-2 lg:col-span-1">
-                    <span className="flex lg:hidden">Collected by :</span>
                     <span className="capitalize">
                       {collector.totalCollected &&
                         CurrencyFormatter(collector.totalCollected)}{" "}
@@ -112,8 +112,18 @@ const CollectorDetails = () => {
                     </span>
                   </p>
 
-                  <p className="gap-1 flex lg:justify-end col-span-2 lg:col-span-1">
+                  {/* <p className="gap-1 flex lg:justify-end col-span-2 lg:col-span-1">
                     <span className="flex lg:hidden">Amount :</span>
+                  </p> */}
+                 
+                  <p className="flex gap-1 col-span-2 lg:col-span-1">
+                    <span className="capitalize">
+                      {collector.isTodayWorkingDay ? "Working" : "Not Working"}
+                    </span>
+                  </p>
+                  <p className="flex gap-1 font-semibold lg:font-normal">
+                    <span className=" flex lg:hidden"> -</span>
+                    {collector.email}
                   </p>
                 </div>
               );

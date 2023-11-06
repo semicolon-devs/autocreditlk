@@ -22,13 +22,14 @@ import PageNotFound from "./pages/PageNotFound";
 import SMSGateway from "./pages/SMSGateway";
 import ReportsPage from "./pages/ReportsPage";
 import AccessDeniedPage from "./pages/AccessDeniedPage";
+import SetteledLoans from "./pages/SetteldLoans";
+import CollectorDetails from "./pages/CollectorDetails";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
 
 import Cookies from "universal-cookie";
-import SetteledLoans from "./pages/SetteldLoans";
 const cookies = new Cookies();
 
 const isAdmin = () => {
@@ -84,9 +85,13 @@ const router = createBrowserRouter(
           path="/reports"
           element={isAdmin() ? <ReportsPage /> : <AccessDeniedPage />}
         />
-                <Route
+        <Route
           path="/settled-loans"
           element={isAdmin() ? <SetteledLoans /> : <AccessDeniedPage />}
+        />
+        <Route
+          path="/collector-details"
+          element={isAdmin() ? <CollectorDetails /> : <AccessDeniedPage />}
         />
         <Route path="*" element={<PageNotFound />} />
       </Route>

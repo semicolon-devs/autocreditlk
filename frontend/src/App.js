@@ -89,10 +89,10 @@ const router = createBrowserRouter(
           path="/settled-loans"
           element={isAdmin() ? <SetteledLoans /> : <AccessDeniedPage />}
         />
-        <Route
+        {/* <Route
           path="/collector-details"
           element={isAdmin() ? <CollectorDetails /> : <AccessDeniedPage />}
-        />
+        /> */}
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </>

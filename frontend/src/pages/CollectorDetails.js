@@ -4,7 +4,6 @@ import { ThreeDots } from "react-loader-spinner";
 
 import SectionTitle from "../components/SectionTitle";
 import SectionSubtitle from "../components/SectionSubtitle";
-import MUIDatePicker from "../components/MUIDatePicker";
 import { CurrencyFormatter } from "../utils/CurrencyFormatter";
 
 import Cookies from "universal-cookie";
@@ -59,20 +58,12 @@ const CollectorDetails = () => {
   return (
     <>
       <SectionTitle title="Collector Details" />
-      <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5 flex justify-end sm:justify-between items-center">
-        <p className="text-xl hidden sm:block">Pick date</p>
-        <div className="flex justify-end">
-          <MUIDatePicker setDate={setDate} />
-        </div>
-      </div>{" "}
       <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5">
         <SectionSubtitle title="Daily transactions" />
-        <div className="hidden lg:grid lg:grid-cols-7 lg:border-y lg:border-grey lg:py-3 lg:my-3">
+        <div className="hidden lg:grid lg:grid-cols-4 lg:border-y lg:border-grey lg:py-3 lg:my-3">
           <p className="font-semibold col-span-2">Collector name</p>
-          <p className="font-semibold">Collector Phone</p>
           <p className="font-semibold">Collected Amount</p>
           <p className="font-semibold ">Status</p>
-          <p className="font-semibold text-end">Email</p>
         </div>
         <div className="overflow-y-auto max-h-96">
           {loading ? (
@@ -91,18 +82,13 @@ const CollectorDetails = () => {
           ) : (
             collectors &&
             collectors.map((collector) => {
-              // const paidDate = new Date(installment.paidDate);
               return (
                 <div
-                  className="bg-yellow p-3 rounded-lg mb-3 lg:bg-transparent lg:p-0 lg:rounded-none lg:mb-0 w-full grid grid-cols-2 lg:grid-cols-7"
+                  className="bg-yellow p-3 rounded-lg mb-3 lg:bg-transparent lg:p-0 lg:rounded-none lg:mb-0 w-full grid grid-cols-2 lg:grid-cols-4"
                   key={collector.id}
                 >
                   <p className="flex gap-1 lg:col-span-2 capitalize font-semibold lg:font-normal">
                     {collector.name}
-                  </p>
-                  <p className="flex gap-1 font-semibold lg:font-normal">
-                    <span className=" flex lg:hidden"> -</span>
-                    {collector.phone}
                   </p>
                   <p className="flex gap-1 col-span-2 lg:col-span-1">
                     <span className="capitalize">
@@ -112,18 +98,10 @@ const CollectorDetails = () => {
                     </span>
                   </p>
 
-                  {/* <p className="gap-1 flex lg:justify-end col-span-2 lg:col-span-1">
-                    <span className="flex lg:hidden">Amount :</span>
-                  </p> */}
-                 
                   <p className="flex gap-1 col-span-2 lg:col-span-1">
                     <span className="capitalize">
                       {collector.isTodayWorkingDay ? "Working" : "Not Working"}
                     </span>
-                  </p>
-                  <p className="flex gap-1 font-semibold lg:font-normal">
-                    <span className=" flex lg:hidden"> -</span>
-                    {collector.email}
                   </p>
                 </div>
               );

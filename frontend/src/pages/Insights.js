@@ -6,6 +6,7 @@ import SectionTitle from "../components/SectionTitle";
 import SectionSubtitle from "../components/SectionSubtitle";
 import MUIDatePicker from "../components/MUIDatePicker";
 import { CurrencyFormatter } from "../utils/CurrencyFormatter";
+import CollectorDetails from "./CollectorDetails";
 
 import Cookies from "universal-cookie";
 
@@ -133,74 +134,75 @@ const Insights = () => {
           <MUIDatePicker setDate={setDate} />
         </div>
       </div>{" "}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-        <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between">
-          <SectionSubtitle title="Total Money to be collected" />
-          {loading ? (
-            <div className="w-full flex items-center justify-center">
-              <ThreeDots
-                height="40"
-                width="40"
-                radius="9"
-                color="#808080"
-                ariaLabel="three-dots-loading"
-                wrapperStyle={{}}
-                wrapperClassName=""
-                visible={true}
-              />
-            </div>
-          ) : (
-            <p className="text-3xl font-semibold">
-              {totalUnPaid && CurrencyFormatter(totalUnPaid)} LKR
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-        <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between">
-          <SectionSubtitle title="Daily total collection" />
-          {loading ? (
-            <div className="w-full flex items-center justify-center">
-              <ThreeDots
-                height="40"
-                width="40"
-                radius="9"
-                color="#808080"
-                ariaLabel="three-dots-loading"
-                wrapperStyle={{}}
-                wrapperClassName=""
-                visible={true}
-              />
-            </div>
-          ) : (
-            <p className="text-3xl font-semibold">
-              {dailyTotal && CurrencyFormatter(dailyTotal)} LKR
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-      <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between">
-        <SectionSubtitle title="Daily count" />
-        {loading ? (
-          <div className="w-full flex items-center justify-center">
-            <ThreeDots
-              height="40"
-              width="40"
-              radius="9"
-              color="#808080"
-              ariaLabel="three-dots-loading"
-              wrapperStyle={{}}
-              wrapperClassName=""
-              visible={true}
-            />
+      <div className="grid grid-cols-2 gap-5 ">
+        <div className="grid grid-rows-3 gap-5 mb-10">
+          <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between ">
+            <SectionSubtitle title="Total Money to be collected" />
+            {loading ? (
+              <div className="w-full flex items-center justify-center">
+                <ThreeDots
+                  height="40"
+                  width="40"
+                  radius="9"
+                  color="#808080"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={true}
+                />
+              </div>
+            ) : (
+              <p className="text-3xl font-semibold">
+                {totalUnPaid && CurrencyFormatter(totalUnPaid)} LKR
+              </p>
+            )}
           </div>
-        ) : (
-          <p className="text-3xl font-semibold">
-            {dailyInstallments} Installments
-          </p>
-        )}
-      </div>
+          <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between">
+            <SectionSubtitle title="Daily total collection" />
+            {loading ? (
+              <div className="w-full flex items-center justify-center">
+                <ThreeDots
+                  height="40"
+                  width="40"
+                  radius="9"
+                  color="#808080"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={true}
+                />
+              </div>
+            ) : (
+              <p className="text-3xl font-semibold">
+                {dailyTotal && CurrencyFormatter(dailyTotal)} LKR
+              </p>
+            )}
+          </div>
+          <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between">
+          <SectionSubtitle title="Daily count" />
+          {loading ? (
+            <div className="w-full flex items-center justify-center">
+              <ThreeDots
+                height="40"
+                width="40"
+                radius="9"
+                color="#808080"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClassName=""
+                visible={true}
+              />
+            </div>
+          ) : (
+            <p className="text-3xl font-semibold">
+              {dailyInstallments} Installments
+            </p>
+          )}
+        </div>
+        </div>
+        <div className="w-full">
+          <CollectorDetails />
+        </div>
       </div>
       <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5">
         <SectionSubtitle title="Daily installments" />

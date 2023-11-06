@@ -22,7 +22,7 @@ const SignIn = () => {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
 
   const [editWorkingDayModalShow, setWorkingDayModalShow] = useState(null);
-  const [isWorkingDay, setIsWorkingDay] = useState();
+  const [isWorkingDay, setIsWorkingDay] = useState(null);
 
   const signIn = async (email, password, isWorkingDay) => {
     setLoading(true);

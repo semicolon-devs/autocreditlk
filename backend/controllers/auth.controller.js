@@ -27,7 +27,6 @@ exports.getUserData = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-
   const token = jwt.sign(
     {
       name: req.user.name,
@@ -38,8 +37,9 @@ exports.login = async (req, res) => {
     { expiresIn: "24h" }
   );
   const isWorkingDay = req.body.isWorkingDay;
-  if(isWorkingDay){
-    markWorkingDay(req.user.id)
+
+  if (isWorkingDay) {
+    markWorkingDay(req.user.id);
   }
 
   if (req.user.role == "admin" || req.user.role == "collector") {

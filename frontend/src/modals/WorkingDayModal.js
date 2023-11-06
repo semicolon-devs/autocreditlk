@@ -10,18 +10,21 @@ const WorkingDayModal = ({
   setModalShow,
   onModalButtonClicked,
   setIsWorkingDay,
+  setSubmitted,
 }) => {
   const handleYesClick = () => {
-    console.log("here")
+    console.log("here");
     setIsWorkingDay(true);
     onModalButtonClicked(true);
     setModalShow(false);
+    
   };
 
   const handleNoClick = () => {
     setIsWorkingDay(false);
     onModalButtonClicked(true);
     setModalShow(false);
+    
   };
 
   return (

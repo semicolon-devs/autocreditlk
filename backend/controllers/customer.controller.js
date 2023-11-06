@@ -463,7 +463,6 @@ exports.updateIsSettled = async (req, res) => {
 
 exports.getSettledCustomers = async (req, res) => {
   try {
-    console.log("here");
     const settledCustomers = await Customer.find({
       $expr: { $lte: ["$loanAmount", "$paidAmount"] },
     })

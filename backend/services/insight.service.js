@@ -90,7 +90,9 @@ const getInstallmentsForDate = async (date) => {
   };
 };
 
+
 module.exports = {
   getCustomersToPay,
   getInstallmentsForDate,
+
 };

@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const Installment = require("../models/installment.model");
+const Customer = require("../models/customer.model");
 const {
   validateMobileNumber,
   parseMobileNumber,

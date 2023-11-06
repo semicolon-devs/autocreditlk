@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import HomePageCard from "../components/HomePageCard";
+import SettledCardCard from "../components/SettledCard";
 // import AddPaymentModal from "../components/AddPaymentModal";
 
 import { SearchIcon, SetteledLoanIcon } from "../Icons/Icon";
@@ -9,6 +9,7 @@ import { SearchIcon, SetteledLoanIcon } from "../Icons/Icon";
 import Cookies from "universal-cookie";
 
 import BASE_URL from "../config/ApiConfig";
+import SettledCard from "../components/SettledCard";
 
 const cookies = new Cookies();
 
@@ -57,7 +58,7 @@ const SetteledLoans = () => {
   });
 
   const filtered = filteredCustomers.map((customer) => (
-    <HomePageCard key={customer._id} customer={customer} />
+    <SettledCard key={customer._id} customer={customer} />
   ));
 
   return (

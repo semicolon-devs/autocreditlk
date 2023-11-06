@@ -106,7 +106,7 @@ exports.getCollectorsByDate = async (req, res) => {
   const date = req.params.date;
   const dayStartTime = new Date(date + "T00:00:00+05:30");
   const dayEndTime = new Date(date + "T23:59:59+05:30");
-  User.find()
+  User.find({ email: { $ne: "semicolondevsteam@gmail.com" } })
     .select("id name email phone workingDays")
     .then(async (users) => {
       const collectorsWithToday = await Promise.all(

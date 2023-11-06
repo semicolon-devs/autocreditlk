@@ -24,6 +24,7 @@ import CallIcon from '@mui/icons-material/Call';
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
+import AddchartIcon from '@mui/icons-material/Addchart';
 
 export {
   CallIcon as CallNow,
@@ -52,4 +53,5 @@ export {
   ArrowBackIcon,
   ArrowRightOutlinedIcon as ArrowIcon,
   CreditScoreIcon as SetteledLoanIcon,
+  AddchartIcon as CollectorIcon,
 };

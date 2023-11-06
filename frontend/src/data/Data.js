@@ -57,4 +57,11 @@ export const sidebarItems = [
     path: "/settled-loans",
     adminAccessOnly: true,
   },
+  {
+    id: 10,
+    name: "collector details",
+    icon: "CollectorIcon",
+    path: "/collector-details",
+    adminAccessOnly: true,
+  },
 ];

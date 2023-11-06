@@ -34,7 +34,7 @@ const CollectorDetails = () => {
 
     const axiosConfig = {
       method: "GET",
-      url: `${BASE_URL}collectors/collectors/${modifiedDate}`,
+      url: `${BASE_URL}collector/collectors/${modifiedDate}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -71,9 +71,9 @@ const CollectorDetails = () => {
         <SectionSubtitle title="Daily transactions" />
         <div className="hidden lg:grid lg:grid-cols-7 lg:border-y lg:border-grey lg:py-3 lg:my-3">
           <p className="font-semibold col-span-2">Collector name</p>
-          <p className="font-semibold">Collector ID</p>
           <p className="font-semibold">Amount to be collected</p>
-          <p className="font-semibold text-end">Workig Day</p>
+          <p className="font-semibold ">Workig Day</p>
+          <p className="font-semibold">Collector Email</p>
         </div>
         <div className="overflow-y-auto max-h-96">
           {loading ? (
@@ -101,22 +101,21 @@ const CollectorDetails = () => {
                   <p className="flex gap-1 lg:col-span-2 capitalize font-semibold lg:font-normal">
                     {collector.name}
                   </p>
-                  <p className="flex gap-1 font-semibold lg:font-normal">
-                    <span className=" flex lg:hidden"> -</span>
-                    {collector.email}
-                  </p>
-                  <p className="flex gap-1 col-span-2 lg:col-span-1">
-                    <span className="flex lg:hidden">Collected by :</span>
-                    <span className="capitalize">
-                      {collector.isTodayWorkingDay}
-                    </span>
-                  </p>
-                 
                   <p className="gap-1 flex lg:justify-end col-span-2 lg:col-span-1">
                     <span className="flex lg:hidden">Amount :</span>
                     {collector.totalCollected &&
                       CurrencyFormatter(collector.totalCollected)}{" "}
                     LKR
+                  </p>
+                  <p className="flex gap-1 col-span-2 lg:col-span-1">
+                    <span className="capitalize">
+                      {collector.isTodayWorkingDay}
+                    </span>
+                  </p>
+                 
+                  <p className="flex gap-1 font-semibold lg:font-normal">
+                    <span className=" flex lg:hidden"> -</span>
+                    {collector.email}
                   </p>
                 </div>
               );

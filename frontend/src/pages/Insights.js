@@ -287,8 +287,8 @@ const Insights = () => {
                     {customer.customerID}
                   </p>
                   <p className="flex gap-1 col-span-2 lg:col-span-1">
-                    <span className="flex lg:hidden">Customer Name :</span>
-                    <span className="capitalize">{customer.name}</span>
+                    <span className="flex lg:hidden">Collector Name :</span>
+                    <span className="capitalize">{customer.collectorName}</span>
                   </p>
                   <p className="flex gap-1 col-span-2">{customer.phone}</p>
                   <p className="gap-1 flex lg:justify-end col-span-2 lg:col-span-1">

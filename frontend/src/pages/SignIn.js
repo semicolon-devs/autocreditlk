@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Formik, Form } from "formik";
@@ -19,11 +19,12 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
-  const [formValues , setFormValues] = useState({email:"", password: ""});
+  const [formValues, setFormValues] = useState({ email: "", password: "" });
 
   const [editWorkingDayModalShow, setWorkingDayModalShow] = useState(null);
+  const [isWorkingDay, setIsWorkingDay] = useState(null);
 
-  const signIn = async (email, password ,isWorkingDay ) => {
+  const signIn = async (email, password, isWorkingDay) => {
     setLoading(true);
     // console.log(isWorkingDay+ "when subm")
     const config = {
@@ -32,10 +33,9 @@ const SignIn = () => {
       data: {
         email: email,
         password: password,
-        isWorkingDay: isWorkingDay
+        isWorkingDay: isWorkingDay,
       },
     };
-
 
     await axios(config)
       .then((res) => {
@@ -69,12 +69,14 @@ const SignIn = () => {
       })
       .finally(() => {
         setLoading(false);
-      }
-      
-      );
-
-
+      });
   };
+
+  useEffect(() => {
+    if (isWorkingDay !== null) {
+      signIn(formValues.email, formValues.password, isWorkingDay);
+    }
+  }, [isWorkingDay]);
 
   return (
     <div className=" bg-light flex justify-center items-center w-screen h-screen p-5">
@@ -156,10 +158,9 @@ const SignIn = () => {
           <WorkingDayModal
             modalShow={editWorkingDayModalShow}
             setModalShow={setWorkingDayModalShow}
-            // checkingIn = {checkIn}
-            onModalButtonClicked={(isWorkingDay) => {
+            setIsWorkingDay={setIsWorkingDay}
+            onModalButtonClicked={() => {
               setWorkingDayModalShow(false); // Close the modal
-              signIn(formValues.email, formValues.password, isWorkingDay); // Call signIn with the chosen value
             }}
           />
         )}

@@ -30,6 +30,11 @@ const AddExistingCustomer = () => {
   const [customerPhoto, setCustomerPhoto] = useState();
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [message, setMessage] = useState(null);
+  const [guarantorAdditionalDocument, setGuarantorAdditionalDocument] =
+    useState([]);
+  const [customerAdditionalDocument, setCustomerAdditionalDocument] = useState(
+    []
+  );
 
   const token = cookies.get("autoCreditCookie");
 
@@ -109,6 +114,8 @@ const AddExistingCustomer = () => {
     formData.append("guarantorNIC", guarantorNIC);
     formData.append("guarantorNICFrontCopy", guarantorNICFrontCopy);
     formData.append("guarantorNICRearCopy", guarantorNICRearCopy);
+    formData.append("customerAdditionalDocument", customerAdditionalDocument);
+    formData.append("guarantorAdditionalDocument", guarantorAdditionalDocument);
 
     try {
       const response = await axios.post(
@@ -158,6 +165,13 @@ const AddExistingCustomer = () => {
 
   const handleGuarantorNICRearCopyChange = (e) => {
     setGuarantorNICRearCopy(e.target.files[0]);
+  };
+  const handleGuarantorAdditionalDocumentChange = (e) => {
+    setGuarantorAdditionalDocument(e.target.files[0]);
+  };
+
+  const handleACustomerdditionalDocumentChange = (e) => {
+    setCustomerAdditionalDocument(e.target.files[0]);
   };
 
   const validationSchema = Yup.object({
@@ -408,6 +422,15 @@ const AddExistingCustomer = () => {
                 />
               </div>
 
+              <div className="">
+                <label className="font-semibold mb-2">Additional details</label>
+                <input
+                  type="file"
+                  onChange={handleACustomerdditionalDocumentChange}
+                  className="w-full rounded-lg p-2 mb-8 outline-none border border-grey"
+                />
+              </div>
+
               <SectionSubtitle title="guarantor details" />
 
               <TextInput
@@ -458,6 +481,17 @@ const AddExistingCustomer = () => {
                 <input
                   type="file"
                   onChange={handleGuarantorNICRearCopyChange}
+                  className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
+                />
+              </div>
+
+              <div className="">
+                <label className="font-semibold mb-2">
+                  Guarantor Additional details
+                </label>
+                <input
+                  type="file"
+                  onChange={handleGuarantorAdditionalDocumentChange}
                   className="w-full rounded-lg p-2 mb-3 outline-none border border-grey"
                 />
               </div>

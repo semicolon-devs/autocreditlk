@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const Installment = require("../models/installment.model");
 const {
   validateMobileNumber,
   parseMobileNumber,
@@ -91,9 +92,50 @@ exports.getPendingUsers = async (req, res) => {
 
 exports.getCollectors = async (req, res) => {
   User.find({ role: "collector" })
-    .select("userID name email phone workingDays")
+    .select("userID name email phone")
     .then((users) => {
       res.status(200).json({ collectors: users });
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err.message });
+    });
+};
+
+exports.getCollectorsByDate = async (req, res) => {
+  const date = req.params.date;
+  const dayStartTime = new Date(date + "T00:00:00+05:30");
+  const dayEndTime = new Date(date + "T23:59:59+05:30");
+  User.find()
+    .select("id name email phone workingDays")
+    .then(async (users) => {
+      const collectorsWithToday = await Promise.all(
+        users.map(async (user) => {
+          const workingDays = user.workingDays || [];
+          const trimmedWorkingDays = workingDays.map((day) =>
+            moment(day).format("YYYY-MM-DD")
+          );
+          const isTodayWorkingDay = trimmedWorkingDays.includes(date);
+          const installments = await Installment.find({
+            collectedBy: user.id,
+            paidDate: { $gte: dayStartTime, $lt: dayEndTime },
+          });
+
+          const totalCollected = installments.reduce((total, installment) => {
+            return total + installment.amount;
+          }, 0);
+
+          return {
+            userID: user.userID,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            isTodayWorkingDay,
+            totalCollected,
+          };
+        })
+      );
+
+      res.status(200).json({ collectors: collectorsWithToday });
     })
     .catch((err) => {
       res.status(400).json({ message: err.message });
@@ -104,6 +146,7 @@ exports.markWorkingDay = async (req, res) => {
   try {
     const isWorkingDay = req.body.isWorkingDay;
     const collectorId = req.params.id;
+
     if (isWorkingDay) {
       const user = await User.findById(collectorId);
 

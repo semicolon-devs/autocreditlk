@@ -20,8 +20,6 @@ const Insights = () => {
 
   //console.log(today);
 
-
-
   const [date, setDate] = useState(today);
   const [installments, setInstallments] = useState(null);
   const [notPaid, setNotPaid] = useState(null);
@@ -29,9 +27,9 @@ const Insights = () => {
   const [dailyTotal, setDailyTotal] = useState(0);
   const [dailyInstallments, setDailyInstallments] = useState(0);
   const [totalUnPaid, setTotalUnpaid] = useState(0);
+  const [collectors, setCollector] = useState(null);
 
   const token = cookies.get("autoCreditCookie");
-
 
   const getTotalUnpaid = () => {
     setLoading(true);
@@ -48,6 +46,33 @@ const Insights = () => {
         setTotalUnpaid(response.data.totalUnpaid);
       })
       .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const getCollectors = () => {
+    setLoading(true);
+
+    var modifiedDate = new Date(date).toLocaleDateString("en-CA", {
+      timeZone: "Asia/Colombo",
+    });
+    console.log(modifiedDate + "here");
+    const axiosConfig = {
+      method: "GET",
+      url: `${BASE_URL}collector/collectors/${modifiedDate}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios(axiosConfig)
+      .then((response) => {
+        setCollector(response.data.collectors);
+      })
+      .catch((err) => {
+        // setMessage(err.data.message);
         console.log(err);
       })
       .finally(() => {
@@ -95,11 +120,9 @@ const Insights = () => {
 
   useEffect(() => {
     getInstallments();
+    getCollectors();
+    getTotalUnpaid();
   }, [date]);
-
-  useEffect(() => {
-    getTotalUnpaid(); // This function will not be called when the date changes.
-  }, []);
 
   return (
     <>
@@ -155,27 +178,29 @@ const Insights = () => {
             </p>
           )}
         </div>
-        <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between">
-          <SectionSubtitle title="Daily count" />
-          {loading ? (
-            <div className="w-full flex items-center justify-center">
-              <ThreeDots
-                height="40"
-                width="40"
-                radius="9"
-                color="#808080"
-                ariaLabel="three-dots-loading"
-                wrapperStyle={{}}
-                wrapperClassName=""
-                visible={true}
-              />
-            </div>
-          ) : (
-            <p className="text-3xl font-semibold">
-              {dailyInstallments} Installments
-            </p>
-          )}
-        </div>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+      <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between">
+        <SectionSubtitle title="Daily count" />
+        {loading ? (
+          <div className="w-full flex items-center justify-center">
+            <ThreeDots
+              height="40"
+              width="40"
+              radius="9"
+              color="#808080"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={true}
+            />
+          </div>
+        ) : (
+          <p className="text-3xl font-semibold">
+            {dailyInstallments} Installments
+          </p>
+        )}
+      </div>
       </div>
       <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5">
         <SectionSubtitle title="Daily installments" />

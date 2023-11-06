@@ -20,6 +20,8 @@ const Insights = () => {
 
   //console.log(today);
 
+
+
   const [date, setDate] = useState(today);
   const [installments, setInstallments] = useState(null);
   const [notPaid, setNotPaid] = useState(null);
@@ -29,6 +31,7 @@ const Insights = () => {
   const [totalUnPaid, setTotalUnpaid] = useState(0);
 
   const token = cookies.get("autoCreditCookie");
+
 
   const getTotalUnpaid = () => {
     setLoading(true);

@@ -7,7 +7,10 @@ import SectionSubtitle from "../components/SectionSubtitle";
 import MUIDatePicker from "../components/MUIDatePicker";
 import { CurrencyFormatter } from "../utils/CurrencyFormatter";
 import CollectorDetails from "../components/CollectorDetails";
-
+import DailyInstallmentAdmin from "../components/DailyInstallementsAdmin";
+import DailyInstallments from "../components/DailyInstallemnts";
+import DailyUnpaid from "../components/DailyUnpaid";
+import DailyUnpaidAdmin from "../components/DailyUnpaidAdmin";
 import Cookies from "universal-cookie";
 
 import BASE_URL from "../config/ApiConfig";
@@ -20,7 +23,7 @@ const Insights = () => {
   });
 
   //console.log(today);
-
+  const userData = JSON.parse(localStorage.getItem("userData"));
   const [date, setDate] = useState(today);
   const [installments, setInstallments] = useState(null);
   const [notPaid, setNotPaid] = useState(null);
@@ -69,14 +72,20 @@ const Insights = () => {
     axios(axiosConfig)
       .then((response) => {
         setCollector(response.data.collectors);
+        const collectorsData = response.data.collectors;
+        const matchingCollector = collectorsData.find(
+          (collector) => collector.name === userData.name
+        );
+        if (matchingCollector) {
+          setDailyTotal(matchingCollector.totalCollected);
+          setDailyInstallments(matchingCollector.installmentCount);
+        }
       })
       .catch((err) => {
         // setMessage(err.data.message);
         console.log(err);
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => {});
   };
 
   const getInstallments = () => {
@@ -96,17 +105,19 @@ const Insights = () => {
     axios(axiosConfig)
       .then((response) => {
         setInstallments(response.data.installments);
+        if (userData.role == "admin") {
+          setDailyTotal(
+            response.data.installments.reduce((total, installment) => {
+              return total + installment.amount;
+            }, 0)
+          );
+          setDailyInstallments(
+            response.data.installments.reduce((count, installment) => {
+              return count + 1;
+            }, 0)
+          );
+        }
         setNotPaid(response.data.nonPaidCustomers);
-        setDailyTotal(
-          response.data.installments.reduce((total, installment) => {
-            return total + installment.amount;
-          }, 0)
-        );
-        setDailyInstallments(
-          response.data.installments.reduce((count, installment) => {
-            return count + 1;
-          }, 0)
-        );
       })
       .catch((err) => {
         // setMessage(err.data.message);
@@ -134,27 +145,30 @@ const Insights = () => {
       </div>{" "}
       <div className="grid grid-cols-2 gap-5 ">
         <div className="grid grid-rows-3 gap-5 mb-10">
-          <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between ">
-            <SectionSubtitle title="Total Money to be collected" />
-            {loading ? (
-              <div className="w-full flex items-center justify-center">
-                <ThreeDots
-                  height="40"
-                  width="40"
-                  radius="9"
-                  color="#808080"
-                  ariaLabel="three-dots-loading"
-                  wrapperStyle={{}}
-                  wrapperClassName=""
-                  visible={true}
-                />
-              </div>
-            ) : (
-              <p className="text-3xl font-semibold">
-                {totalUnPaid && CurrencyFormatter(totalUnPaid)} LKR
-              </p>
-            )}
-          </div>
+          {userData.role === "admin" && (
+            <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between ">
+              <SectionSubtitle title="Total Money to be collected" />
+              {loading ? (
+                <div className="w-full flex items-center justify-center">
+                  <ThreeDots
+                    height="40"
+                    width="40"
+                    radius="9"
+                    color="#808080"
+                    ariaLabel="three-dots-loading"
+                    wrapperStyle={{}}
+                    wrapperClassName=""
+                    visible={true}
+                  />
+                </div>
+              ) : (
+                <p className="text-3xl font-semibold">
+                  {totalUnPaid && CurrencyFormatter(totalUnPaid)} LKR
+                </p>
+              )}
+            </div>
+          )}
+
           <div className="bg-white drop-shadow-lg rounded-lg p-3 flex flex-col justify-between">
             <SectionSubtitle title="Daily total collection" />
             {loading ? (
@@ -199,7 +213,9 @@ const Insights = () => {
           </div>
         </div>
         <div className="w-full">
-          <CollectorDetails collectors={collectors} />
+          {userData.role === "admin" && (
+            <CollectorDetails collectors={collectors} />
+          )}
         </div>
       </div>
       <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5">
@@ -225,54 +241,13 @@ const Insights = () => {
                 visible={true}
               />
             </div>
+          ) : userData.role === "admin" ? (
+            <DailyInstallmentAdmin installments={installments} />
           ) : (
-            installments &&
-            installments.map((installment) => {
-              const paidDate = new Date(installment.paidDate);
-              return (
-                <div
-                  className="bg-yellow p-3 rounded-lg mb-3 lg:bg-transparent lg:p-0 lg:rounded-none lg:mb-0 w-full grid grid-cols-2 lg:grid-cols-7"
-                  key={installment._id}
-                >
-                  <p className="flex gap-1 lg:col-span-2 capitalize font-semibold lg:font-normal">
-                    {installment.customerName}
-                  </p>
-                  <p className="flex gap-1 font-semibold lg:font-normal">
-                    <span className=" flex lg:hidden"> -</span>
-                    {installment.customerID}
-                  </p>
-                  <p className="flex gap-1 col-span-2 lg:col-span-1">
-                    <span className="flex lg:hidden">Collected by :</span>
-                    <span className="capitalize">
-                      {installment.collectedBy}
-                    </span>
-                  </p>
-                  <p className="flex gap-1 col-span-2">
-                    {new Date(installment.paidDate).toLocaleDateString(
-                      "en-GB",
-                      {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        timeZone: "Asia/Colombo",
-                      }
-                    )}{" "}
-                    {new Date(installment.paidDate).toLocaleTimeString(
-                      "en-US",
-                      {
-                        timeZone: "Asia/Colombo",
-                      }
-                    )}
-                  </p>
-                  <p className="gap-1 flex lg:justify-end col-span-2 lg:col-span-1">
-                    <span className="flex lg:hidden">Amount :</span>
-                    {installment.amount &&
-                      CurrencyFormatter(installment.amount)}{" "}
-                    LKR
-                  </p>
-                </div>
-              );
-            })
+            <DailyInstallments
+              installments={installments}
+              userData={userData}
+            />
           )}
         </div>
       </div>
@@ -299,35 +274,10 @@ const Insights = () => {
                 visible={true}
               />
             </div>
+          ) : userData.role === "admin" ? (
+            <DailyUnpaidAdmin notPaid={notPaid} />
           ) : (
-            notPaid &&
-            notPaid.map((customer) => {
-              return (
-                <div
-                  className="bg-yellow p-3 rounded-lg mb-3 lg:bg-transparent lg:p-0 lg:rounded-none lg:mb-0 w-full grid grid-cols-2 lg:grid-cols-7"
-                  key={customer._id}
-                >
-                  <p className="flex gap-1 lg:col-span-2 capitalize font-semibold lg:font-normal">
-                    {customer.name}
-                  </p>
-                  <p className="flex gap-1 font-semibold lg:font-normal">
-                    <span className=" flex lg:hidden"> -</span>
-                    {customer.customerID}
-                  </p>
-                  <p className="flex gap-1 col-span-2 lg:col-span-1">
-                    <span className="flex lg:hidden">Collector Name :</span>
-                    <span className="capitalize">{customer.collectorName}</span>
-                  </p>
-                  <p className="flex gap-1 col-span-2">{customer.phone}</p>
-                  <p className="gap-1 flex lg:justify-end col-span-2 lg:col-span-1">
-                    <span className="flex lg:hidden">Amount :</span>
-                    {customer.installmentAmount &&
-                      CurrencyFormatter(customer.installmentAmount)}{" "}
-                    LKR
-                  </p>
-                </div>
-              );
-            })
+            <DailyUnpaid notPaid={notPaid} userData={userData} />
           )}
         </div>
       </div>

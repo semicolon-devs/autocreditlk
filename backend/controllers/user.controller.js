@@ -132,6 +132,7 @@ exports.getCollectorsByDate = async (req, res) => {
             phone: user.phone,
             isTodayWorkingDay,
             totalCollected,
+            installmentCount: installments.length,
           };
         })
       );

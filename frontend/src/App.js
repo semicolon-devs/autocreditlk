@@ -24,7 +24,6 @@ import ReportsPage from "./pages/ReportsPage";
 import AccessDeniedPage from "./pages/AccessDeniedPage";
 import SetteledLoans from "./pages/SetteldLoans";
 
-
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
@@ -69,10 +68,7 @@ const router = createBrowserRouter(
           path="/add-existing-customer"
           element={isAdmin() ? <AddExistingCustomer /> : <AccessDeniedPage />}
         />
-        <Route
-          path="/insights"
-          element={isAdmin() ? <Insights /> : <AccessDeniedPage />}
-        />
+        <Route path="/insights" element={<Insights />} />
         <Route
           path="/manage-users"
           element={isAdmin() ? <ManageUsers /> : <AccessDeniedPage />}
@@ -89,7 +85,7 @@ const router = createBrowserRouter(
           path="/settled-loans"
           element={isAdmin() ? <SetteledLoans /> : <AccessDeniedPage />}
         />
-      
+
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </>

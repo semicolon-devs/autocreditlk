@@ -6,7 +6,7 @@ const {
   addPayment,
   deletePayment,
   updatePayment,
-  filterByDate
+  filterByDate,
 } = require("../controllers/installment.controller");
 
 router.post(
@@ -38,10 +38,7 @@ router.put(
 
 router.get(
   "/:date",
-  [
-    passport.authenticate("jwt", { session: false }),
-    checkPermission(["admin"]),
-  ],
+  [passport.authenticate("jwt", { session: false })],
   filterByDate
 );
 

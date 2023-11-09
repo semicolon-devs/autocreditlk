@@ -5,7 +5,7 @@ export const sidebarItems = [
     name: "insights",
     icon: "InsightsIcon",
     path: "/insights",
-    adminAccessOnly: true,
+    adminAccessOnly: false,
   },
   {
     id: 3,

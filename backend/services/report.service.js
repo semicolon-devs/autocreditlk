@@ -6,9 +6,8 @@ const Customer = require("../models/customer.model");
 const User = require("../models/user.model");
 const { reportUpload } = require("../utils/firebaseUpload");
 const Report = require("../models/report.model");
-const schedule = require('node-schedule');
-const  getInstallmentsForDate = require("./insight.service")
-
+const schedule = require("node-schedule");
+const getInstallmentsForDate = require("../services/insight.service");
 const EMAIL_ADDRESS = process.env.EMAIL_ADDRESS;
 const EMAIL_PROVIDER = process.env.EMAIL_PROVIDER;
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
@@ -20,7 +19,10 @@ function getMailOptions(payload) {
   const to = payload.to;
   const subject =
     payload.date + " -" + COMPANY_NAME + payload.reportType + "Report";
-  const text = "File Attached for : " + payload.date + "\n\n ---SemicolonDevs---\n---semicolondevs.com--- ";
+  const text =
+    "File Attached for : " +
+    payload.date +
+    "\n\n ---SemicolonDevs---\n---semicolondevs.com--- ";
   const html = "";
 
   var mailOption = {
@@ -159,9 +161,7 @@ const addReportToDatabase = async (filePath, date) => {
   }
 };
 
-
-
-const reportGenerateAndSend = (reportTypeSent , dayCount) => {
+const reportGenerateAndSend = (reportTypeSent, dayCount) => {
   const records = [];
 
   const reportType = reportTypeSent;
@@ -174,26 +174,23 @@ const reportGenerateAndSend = (reportTypeSent , dayCount) => {
     FILE_EXTENSION;
   const filePath = "./reports/" + fileName;
 
+  // use following function to get installments and nonpaid customers for the day, and we can map them to the report
 
-// use following function to get installments and nonpaid customers for the day, and we can map them to the report
-
-//  const date = getDate;
-//    const { installments, nonPaidCustomers } = await getInstallmentsForDate(
-//       date
-//     );
-
-
+  //  const date = getDate;
+  //    const { installments, nonPaidCustomers } = await getInstallmentsForDate(
+  //       date
+  //     );
 
   const dayStartTime = new Date(
     moment().utcOffset("+05:30").format("YYYY-MM-DD") + "T00:00:00+05:30"
   );
   dayStartTime.setUTCDate(dayStartTime.getUTCDate() - dayCount);
-  console.log(dayStartTime)
+  console.log(dayStartTime);
   const dayEndTime = new Date(
     moment().utcOffset("+05:30").format("YYYY-MM-DD") + "T23:59:59+05:30"
   );
-  dayEndTime.setUTCDate(dayEndTime.getUTCDate() );
-  console.log(dayEndTime)
+  dayEndTime.setUTCDate(dayEndTime.getUTCDate());
+  console.log(dayEndTime);
   Installment.find({
     paidDate: { $gte: dayStartTime, $lt: dayEndTime },
   })
@@ -217,9 +214,6 @@ const reportGenerateAndSend = (reportTypeSent , dayCount) => {
           });
       }
 
-
-
-      
       // TODO shedule generate and send report at 23:59:59 today
       setTimeout(await generateDailyReport(records, filePath), 15000);
 
@@ -241,43 +235,35 @@ const reportGenerateAndSend = (reportTypeSent , dayCount) => {
     });
 };
 
-
-
-
 // Triggering reportGenerateAndSend() everyday at 00:00:00
 const rule = new schedule.RecurrenceRule();
-  rule.hour = 21;
-  rule.minute = 12;
-  rule.second = 0;
-  rule.tz = "Asia/colombo"
+rule.hour = 21;
+rule.minute = 12;
+rule.second = 0;
+rule.tz = "Asia/colombo";
 
-  schedule.scheduleJob(rule, function(){
-    reportGenerateAndSend("Daily" , 1)
-  })
-
+schedule.scheduleJob(rule, function () {
+  reportGenerateAndSend("Daily", 1);
+});
 
 // Triggering reportGenerateAndSend() every week on sunday at 23:00:00
 const rule2 = new schedule.RecurrenceRule();
- rule2.dayOfWeek = 0; // 0 = Sunday
- rule2.hour = 8;    
- rule2.minute = 0;
- rule2.tz = "Asia/colombo"
+rule2.dayOfWeek = 0; // 0 = Sunday
+rule2.hour = 8;
+rule2.minute = 0;
+rule2.tz = "Asia/colombo";
 
- schedule.scheduleJob(rule2, function () {
-   reportGenerateAndSend("Weekly" , 7)
+schedule.scheduleJob(rule2, function () {
+  reportGenerateAndSend("Weekly", 7);
 });
-
 
 // Triggering reportGenerateAndSend() every month on 30 at 00:23:00
 const rule3 = new schedule.RecurrenceRule();
-  rule3.date = 1;      // 1st day of the month
-  rule3.hour = 4;    // 2 PM
-  rule3.minute = 0;
-  rule3.tz = "Asia/colombo"
+rule3.date = 1; // 1st day of the month
+rule3.hour = 4; // 2 PM
+rule3.minute = 0;
+rule3.tz = "Asia/colombo";
 
 schedule.scheduleJob(rule3, function () {
-  reportGenerateAndSend("Monthly" , 30)
+  reportGenerateAndSend("Monthly", 30);
 });
-
-
-

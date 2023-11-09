@@ -11,6 +11,7 @@ const { calculateNextBillingDate } = require("../utils/calculateDays");
 const {
   getCustomersToPay,
   getInstallmentsForDate,
+  filterByCollectorId,
 } = require("../services/insight.service");
 
 exports.addPayment = async (req, res) => {

@@ -5,7 +5,7 @@ import SectionSubtitle from "../components/SectionSubtitle";
 
 import { CloseIcon } from "../Icons/Icon";
 import DeleteUserModal from "../modals/DeleteUserModal";
-
+import { EditIcon } from "../Icons/Icon";
 import { ThreeDots } from "react-loader-spinner";
 
 import Cookies from "universal-cookie";
@@ -70,14 +70,6 @@ const UserList = () => {
                 </p>
                 <p className="text-maroon ">{user.email}</p>
                 <p className="text-maroon leading-none">{user.phone}</p>
-              </div>
-              <div className="">
-                <button
-                  className="border-none outline-none"
-                  onClick={() => handleDeleteUserClick(user)}
-                >
-                  <CloseIcon className="text-maroon" />
-                </button>
               </div>
             </div>
           ))

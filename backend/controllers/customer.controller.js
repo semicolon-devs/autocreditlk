@@ -256,7 +256,7 @@ exports.getCustomers = async (req, res) => {
   Customer.find({ $expr: { $ne: ["$loanAmount", "$paidAmount"] } })
     .sort({ customerID: -1 })
     .select(
-      "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId"
+      "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId billingCycle"
     )
     .then(async (customers) => {
       const updatedList = [];

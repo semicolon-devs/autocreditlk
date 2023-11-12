@@ -18,7 +18,7 @@ exports.addPayment = async (req, res) => {
   const { customerID, amount, paidDate, collectedBy, paidAmountDate } =
     req.body;
   try {
-    // startCollecting(collectedBy);
+    startCollecting(collectedBy);
 
     await User.findById(collectedBy)
       .then(async (user) => {

@@ -4,6 +4,12 @@ const moment = require("moment-timezone");
 async function markWorkingDay(collectorId) {
   try {
     const user = await User.findById(collectorId);
+    const dayToSave = moment(new Date())
+      .tz("Asia/Colombo")
+      .startOf("day")
+      .format();
+
+    const dayToDisplay = moment(new Date()).format("YYYY-MM-DD");
 
     if (!user) {
       return {
@@ -17,12 +23,9 @@ async function markWorkingDay(collectorId) {
       moment(day).format("YYYY-MM-DD")
     );
 
-    const dayToSave = moment.tz("Asia/Colombo").format("YYYY-MM-DD");
-
-    if (!trimmedWorkingDays.includes(dayToSave)) {
+    if (!trimmedWorkingDays.includes(dayToDisplay)) {
       workingDays.push(dayToSave);
     }
-
     const updatedWorkingDays = Array.from(new Set(workingDays));
 
     // await User.findByIdAndUpdate(collectorId, {
@@ -32,7 +35,7 @@ async function markWorkingDay(collectorId) {
     await User.findByIdAndUpdate(collectorId, {
       $set: { workingDays: updatedWorkingDays },
     });
-   
+
     return {
       status: "Success",
     };

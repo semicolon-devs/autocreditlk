@@ -37,7 +37,6 @@ exports.login = async (req, res) => {
     { expiresIn: "24h" }
   );
   const isWorkingDay = req.body.isWorkingDay;
-
   if (isWorkingDay) {
     markWorkingDay(req.user.id);
   }

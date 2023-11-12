@@ -11,8 +11,9 @@ async function getWorkingUsers(date) {
   try {
     const usersWithDate = await User.find({
       workingDays: { $in: [new Date(selectedDate)] },
-    }).select("_id");
+    }).select("_id workingDays");
 
+    const workingDaysu = usersWithDate.map((user) => user.workingDays);
     const userIds = usersWithDate.map((user) => user._id);
     return userIds;
   } catch (err) {

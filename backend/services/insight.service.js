@@ -36,7 +36,7 @@ async function getCustomersToPay(date) {
       startDate: { $lte: startOfDay },
       collectorId: { $in: workingUserIds },
     }).select(
-      "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId installmentAmount"
+      "customerID name NIC loanAmount arrears paidAmount phone billingCycle isSettled collectorId installmentAmount"
     );
 
     return customersToPay;

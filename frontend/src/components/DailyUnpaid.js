@@ -19,7 +19,7 @@ const DailyUnpaid = ({ notPaid, userData }) => {
       {filteredUsers &&
         filteredUsers.map((customer) => (
           <div
-            className="bg-yellow p-3 rounded-lg mb-3 lg:bg-transparent lg:p-0 lg:rounded-none lg:mb-0 w-full grid grid-cols-2 lg:grid-cols-7"
+            className="bg-yellow p-3 rounded-lg mb-3 lg:bg-transparent lg:p-0 lg:rounded-none lg:mb-0 w-full grid grid-cols-2 lg:grid-cols-8"
             key={customer._id}
           >
             <p className="flex gap-1 lg:col-span-2 capitalize font-semibold lg:font-normal">
@@ -35,7 +35,7 @@ const DailyUnpaid = ({ notPaid, userData }) => {
             </p>
             <p className="flex gap-1 ">{customer.phone}</p>
             <p className="flex gap-1 ">{customer.billingCycle}</p>
-            <p className="gap-1 flex lg:justify-end col-span-2 lg:col-span-1">
+            <p className="gap-1 flex lg:justify-start col-span-2 lg:col-span-1">
               <span className="flex lg:hidden">Amount :</span>
               {customer.installmentAmount &&
                 CurrencyFormatter(customer.installmentAmount)}{" "}

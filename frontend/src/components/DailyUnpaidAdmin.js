@@ -22,7 +22,7 @@ const DailyUnpaidAdmin = ({ notPaid }) => {
             </p>
             <p className="flex gap-1 ">{customer.phone}</p>
             <p className="flex gap-1 ">{customer.billingCycle}</p>
-            <p className="gap-1 flex lg:justify-end col-span-2 lg:col-span-1">
+            <p className="gap-1 flex lg:justify-start col-span-2 lg:col-span-1">
               <span className="flex lg:hidden">Amount :</span>
               {customer.installmentAmount &&
                 CurrencyFormatter(customer.installmentAmount)}{" "}

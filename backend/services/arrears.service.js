@@ -94,19 +94,49 @@ async function calculateArrears(customerID) {
         );
         // calculate last billing date
         var lastBillingDate = moment(new Date(customer.startDate));
+        var arriesDays;
+
+
+        function weeksBetweenDates(date1, date2) {
+          const millisecondsInWeek = 1000 * 60 * 60 * 24 * 7;
+        
+          const differenceInMilliseconds = Math.abs(date1 - date2);
+        
+          const differenceInWeeks = differenceInMilliseconds / millisecondsInWeek;
+        
+          return differenceInWeeks;
+        }
+
+        function monthsBetweenDates(date1, date2) {
+          const monthsInYear = 12;
+
+          const yearsDifference = date2.getUTCFullYear() - date1.getUTCFullYear();
+          const monthsDifference = date2.getUTCMonth() - date1.getUTCMonth();
+        
+          const totalMonthsDifference = yearsDifference * monthsInYear + monthsDifference;
+        
+          return totalMonthsDifference;
+        }
+        
+
         switch (customer.billingCycle) {
           case "Daily":
             lastBillingDate = lastBillingDate.add(noOfPayments, "d");
+            days = await getWorkingDays(customer.collectorId);
+            arriesDays = getDateRange(days, lastBillingDate, today);
             break;
           case "Weekly":
             lastBillingDate = lastBillingDate.add(noOfPayments, "w");
+            arriesDays = weeksBetweenDates(today,lastBillingDate);
             break;
           case "Monthly":
             lastBillingDate = lastBillingDate.add(noOfPayments, "M");
+            arriesDays = monthsBetweenDates(today,lastBillingDate);
         }
 
-        const days = await getWorkingDays(customer.collectorId);
-        const arriesDays = getDateRange(days, lastBillingDate, today);
+
+        // const days = await getWorkingDays(customer.collectorId);
+        // const arriesDays = getDateRange(days, lastBillingDate, today);
 
         const noOfArriesPayments = arriesDays.length;
 

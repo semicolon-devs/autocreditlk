@@ -80,6 +80,7 @@ async function collectedBySomeoneElse(customerID, date) {
 
 async function calculateArrears(customerID) {
   const today = moment(new Date());
+  const manualDate = moment("2023-12-28");
 
   try {
     const filter = {
@@ -93,21 +94,26 @@ async function calculateArrears(customerID) {
         );
         // calculate last billing date
         var lastBillingDate = moment(new Date(customer.startDate));
+        var arriesDays = 0;
+        var noOfArriesPayments = 0;
         switch (customer.billingCycle) {
           case "Daily":
             lastBillingDate = lastBillingDate.add(noOfPayments, "d");
+            days = await getWorkingDays(customer.collectorId);
+            arriesDays = getDateRange(days, lastBillingDate, today);
+            noOfArriesPayments = arriesDays.length;
             break;
           case "Weekly":
             lastBillingDate = lastBillingDate.add(noOfPayments, "w");
+            const weekDifference = today.diff(lastBillingDate, "weeks");
+            noOfArriesPayments = weekDifference;
+
             break;
           case "Monthly":
             lastBillingDate = lastBillingDate.add(noOfPayments, "M");
+            const monthDifference = manualDate.diff(lastBillingDate, "months");
+            noOfArriesPayments = monthDifference;
         }
-        
-        const days = await getWorkingDays(customer.collectorId);
-        const arriesDays = getDateRange(days, lastBillingDate, today);
-
-        const noOfArriesPayments = arriesDays.length;
 
         const arries =
           (noOfPayments + noOfArriesPayments) * customer.installmentAmount -

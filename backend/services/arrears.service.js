@@ -15,10 +15,9 @@ async function startCollecting(collectorId, date) {
         .startOf("day")
         .format();
       workingDays.push(day);
-
+      console.log(day);
       // removes duplicates by converting into a set
       const updatedWorkingDays = Array.from(new Set(workingDays));
-
       return User.findByIdAndUpdate(collectorId, {
         $addToSet: { workingDays: updatedWorkingDays },
       })
@@ -104,7 +103,7 @@ async function calculateArrears(customerID) {
           case "Monthly":
             lastBillingDate = lastBillingDate.add(noOfPayments, "M");
         }
-
+        
         const days = await getWorkingDays(customer.collectorId);
         const arriesDays = getDateRange(days, lastBillingDate, today);
 

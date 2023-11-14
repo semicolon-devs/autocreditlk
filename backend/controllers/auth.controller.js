@@ -6,6 +6,7 @@ const { sendResetOTP, sendFirstTimeOTP } = require("../services/sms.service");
 const { generatePassword } = require("../utils/passwordGenerate");
 const { json } = require("express");
 const { markWorkingDay } = require("../utils/markWorkingDay");
+const { startCollecting } = require("../services/arrears.service");
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -38,7 +39,8 @@ exports.login = async (req, res) => {
   );
   const isWorkingDay = req.body.isWorkingDay;
   if (isWorkingDay) {
-    markWorkingDay(req.user.id);
+    // markWorkingDay(req.user.id);
+    startCollecting(req.user.id)
   }
 
   if (req.user.role == "admin" || req.user.role == "collector") {

@@ -18,6 +18,7 @@ const HomePageCard = ({ customer }) => {
     paidAmount,
     phone,
     phoneTwo,
+    billingCycle,
   } = customer;
 
   const handleAddPaymentClick = (customer) => {
@@ -54,7 +55,7 @@ const HomePageCard = ({ customer }) => {
         <p className="">
           Mobile No. 2 - <CallNow /> <a href={"tel:" + phoneTwo}>{phoneTwo}</a>
         </p>
-        {/* <p className="text-sm">{description}</p> */}
+        <p className="">Billing Cycle: {billingCycle}</p>
       </div>
       <div className="flex gap-3">
         <button

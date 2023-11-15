@@ -253,12 +253,12 @@ const Insights = () => {
       </div>
       <div className="bg-yellow drop-shadow-lg rounded-lg p-3 mb-5">
         <SectionSubtitle title="Unpaid Customers" />
-        <div className="hidden lg:grid lg:grid-cols-7 lg:border-y lg:border-grey lg:py-3 lg:my-3">
+        <div className="hidden lg:grid lg:grid-cols-8 lg:border-y lg:border-grey lg:py-3 lg:my-3">
           <p className="font-semibold col-span-2">Customer Name</p>
           <p className="font-semibold">Customer ID</p>
           <p className="font-semibold">Collector Name</p>
           <p className="font-semibold"> Phone Number</p>
-          {/* <p className="font-semibold"> Billing Cycle</p> */}
+          <p className="font-semibold"> Billing Cycle</p>
           <p className="font-semibold col-span-2">Installment amount</p>
         </div>
         <div className="overflow-y-auto max-h-96">

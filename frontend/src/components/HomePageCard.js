@@ -19,6 +19,7 @@ const HomePageCard = ({ customer }) => {
     phone,
     phoneTwo,
     billingCycle,
+    installmentAmount,
   } = customer;
 
   const handleAddPaymentClick = (customer) => {
@@ -33,6 +34,8 @@ const HomePageCard = ({ customer }) => {
       return false;
     }
   };
+
+console.log(customer);
 
   return (
     <div className="bg-white w-full drop-shadow-lg p-3 rounded-lg flex flex-col justify-between">
@@ -55,7 +58,11 @@ const HomePageCard = ({ customer }) => {
         <p className="">
           Mobile No. 2 - <CallNow /> <a href={"tel:" + phoneTwo}>{phoneTwo}</a>
         </p>
-        <p className="">Billing Cycle: {billingCycle}</p>
+        <p className="">Billing Cycle - {billingCycle}</p>
+        <p className="">Installment amount - {installmentAmount &&
+            CurrencyFormatter(installmentAmount)}{" "}
+          LKR</p>
+        
       </div>
       <div className="flex gap-3">
         <button

@@ -68,6 +68,7 @@ const AddCustomer = () => {
       name,
       NIC,
       email,
+      job,
       mobileNo,
       mobileNoTwo,
       address,
@@ -82,6 +83,7 @@ const AddCustomer = () => {
       guarantorMobileNo,
       guarantorMobileNoTwo,
       guarantorNIC,
+      guarantorJob,
     } = values;
 
     setLoading(true);
@@ -91,6 +93,7 @@ const AddCustomer = () => {
     formData.append("name", name);
     formData.append("NIC", NIC);
     formData.append("email", email);
+    formData.append("job", job);
     formData.append("phone", mobileNo);
     formData.append("phoneTwo", mobileNoTwo);
     formData.append("address", address);
@@ -110,6 +113,7 @@ const AddCustomer = () => {
     formData.append("guarantorMobile", guarantorMobileNo);
     formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
     formData.append("guarantorNIC", guarantorNIC);
+    formData.append("guarantorNIC", guarantorJob);
     formData.append("guarantorNICFrontCopy", guarantorNICFrontCopy);
     formData.append("guarantorNICRearCopy", guarantorNICRearCopy);
 
@@ -226,6 +230,7 @@ const AddCustomer = () => {
           name: "",
           NIC: "",
           email: "",
+          job: "",
           mobileNo: "",
           mobileNoTwo: "",
           address: "",
@@ -240,6 +245,7 @@ const AddCustomer = () => {
           guarantorMobileNo: "",
           guarantorMobileNoTwo: "",
           guarantorNIC: "",
+          guarantorJob: "",
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -279,6 +285,13 @@ const AddCustomer = () => {
                 type="text"
                 label="Email (optional):"
                 placeholder="samankumara@gmail.com"
+              />
+
+              <TextInput
+                name="job"
+                type="text"
+                label="Job(Optional) :"
+                placeholder="Teacher"
               />
 
               <TextInput
@@ -414,6 +427,13 @@ const AddCustomer = () => {
                 type="text"
                 label="Guarantor NIC :"
                 placeholder="871301450V / 198713001450"
+              />
+
+              <TextInput
+                name="guarantorJob"
+                type="text"
+                label="Guarantor Job(Optional) :"
+                placeholder="Teacher"
               />
 
               <TextInput

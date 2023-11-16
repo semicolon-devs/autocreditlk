@@ -26,6 +26,8 @@ exports.addCustomer = async (req, res) => {
       guarantorMobile,
       guarantorMobileTwo,
       guarantorNIC,
+      job,
+      guarantorJob,
     } = req.body;
 
     const NICFrontCopy = req.files["NICFrontCopy"][0];
@@ -108,6 +110,8 @@ exports.addCustomer = async (req, res) => {
       guarantorNICFrontCopyLink,
       guarantorNICRearCopyLink,
       guarantorAdditionalDocumentLink,
+      job,
+      guarantorJob,
     })
       .then((result) => {
         res.status(200).json({ result: result });
@@ -225,6 +229,8 @@ exports.addExisitngCustomer = async (req, res) => {
       guarantorNICFrontCopyLink,
       guarantorNICRearCopyLink,
       guarantorAdditionalDocumentLink,
+      job,
+      guarantorJob,
     })
       .then((result) => {
         Installment.create({
@@ -256,7 +262,7 @@ exports.getCustomers = async (req, res) => {
   Customer.find({ $expr: { $lt: ["$paidAmount", "$loanAmount"] } })
     .sort({ customerID: -1 })
     .select(
-      "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId billingCycle"
+      "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId billingCycle installmentAmount"
     )
     .then(async (customers) => {
       const updatedList = [];

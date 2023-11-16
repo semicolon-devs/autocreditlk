@@ -68,6 +68,7 @@ const AddExistingCustomer = () => {
       name,
       NIC,
       email,
+      job,
       mobileNo,
       mobileNoTwo,
       address,
@@ -84,6 +85,7 @@ const AddExistingCustomer = () => {
       guarantorMobileNo,
       guarantorMobileNoTwo,
       guarantorNIC,
+      guarantorJob,
     } = values;
 
     setLoading(true);
@@ -93,6 +95,7 @@ const AddExistingCustomer = () => {
     formData.append("name", name);
     formData.append("NIC", NIC);
     formData.append("email", email);
+    formData.append("job", job);
     formData.append("phone", mobileNo);
     formData.append("phoneTwo", mobileNoTwo);
     formData.append("address", address);
@@ -112,6 +115,7 @@ const AddExistingCustomer = () => {
     formData.append("guarantorMobile", guarantorMobileNo);
     formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
     formData.append("guarantorNIC", guarantorNIC);
+    formData.append("guarantorNIC", guarantorJob);
     formData.append("guarantorNICFrontCopy", guarantorNICFrontCopy);
     formData.append("guarantorNICRearCopy", guarantorNICRearCopy);
     formData.append("customerAdditionalDocument", customerAdditionalDocument);
@@ -298,6 +302,13 @@ const AddExistingCustomer = () => {
               />
 
               <TextInput
+                name="job"
+                type="text"
+                label="Job(Optional) :"
+                placeholder="Teacher"
+              />
+
+              <TextInput
                 name="mobileNo"
                 type="text"
                 label="Mobile No. :"
@@ -445,6 +456,13 @@ const AddExistingCustomer = () => {
                 type="text"
                 label="Guarantor NIC :"
                 placeholder="871301450V / 198713001450"
+              />
+
+              <TextInput
+                name="guarantorJob"
+                type="text"
+                label="Guarantor Job(Optional) :"
+                placeholder="Teacher"
               />
 
               <TextInput

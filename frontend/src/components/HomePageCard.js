@@ -34,9 +34,7 @@ const HomePageCard = ({ customer }) => {
       return false;
     }
   };
-
 console.log(customer);
-
   return (
     <div className="bg-white w-full drop-shadow-lg p-3 rounded-lg flex flex-col justify-between">
       <div className="">
@@ -59,10 +57,10 @@ console.log(customer);
           Mobile No. 2 - <CallNow /> <a href={"tel:" + phoneTwo}>{phoneTwo}</a>
         </p>
         <p className="">Billing Cycle - {billingCycle}</p>
-        <p className="">Installment amount - {installmentAmount &&
-            CurrencyFormatter(installmentAmount)}{" "}
-          LKR</p>
-        
+        <p className="">
+          Installment amount -{" "}
+          {installmentAmount && CurrencyFormatter(installmentAmount)} LKR
+        </p>
       </div>
       <div className="flex gap-3">
         <button

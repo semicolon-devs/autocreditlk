@@ -35,7 +35,7 @@ async function getCustomersToPay(date) {
     const customersToPay = await Customer.find({
       startDate: { $lte: startOfDay },
       collectorId: { $in: workingUserIds },
-      $expr: { $ne: ["$loanAmount", "$paidAmount"] },
+      $expr: { $lt: ["$paidAmount", "$loanAmount"] },
     }).select(
       "customerID name NIC loanAmount arrears paidAmount phone billingCycle isSettled collectorId installmentAmount"
     );

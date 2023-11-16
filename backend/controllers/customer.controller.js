@@ -253,7 +253,7 @@ exports.addExisitngCustomer = async (req, res) => {
 
 exports.getCustomers = async (req, res) => {
   // Customer.find({ isSettled: false })     Can add after updated all customers settled status , using  update-settled route
-  Customer.find({ $expr: { $ne: ["$loanAmount", "$paidAmount"] } })
+  Customer.find({ $expr: { $lt: ["$paidAmount", "$loanAmount"] } })
     .sort({ customerID: -1 })
     .select(
       "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId billingCycle"

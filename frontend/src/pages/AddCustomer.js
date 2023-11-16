@@ -113,7 +113,7 @@ const AddCustomer = () => {
     formData.append("guarantorMobile", guarantorMobileNo);
     formData.append("guarantorMobileTwo", guarantorMobileNoTwo);
     formData.append("guarantorNIC", guarantorNIC);
-    formData.append("guarantorNIC", guarantorJob);
+    formData.append("guarantorJob", guarantorJob);
     formData.append("guarantorNICFrontCopy", guarantorNICFrontCopy);
     formData.append("guarantorNICRearCopy", guarantorNICRearCopy);
 

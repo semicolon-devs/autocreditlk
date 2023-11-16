@@ -107,7 +107,12 @@ const CustomerSchema = new mongoose.Schema(
     },
     isSettled: {
       type: String,
-      required: true,
+    },
+    job: {
+      type: String,
+    },
+    guarantorJob: {
+      type: String,
     },
     collectedDates: [
       {

@@ -147,6 +147,8 @@ exports.addExisitngCustomer = async (req, res) => {
       guarantorMobile,
       guarantorMobileTwo,
       guarantorNIC,
+      job,
+      guarantorJob,
     } = req.body;
 
     const NICFrontCopy = req.files["NICFrontCopy"][0];
@@ -417,6 +419,8 @@ exports.updateCustomer = async (req, res) => {
     guarantorMobile,
     guarantorMobileTwo,
     guarantorNIC,
+    job,
+    guarantorJob,
   } = req.body;
 
   const filter = { customerID: customerID };
@@ -432,6 +436,8 @@ exports.updateCustomer = async (req, res) => {
     guarantorMobile,
     guarantorMobileTwo,
     guarantorNIC,
+    job,
+    guarantorJob,
   };
 
   Customer.findOneAndUpdate(filter, newCustomerDetails, { new: true })

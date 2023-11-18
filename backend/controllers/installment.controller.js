@@ -19,7 +19,6 @@ exports.addPayment = async (req, res) => {
     req.body;
   try {
     startCollecting(collectedBy);
-
     await User.findById(collectedBy)
       .then(async (user) => {
         try {
@@ -45,9 +44,11 @@ exports.addPayment = async (req, res) => {
               ? new Date(paidAmountDate)
               : new Date(),
             nextBillingDate: nextPayment,
-            isSettled: paidAmount <= customer.loanAmount,
+            // isSettled:
+            //   customer.paidAmount + parseInt(amount) <= customer.loanAmount,
           };
 
+          console.log("updated" + update);
           const updatedCustomer = await Customer.findOneAndUpdate(
             filter,
             update,

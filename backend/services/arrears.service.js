@@ -15,7 +15,6 @@ async function startCollecting(collectorId, date) {
         .startOf("day")
         .format();
       workingDays.push(day);
-      console.log(day);
       // removes duplicates by converting into a set
       const updatedWorkingDays = Array.from(new Set(workingDays));
       return User.findByIdAndUpdate(collectorId, {

@@ -80,7 +80,6 @@ exports.addCustomer = async (req, res) => {
           )
         : null,
     ]);
-
     Customer.create({
       customerID,
       name,

@@ -2,19 +2,23 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import AddPaymentModal from "../modals/AddPaymentModal";
 import { CallNow } from "../Icons/Icon";
-
+import BASE_URL from "../config/ApiConfig";
 import { CurrencyFormatter } from "../utils/CurrencyFormatter";
+import axios from "axios";
+import Cookies from "universal-cookie";
 
+const cookies = new Cookies();
 const HomePageCard = ({ customer }) => {
   const [addPaymentModalShow, setAddPaymentModalShow] = useState(false);
   const [displayCustomer, setDisplayCustomer] = useState(null);
-
+  const [showArrears, setShowArrears] = useState();
+  const [arrears, setArrears] = useState(0);
+  const token = cookies.get("autoCreditCookie");
   const {
     customerID,
     name,
     NIC,
     loanAmount,
-    arrears,
     paidAmount,
     phone,
     phoneTwo,
@@ -27,7 +31,28 @@ const HomePageCard = ({ customer }) => {
     setAddPaymentModalShow(true);
   };
 
-  const handleArrears = () => {
+  const handleArrears = (customer) => {
+    const fetchArrears = async (customerID) => {
+      console.log(customerID);
+      const axiosConfig = {
+        method: "get",
+        url: `${BASE_URL}customers/arrears/${customerID}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      axios(axiosConfig)
+        .then((response) => {
+          setArrears(response.data.arrears);
+          setShowArrears(true);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {});
+    };
+    fetchArrears(customer.customerID);
   };
 
   const isAdmin = () => {
@@ -37,7 +62,6 @@ const HomePageCard = ({ customer }) => {
       return false;
     }
   };
-  console.log(customer);
   return (
     <div className="bg-white w-full drop-shadow-lg p-3 rounded-lg flex flex-col justify-between">
       <div className="">
@@ -61,15 +85,17 @@ const HomePageCard = ({ customer }) => {
           Installment amount -{" "}
           {installmentAmount && CurrencyFormatter(installmentAmount)} LKR
         </p>
+        {showArrears && (
+          <p className="">
+            Arrears - {arrears && CurrencyFormatter(arrears)} LKR
+          </p>
+        )}
         <button
           className="bg-maroon hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg"
-          onClick={handleArrears}
+          onClick={() => handleArrears(customer)}
         >
           <p className="text-white uppercase font-semibold">show arrears </p>
         </button>
-        <p className="hidden">
-          Arrears - {arrears && CurrencyFormatter(arrears)} LKR
-        </p>
       </div>
       <div className="flex gap-3">
         <button

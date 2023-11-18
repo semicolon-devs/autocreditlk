@@ -79,8 +79,6 @@ async function collectedBySomeoneElse(customerID, date) {
 
 async function calculateArrears(customerID) {
   const today = moment(new Date());
-  const manualDate = moment("2023-12-28");
-
   try {
     const filter = {
       customerID: customerID,
@@ -110,7 +108,7 @@ async function calculateArrears(customerID) {
             break;
           case "Monthly":
             lastBillingDate = lastBillingDate.add(noOfPayments, "M");
-            const monthDifference = manualDate.diff(lastBillingDate, "months");
+            const monthDifference = today.diff(lastBillingDate, "months");
             noOfArriesPayments = monthDifference;
         }
 

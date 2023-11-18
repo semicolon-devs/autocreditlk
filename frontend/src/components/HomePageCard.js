@@ -27,6 +27,9 @@ const HomePageCard = ({ customer }) => {
     setAddPaymentModalShow(true);
   };
 
+  const handleArrears = () => {
+  };
+
   const isAdmin = () => {
     if (JSON.parse(localStorage.getItem("userRole")) === "admin") {
       return true;
@@ -34,7 +37,7 @@ const HomePageCard = ({ customer }) => {
       return false;
     }
   };
-console.log(customer);
+  console.log(customer);
   return (
     <div className="bg-white w-full drop-shadow-lg p-3 rounded-lg flex flex-col justify-between">
       <div className="">
@@ -48,9 +51,6 @@ console.log(customer);
           Total Paid - {paidAmount && CurrencyFormatter(paidAmount)} LKR
         </p>
         <p className="">
-          Arrears - {arrears && CurrencyFormatter(arrears)} LKR
-        </p>
-        <p className="">
           Mobile No. 1 - <CallNow /> <a href={"tel:" + phone}>{phone}</a>
         </p>
         <p className="">
@@ -60,6 +60,15 @@ console.log(customer);
         <p className="">
           Installment amount -{" "}
           {installmentAmount && CurrencyFormatter(installmentAmount)} LKR
+        </p>
+        <button
+          className="bg-maroon hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg"
+          onClick={handleArrears}
+        >
+          <p className="text-white uppercase font-semibold">show arrears </p>
+        </button>
+        <p className="hidden">
+          Arrears - {arrears && CurrencyFormatter(arrears)} LKR
         </p>
       </div>
       <div className="flex gap-3">

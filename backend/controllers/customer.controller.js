@@ -259,32 +259,20 @@ exports.addExisitngCustomer = async (req, res) => {
 };
 
 exports.getCustomers = async (req, res) => {
-  // Customer.find({ isSettled: false })     Can add after updated all customers settled status , using  update-settled route
   Customer.find({ $expr: { $lt: ["$paidAmount", "$loanAmount"] } })
     .sort({ customerID: -1 })
     .select(
       "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId billingCycle installmentAmount"
     )
-    .then(async (customers) => {
-      const updatedList = [];
-      for (var customer of customers) {
-        // for show in homepage
-        await calculateArrears(customer.customerID)
-          .then((arrears) => {
-            customer._doc.arrears = arrears;
-            updatedList.push(customer);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-      res.status(200).json({ customers: updatedList });
+    .then((customers) => {
+      res.status(200).json({ customers });
     })
     .catch((err) => {
       console.log(err);
       res.status(400).json({ message: err.message });
     });
 };
+
 
 exports.getPaymentOfCustomer = async (req, res) => {
   // reportGenerateAndSend();
@@ -516,5 +504,16 @@ exports.getTotalUnpaid = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: err.message });
+  }
+};
+
+exports.getArrearsOfCustomer = async (req, res) => {
+  const customerId = req.params.id;
+  try {
+    const arrears = await calculateArrears(customerId);
+    res.status(200).json({ arrears });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error calculating arrears." });
   }
 };

@@ -3,7 +3,11 @@ const router = express.Router();
 const passport = require("passport");
 const { checkPermission } = require("../middleware/userAuth");
 
-const { sendSMS, smsGatewayStatus } = require("../controllers/sms.controller");
+const {
+  sendSMS,
+  smsGatewayStatus,
+  sendCustomSMS,
+} = require("../controllers/sms.controller");
 
 router.post("/sendSMS", sendSMS);
 router.get(
@@ -16,3 +20,12 @@ router.get(
 );
 
 module.exports = router;
+
+router.post(
+  "/send-custom",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin", "collector"]),
+  ],
+  sendCustomSMS
+);

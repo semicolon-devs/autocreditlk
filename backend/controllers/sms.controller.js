@@ -4,6 +4,7 @@ const {
   sendResetOTP,
   sendDailySMS,
   getSMSGatewayStatus,
+  sendOneSMS,
 } = require("../services/sms.service");
 
 // this route is made purely for testing purposes. Will be removed after the testing.
@@ -24,21 +25,32 @@ exports.sendSMS = async (req, res) => {
 };
 
 exports.smsGatewayStatus = async (req, res) => {
-//   await axios
-//     .post(
-//       `https://app.notify.lk/api/v1/status?user_id=${process.env.SMS_SENDER_USER_ID}&api_key=${process.env.SMS_SENDER_API_KEY}`
-//     )
-//     .then((result) => {
-//       res.status(200).json(JSON.stringify(result));
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.status(500).json({ message: err.message });
-//     });
-    getSMSGatewayStatus().then((result) => {
-        res.status(200).json({status: result});
+  //   await axios
+  //     .post(
+  //       `https://app.notify.lk/api/v1/status?user_id=${process.env.SMS_SENDER_USER_ID}&api_key=${process.env.SMS_SENDER_API_KEY}`
+  //     )
+  //     .then((result) => {
+  //       res.status(200).json(JSON.stringify(result));
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       res.status(500).json({ message: err.message });
+  //     });
+  getSMSGatewayStatus()
+    .then((result) => {
+      res.status(200).json({ status: result });
     })
     .catch((err) => {
-        res.status(500).json({message: err.message});
-    })
+      res.status(500).json({ message: err.message });
+    });
+};
+
+exports.sendCustomSMS = async (req, res) => {
+  const { to, message } = req.body;
+  try {
+    const result = await sendOneSMS(to, message);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

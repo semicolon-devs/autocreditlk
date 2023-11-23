@@ -13,8 +13,6 @@ const SMS_SENDER_UID = process.env.SMS_SENDER_USER_ID;
 const SMS_SENDER_API_KEY = process.env.SMS_SENDER_API_KEY;
 const SMS_SENDER_SID = process.env.SMS_SENDER_SID;
 
-
-
 async function sendOneSMS(to, message) {
   to = parseMobileNumber(to);
 
@@ -74,8 +72,8 @@ async function sendDailySMS(payload) {
     amountLeft,
   } = payload;
 
-  const arrears = await calculateArrears(customerId)
-  
+  const arrears = await calculateArrears(customerId);
+
   message = `Payment Recieved. 
 Name : ${customerName}
 ID : ${customerId}
@@ -191,4 +189,5 @@ module.exports = {
   sendFirstTimeOTP,
   sendResetOTP,
   getSMSGatewayStatus,
+  sendOneSMS,
 };

@@ -25,7 +25,7 @@ router.post(
   "/send-custom",
   [
     passport.authenticate("jwt", { session: false }),
-    checkPermission(["admin", "collector"]),
+    checkPermission(["admin"]),
   ],
   sendCustomSMS
 );

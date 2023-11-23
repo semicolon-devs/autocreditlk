@@ -104,12 +104,14 @@ const HomePageCard = ({ customer }) => {
           >
             <p className="text-white uppercase font-semibold">show arrears </p>
           </button>
-          <button
-            className="bg-yellow hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg"
-            onClick={() => handleSendMessage(customer)}
-          >
-            <p className="text-white uppercase font-semibold">send message</p>
-          </button>
+          {isAdmin() ? (
+            <button
+              className="bg-yellow hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg"
+              onClick={() => handleSendMessage(customer)}
+            >
+              <p className="text-white uppercase font-semibold">send message</p>
+            </button>
+          ) : null}
         </div>
       </div>
       <div className="flex gap-3">

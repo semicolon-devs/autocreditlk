@@ -102,9 +102,10 @@ async function calculateArrears(customerID) {
             break;
           case "Weekly":
             lastBillingDate = lastBillingDate.add(noOfPayments, "w");
+            // lastBillingDate = moment("2024-01-08T18:50:06+05:30")
             const weekDifference = today.diff(lastBillingDate, "weeks");
             noOfArriesPayments = weekDifference;
-
+            console.log(noOfArriesPayments);
             break;
           case "Monthly":
             lastBillingDate = lastBillingDate.add(noOfPayments, "M");
@@ -115,11 +116,12 @@ async function calculateArrears(customerID) {
         const arries =
           (noOfPayments + noOfArriesPayments) * customer.installmentAmount -
           customer.paidAmount;
-
-        if (arries + customer.paidAmount >= customer.loanAmount) {
-          finalArries = customer.loanAmount - customer.paidAmount;
-        } else {
-          finalArries = arries;
+        if (noOfArriesPayments > 0) {
+          if (arries + customer.paidAmount >= customer.loanAmount) {
+            finalArries = customer.loanAmount - customer.paidAmount;
+          } else {
+            finalArries = arries;
+          }
         }
       })
       .catch((err) => {

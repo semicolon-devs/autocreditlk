@@ -116,7 +116,7 @@ async function calculateArrears(customerID) {
         const arries =
           (noOfPayments + noOfArriesPayments) * customer.installmentAmount -
           customer.paidAmount;
-        if (noOfArriesPayments > 0) {
+        if (noOfArriesPayments >= 0) {
           if (arries + customer.paidAmount >= customer.loanAmount) {
             finalArries = customer.loanAmount - customer.paidAmount;
           } else {

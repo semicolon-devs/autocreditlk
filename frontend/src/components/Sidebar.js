@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import * as Icons from "../Icons/Icon";
 import { LogoutIcon } from "../Icons/Icon";
 import { sidebarItems } from "../data/Data";
-
+import SemicolonDevs from "../assets/devs.png";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
@@ -67,7 +67,18 @@ const Sidebar = ({ collapsed, toggled }) => {
         >
           log out
         </p>
+        
       </div>
+      <div style={{padding: 15 + 'px', }} className={`${
+            collapsed ? "hidden" : "block"
+          }`}>
+        <p style={{fontSize: 10 + 'px' }}>Developed By
+        <img style={{ display: 'inline-block' , width:20 + 'px' , marginLeft:10+'px'}} alt="SemicolonDevs" src={SemicolonDevs}/>
+        </p>
+        <a style={{fontSize: 13 + 'px', }} href="https://semicolondevs.com/">SemicolonDevs</a>
+        
+      </div>
+      
     </div>
   );
 };

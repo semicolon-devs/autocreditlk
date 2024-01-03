@@ -99,7 +99,6 @@ async function calculateArrears(customerID) {
           case "Daily":
             workingDays = await getWorkingDays(customer.collectorId);
             var paymentDates = workingDays.filter((item) => item >= startDate);
-            console.log(paymentDates);
             noOfArriesPayments = paymentDates.length - noOfPayments;
             break;
           case "Weekly":

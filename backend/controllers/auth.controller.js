@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
   const isWorkingDay = req.body.isWorkingDay;
   if (isWorkingDay) {
     // markWorkingDay(req.user.id);
-    startCollecting(req.user.id)
+    startCollecting(req.user.id);
   }
 
   if (req.user.role == "admin" || req.user.role == "collector") {

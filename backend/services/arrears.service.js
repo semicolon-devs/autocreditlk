@@ -14,6 +14,7 @@ async function startCollecting(collectorId, date) {
         .tz("Asia/Colombo")
         .startOf("day")
         .format();
+
       workingDays.push(day);
       // removes duplicates by converting into a set
       const updatedWorkingDays = Array.from(new Set(workingDays));
@@ -90,15 +91,15 @@ async function calculateArrears(customerID) {
           customer.paidAmount / customer.installmentAmount
         );
         // calculate last billing date
-        var lastBillingDate = moment(new Date(customer.startDate));
+        var startDate = moment(new Date(customer.startDate));
         var arriesDays = 0;
         var noOfArriesPayments = 0;
+
         switch (customer.billingCycle) {
           case "Daily":
-            lastBillingDate = lastBillingDate.add(noOfPayments, "d");
-            days = await getWorkingDays(customer.collectorId);
-            arriesDays = getDateRange(days, lastBillingDate, today);
-            noOfArriesPayments = arriesDays.length;
+            workingDays = await getWorkingDays(customer.collectorId);
+            var paymentDates = workingDays.filter((item) => item > startDate);
+            noOfArriesPayments = paymentDates.length - noOfPayments;
             break;
           case "Weekly":
             lastBillingDate = lastBillingDate.add(noOfPayments, "w");
@@ -112,7 +113,6 @@ async function calculateArrears(customerID) {
             const monthDifference = today.diff(lastBillingDate, "months");
             noOfArriesPayments = monthDifference;
         }
-
         const arries =
           (noOfPayments + noOfArriesPayments) * customer.installmentAmount -
           customer.paidAmount;

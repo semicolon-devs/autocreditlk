@@ -273,7 +273,6 @@ exports.getCustomers = async (req, res) => {
     });
 };
 
-
 exports.getPaymentOfCustomer = async (req, res) => {
   // reportGenerateAndSend();
   const customerID = req.params.id;

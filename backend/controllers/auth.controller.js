@@ -33,6 +33,7 @@ exports.login = async (req, res) => {
       name: req.user.name,
       email: req.user.email,
       role: req.user.role,
+      id: req.user.id
     },
     SECRET_KEY,
     { expiresIn: "24h" }

@@ -259,7 +259,20 @@ exports.addExisitngCustomer = async (req, res) => {
 };
 
 exports.getCustomers = async (req, res) => {
-  Customer.find({ $expr: { $lt: ["$paidAmount", "$loanAmount"] } })
+  const userId = req.user.id;
+  const isAdmin = req.user.role === 'admin';
+
+  let query = { $expr: { $lt: ["$paidAmount", "$loanAmount"] } };
+  if (!isAdmin) {
+    query = {
+      $and: [
+        query, 
+        { collectorId: userId }, 
+      ],
+    };
+  }
+
+  Customer.find(query)
     .sort({ customerID: -1 })
     .select(
       "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId billingCycle installmentAmount"

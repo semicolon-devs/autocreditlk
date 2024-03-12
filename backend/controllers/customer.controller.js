@@ -593,7 +593,6 @@ exports.approveAllCustomers = async (req, res) => {
 exports.changeCollector = async (req, res) => {
   const customerID = req.params.id;
   const newCollectorId = req.body.collectorId;
-  console.log(newCollectorId);
   const filter = { customerID: customerID };
   const updateCustomer = {
     collectorId: newCollectorId,

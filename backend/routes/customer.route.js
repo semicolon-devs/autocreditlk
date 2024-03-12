@@ -119,7 +119,7 @@ router.get(
   getPaymentOfCustomer
 );
 
-router.post(
+router.put(
   "/approve/:id",
   [
     passport.authenticate("jwt", { session: false }),

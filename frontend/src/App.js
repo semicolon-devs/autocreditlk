@@ -29,6 +29,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 
 import Cookies from "universal-cookie";
+import PendingCustomers from "./pages/PendingCustomers";
 const cookies = new Cookies();
 
 const isAdmin = () => {
@@ -84,6 +85,11 @@ const router = createBrowserRouter(
         <Route
           path="/settled-loans"
           element={isAdmin() ? <SetteledLoans /> : <AccessDeniedPage />}
+        />
+
+        <Route
+          path="/pending-customers"
+          element={isAdmin() ? <PendingCustomers /> : <AccessDeniedPage />}
         />
 
         <Route path="*" element={<PageNotFound />} />

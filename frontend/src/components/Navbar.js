@@ -36,7 +36,12 @@ const Navbar = ({ setCollapsed, collapsed, setToggled, toggled }) => {
     getUserData();
   }, []);
 
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  // const userData = JSON.parse(localStorage.getItem("userData"));
+  let storedUserData = localStorage.getItem("userData");
+
+  if (storedUserData) {
+    const userData = JSON.parse(storedUserData);
+  }
 
   const windowWidth = useRef(window.innerWidth);
 

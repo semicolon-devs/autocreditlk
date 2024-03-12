@@ -262,7 +262,10 @@ exports.addExisitngCustomer = async (req, res) => {
 exports.getCustomers = async (req, res) => {
   const userId = req.user.id;
   const isAdmin = req.user.role === "admin";
-  let query = { $expr: { $lt: ["$paidAmount", "$loanAmount"] } };
+  let query = {
+    $expr: { $lt: ["$paidAmount", "$loanAmount"] },
+    status: "approved",
+  };
   if (!isAdmin) {
     query = {
       $and: [query, { collectorId: userId }],
@@ -272,7 +275,7 @@ exports.getCustomers = async (req, res) => {
   Customer.find(query)
     .sort({ customerID: -1 })
     .select(
-      "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId billingCycle installmentAmount"
+      "customerID name NIC loanAmount arrears paidAmount phone phoneTwo isSettled collectorId billingCycle installmentAmount status"
     )
     .then((customers) => {
       res.status(200).json({ customers });
@@ -527,7 +530,6 @@ exports.getArrearsOfCustomer = async (req, res) => {
   }
 };
 
-
 exports.approveCustomer = async (req, res) => {
   const customerID = req.params.id;
   const { collectorId } = req.body;
@@ -547,7 +549,7 @@ exports.approveCustomer = async (req, res) => {
     .catch((err) => {
       res.status(400).json({ message: err.message });
     });
-}
+};
 
 //create get pending users controller, for admin to get pending users
 exports.getPendingCustomers = async (req, res) => {

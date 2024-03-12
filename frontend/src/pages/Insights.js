@@ -61,7 +61,6 @@ const Insights = () => {
     var modifiedDate = new Date(date).toLocaleDateString("en-CA", {
       timeZone: "Asia/Colombo",
     });
-    console.log(modifiedDate + "here");
     const axiosConfig = {
       method: "GET",
       url: `${BASE_URL}collector/collectors/${modifiedDate}`,
@@ -105,7 +104,7 @@ const Insights = () => {
     axios(axiosConfig)
       .then((response) => {
         setInstallments(response.data.installments);
-        if (userData.role == "admin") {
+        if (userData.role === "admin") {
           setDailyTotal(
             response.data.installments.reduce((total, installment) => {
               return total + installment.amount;

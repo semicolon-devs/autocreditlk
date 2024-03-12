@@ -12,6 +12,7 @@ const DailyInstallments = ({ installments, userData }) => {
   const userInstallments = installments.filter(
     (installment) => userData.name === installment.collectedBy
   );
+  console.log(userData.name)
   return (
     <>
       {userInstallments &&

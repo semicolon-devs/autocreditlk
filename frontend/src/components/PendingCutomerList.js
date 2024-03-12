@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-
 import SectionSubtitle from "../components/SectionSubtitle";
-
+import axios from "axios";
 import { CloseIcon } from "../Icons/Icon";
 import DeleteUserModal from "../modals/DeleteUserModal";
-
 import { ThreeDots } from "react-loader-spinner";
+import Cookies from "universal-cookie";
+import BASE_URL from "../config/ApiConfig";
+const cookies = new Cookies();
+
+const token = cookies.get("autoCreditCookie");
 
 const PendingCustomerList = ({
   pendingCustomers,
@@ -15,6 +18,28 @@ const PendingCustomerList = ({
   const [displayUser, setDisplayUser] = useState(null);
   const [DeletePendingUserModalShow, setDeletePendingUserModalShow] =
     useState(false);
+
+  const handleApproveUserClick = (user) => {
+    const axiosConfig = {
+      method: "put",
+      url: `${BASE_URL}customers/approve/${user.customerID}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios(axiosConfig)
+      .then((response) => {
+        console.log(response);
+        const updatedUserList = pendingCustomers.filter(
+          (pendingUser) => pendingUser._id !== user._id
+        );
+        setPendingCustomers(updatedUserList);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {});
+  };
 
   const handleDeletePendingUserClick = (user) => {
     setDisplayUser(user);
@@ -38,6 +63,14 @@ const PendingCustomerList = ({
                 </p>
                 <p className="text-maroon ">{user.email}</p>
                 <p className="text-maroon leading-none">{user.phone}</p>
+                <button className="bg-red hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg">
+                  <p
+                    className="text-white uppercase font-semibold"
+                    onClick={() => handleApproveUserClick(user)}
+                  >
+                    Approve
+                  </p>
+                </button>
               </div>
               <div className="">
                 <button

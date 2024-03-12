@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
       name: req.user.name,
       email: req.user.email,
       role: req.user.role,
-      id: req.user.id
+      id: req.user.id,
     },
     SECRET_KEY,
     { expiresIn: "24h" }
@@ -161,7 +161,6 @@ exports.tempPasswordReset = async (req, res) => {
 exports.addUser = async (req, res) => {
   const { name, email, phone } = req.body;
   const password = generatePassword();
-  console.log(password);
   bcrypt
     .hash(password, 10)
     .then(async (hashedPassword) => {
@@ -324,7 +323,7 @@ exports.passwordResetByAdmin = async (req, res) => {
               message: "user password reset failed",
             });
           } else {
-            console.log(password);
+            // console.log(password);
 
             // temp password (password) need to send via sms here
             // phone -> user.phone

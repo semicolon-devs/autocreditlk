@@ -16,6 +16,7 @@ const {
   getTotalUnpaid,
   getArrearsOfCustomer,
   approveCustomer,
+  getPendingCustomers,
 } = require("../controllers/customer.controller");
 const { uploader } = require("../config/multer.config");
 
@@ -151,6 +152,16 @@ router.put(
     checkPermission(["admin"]),
   ],
   changeLoanAmount
+);
+
+//get pending customers route for admin
+router.get(
+  "/pending",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  getPendingCustomers
 );
 
 module.exports = router;

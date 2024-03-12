@@ -548,3 +548,19 @@ exports.approveCustomer = async (req, res) => {
       res.status(400).json({ message: err.message });
     });
 }
+
+//create get pending users controller, for admin to get pending users
+exports.getPendingCustomers = async (req, res) => {
+  try {
+    const pendingCustomers = await Customer.find({ status: "pending" })
+      .sort({ customerID: -1 })
+      .select(
+        "customerID name NIC loanAmount paidAmount phone phoneTwo isSettled collectorId billingCycle installmentAmount"
+      );
+
+    res.status(200).json({ customers: pendingCustomers });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err.message });
+  }
+};

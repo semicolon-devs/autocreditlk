@@ -588,3 +588,24 @@ exports.approveAllCustomers = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+//create change collector controller, to change collectorId field of a customer
+exports.changeCollector = async (req, res) => {
+  const customerID = req.params.id;
+  const newCollectorId = req.body.collectorId;
+  console.log(newCollectorId);
+  const filter = { customerID: customerID };
+  const updateCustomer = {
+    collectorId: newCollectorId,
+  };
+  Customer.findOneAndUpdate(filter, updateCustomer, { new: true })
+    .then((customer) => {
+      if (!customer) {
+        return res.status(404).json({ message: "Customer not found" });
+      }
+      res.status(200).json({ message: "Collector changed successfully" });
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err.message });
+    });
+};

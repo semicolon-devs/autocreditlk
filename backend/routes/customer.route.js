@@ -18,6 +18,7 @@ const {
   approveCustomer,
   approveAllCustomers,
   getPendingCustomers,
+  changeCollector,
 } = require("../controllers/customer.controller");
 const { uploader } = require("../config/multer.config");
 
@@ -55,6 +56,15 @@ router.post(
   ],
   addExisitngCustomer
 );
+
+router.put(
+  "/change-collector/:id",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  changeCollector
+);
 router.put(
   "/set-approved",
   [
@@ -63,6 +73,7 @@ router.put(
   ],
   approveAllCustomers
 );
+
 router.get(
   "/all",
   [

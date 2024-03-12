@@ -97,6 +97,7 @@ exports.addCustomer = async (req, res) => {
       paidAmount: 0,
       isSettled: false,
       noOfInstallments,
+      status: "pending",
       startDate: new Date(startDate + "T00:00:00+05:30"),
       billingCycle,
       collectorId,
@@ -216,6 +217,7 @@ exports.addExisitngCustomer = async (req, res) => {
       loanAmount,
       installmentAmount,
       paidAmount,
+      status: "pending",
       isSettled: false,
       paidAmountDate,
       startDate: new Date(startDate + "T00:00:00+05:30"),
@@ -260,7 +262,6 @@ exports.addExisitngCustomer = async (req, res) => {
 exports.getCustomers = async (req, res) => {
   const userId = req.user.id;
   const isAdmin = req.user.role === "admin";
-  console.log("here");
   let query = { $expr: { $lt: ["$paidAmount", "$loanAmount"] } };
   if (!isAdmin) {
     query = {

@@ -526,3 +526,25 @@ exports.getArrearsOfCustomer = async (req, res) => {
     res.status(500).json({ message: "Error calculating arrears." });
   }
 };
+
+
+exports.approveCustomer = async (req, res) => {
+  const customerID = req.params.id;
+  const { collectorId } = req.body;
+
+  const filter = { customerID: customerID };
+  const updateCustomer = {
+    status: "approved",
+  };
+  Customer.findOneAndUpdate(filter, updateCustomer, { new: true })
+    .then((customer) => {
+      if (!customer) {
+        res.status(404).json({ message: "User not found." });
+      } else {
+        res.status(200).json({ message: "Customer approved." });
+      }
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err.message });
+    });
+}

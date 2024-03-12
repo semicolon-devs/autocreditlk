@@ -15,6 +15,7 @@ const {
   getSettledCustomers,
   getTotalUnpaid,
   getArrearsOfCustomer,
+  approveCustomer,
 } = require("../controllers/customer.controller");
 const { uploader } = require("../config/multer.config");
 
@@ -88,6 +89,16 @@ router.get(
 
   getPaymentOfCustomer
 );
+
+router.post(
+  "/approve/:id",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  approveCustomer
+);
+
 router.get(
   "/guarantors/ids",
   [

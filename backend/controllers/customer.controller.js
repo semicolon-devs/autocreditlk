@@ -29,7 +29,6 @@ exports.addCustomer = async (req, res) => {
       job,
       guarantorJob,
     } = req.body;
-
     const NICFrontCopy = req.files["NICFrontCopy"][0];
     const NICRearCopy = req.files["NICRearCopy"][0];
     const customerPhoto = req.files["customerPhoto"][0];
@@ -260,15 +259,12 @@ exports.addExisitngCustomer = async (req, res) => {
 
 exports.getCustomers = async (req, res) => {
   const userId = req.user.id;
-  const isAdmin = req.user.role === 'admin';
-
+  const isAdmin = req.user.role === "admin";
+  console.log("here");
   let query = { $expr: { $lt: ["$paidAmount", "$loanAmount"] } };
   if (!isAdmin) {
     query = {
-      $and: [
-        query, 
-        { collectorId: userId }, 
-      ],
+      $and: [query, { collectorId: userId }],
     };
   }
 

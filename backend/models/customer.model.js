@@ -114,6 +114,9 @@ const CustomerSchema = new mongoose.Schema(
     guarantorJob: {
       type: String,
     },
+    status: {
+      type: String,
+    },
     collectedDates: [
       {
         type: Date,

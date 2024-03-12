@@ -34,7 +34,7 @@ const Home = () => {
       };
       axios(axiosConfig)
         .then((response) => {
-          // console.log(response);
+          console.log(response.data.customers);
           setCustomers(response.data.customers);
         })
         .catch((err) => {

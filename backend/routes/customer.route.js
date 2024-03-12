@@ -16,6 +16,7 @@ const {
   getTotalUnpaid,
   getArrearsOfCustomer,
   approveCustomer,
+  approveAllCustomers,
   getPendingCustomers,
 } = require("../controllers/customer.controller");
 const { uploader } = require("../config/multer.config");
@@ -54,6 +55,14 @@ router.post(
   ],
   addExisitngCustomer
 );
+router.put(
+  "/set-approved",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  approveAllCustomers
+);
 router.get(
   "/all",
   [
@@ -79,6 +88,14 @@ router.get(
     checkPermission(["admin", "collector"]),
   ],
   getTotalUnpaid
+);
+router.get(
+  "/pending",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  getPendingCustomers
 );
 
 router.get(
@@ -155,13 +172,5 @@ router.put(
 );
 
 //get pending customers route for admin
-router.get(
-  "/pending",
-  [
-    passport.authenticate("jwt", { session: false }),
-    checkPermission(["admin"]),
-  ],
-  getPendingCustomers
-);
 
 module.exports = router;

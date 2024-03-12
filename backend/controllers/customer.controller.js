@@ -566,3 +566,25 @@ exports.getPendingCustomers = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+exports.approveAllCustomers = async (req, res) => {
+  try {
+    console.log("here");
+    const allCustomers = await Customer.find();
+
+    const updatePromises = allCustomers.map(async (customer) => {
+      customer.set("status", "approved");
+      const saveResult = await customer.save();
+      console.log(saveResult);
+    });
+
+    await Promise.all(updatePromises);
+
+    res.status(200).json({
+      message: "updated customer status to approved for all customers",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err.message });
+  }
+};

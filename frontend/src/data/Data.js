@@ -60,7 +60,7 @@ export const sidebarItems = [
   {
     id: 10,
     name: "pending customers",
-    icon: "ManageAccountsIcon",
+    icon: "PendingCustomerIcon",
     path: "/pending-customers",
     adminAccessOnly: true,
   },

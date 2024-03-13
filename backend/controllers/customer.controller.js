@@ -365,7 +365,7 @@ exports.getGuarantorIDs = async (req, res) => {
 
 exports.deleteCustomer = async (req, res) => {
   const customerID = req.params.id;
-
+  console.log("88888888888888888888888");
   const filter = { customerID: customerID };
 
   Customer.findOneAndDelete(filter)
@@ -538,7 +538,7 @@ exports.approveCustomer = async (req, res) => {
   const updateCustomer = {
     status: "approved",
   };
-  console.log(customerID)
+  console.log(customerID);
   Customer.findOneAndUpdate(filter, updateCustomer, { new: true })
     .then((customer) => {
       if (!customer) {

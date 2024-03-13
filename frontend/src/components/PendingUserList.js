@@ -6,6 +6,7 @@ import { CloseIcon } from "../Icons/Icon";
 import DeleteUserModal from "../modals/DeleteUserModal";
 
 import { ThreeDots } from "react-loader-spinner";
+import DeleteCustomerModal from "../modals/DeleteCustomerModal";
 
 const PendingUserList = ({ pendingUsers, setPendingUsers, loading }) => {
   const [displayUser, setDisplayUser] = useState(null);

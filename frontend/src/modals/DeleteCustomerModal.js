@@ -13,6 +13,7 @@ const DeleteCustomerModal = ({ modalShow, setModalShow, customer }) => {
   const token = cookies.get("autoCreditCookie");
 
   const deleteCustomer = () => {
+    console.log(customer.customerID);
     const axiosConfig = {
       method: "DELETE",
       url: `${BASE_URL}customers/${customer.customerID}`,

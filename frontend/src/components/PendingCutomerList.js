@@ -6,8 +6,9 @@ import DeleteUserModal from "../modals/DeleteUserModal";
 import { ThreeDots } from "react-loader-spinner";
 import Cookies from "universal-cookie";
 import BASE_URL from "../config/ApiConfig";
-const cookies = new Cookies();
+import DeleteCustomerModal from "../modals/DeleteCustomerModal";
 
+const cookies = new Cookies();
 const token = cookies.get("autoCreditCookie");
 
 const PendingCustomerList = ({
@@ -96,12 +97,10 @@ const PendingCustomerList = ({
         )}
       </div>
       {displayUser && (
-        <DeleteUserModal
+        <DeleteCustomerModal
           modalShow={DeletePendingUserModalShow}
           setModalShow={setDeletePendingUserModalShow}
-          user={displayUser}
-          userList={pendingCustomers}
-          setUserList={setPendingCustomers}
+          customer={displayUser}
         />
       )}
     </div>

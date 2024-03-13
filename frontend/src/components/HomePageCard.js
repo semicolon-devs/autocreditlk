@@ -121,13 +121,12 @@ const HomePageCard = ({ customer }) => {
         >
           <p className="text-white uppercase font-semibold">add installment</p>
         </button>
-        {isAdmin() ? (
-          <Link to={`customer-details/${customerID.toString()}`}>
-            <button className="bg-maroon hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg">
-              <p className="text-white uppercase font-semibold">view details</p>
-            </button>
-          </Link>
-        ) : null}
+
+        <Link to={`customer-details/${customerID.toString()}`}>
+          <button className="bg-maroon hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg">
+            <p className="text-white uppercase font-semibold">view details</p>
+          </button>
+        </Link>
       </div>
       {displayCustomer && (
         <AddPaymentModal

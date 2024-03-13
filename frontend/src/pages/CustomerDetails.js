@@ -51,7 +51,13 @@ const CustomerDetails = () => {
 
   var startDate = new Date(customer && customer.startDate);
   const today = new Date();
-
+  const isAdmin = () => {
+    if (JSON.parse(localStorage.getItem("userRole")) === "admin") {
+      return true;
+    } else {
+      return false;
+    }
+  };
   useEffect(() => {
     const getCustomer = () => {
       setLoading(true);
@@ -190,12 +196,14 @@ const CustomerDetails = () => {
                     </div>
                   </div>
                   <div className="mt-4">
-                    <button
-                      className={`${secondaryButtonClasses} w-full`}
-                      onClick={() => setChangeLoanAmountModalShow(true)}
-                    >
-                      <p className={buttonTextClasses}>change loan amount</p>
-                    </button>
+                    {isAdmin() ? (
+                      <button
+                        className={`${secondaryButtonClasses} w-full`}
+                        onClick={() => setChangeLoanAmountModalShow(true)}
+                      >
+                        <p className={buttonTextClasses}>change loan amount</p>
+                      </button>
+                    ) : null}
                   </div>
                   {changeLoanAmountModalShow && (
                     <ChangeLoanAmountModal
@@ -370,23 +378,23 @@ const CustomerDetails = () => {
                       Guarantor Additional Photo
                     </p>
                   </div>
+                  {isAdmin() ? (
+                    <div className="flex flex-col gap-3 mt-4">
+                      <button
+                        className={`${secondaryButtonClasses} w-full`}
+                        onClick={() => setChangeCustomerDetailsModalShow(true)}
+                      >
+                        <p className={buttonTextClasses}>change details</p>
+                      </button>
 
-                  <div className="flex flex-col gap-3 mt-4">
-                    <button
-                      className={`${secondaryButtonClasses} w-full`}
-                      onClick={() => setChangeCustomerDetailsModalShow(true)}
-                    >
-                      <p className={buttonTextClasses}>change details</p>
-                    </button>
-
-                    <button
-                      className={`${primaryButtonClasses} w-full`}
-                      onClick={() => setDeleteCustomerModalShow(true)}
-                    >
-                      <p className={buttonTextClasses}>remove customer</p>
-                    </button>
-                  </div>
-
+                      <button
+                        className={`${primaryButtonClasses} w-full`}
+                        onClick={() => setDeleteCustomerModalShow(true)}
+                      >
+                        <p className={buttonTextClasses}>remove customer</p>
+                      </button>
+                    </div>
+                  ) : null}
                   {changeCustomerDetailsModalShow && (
                     <ChangeCustomerDetailsModal
                       modalShow={changeCustomerDetailsModalShow}
@@ -422,12 +430,14 @@ const CustomerDetails = () => {
               >
                 <p className={buttonTextClasses}>add installment</p>
               </button>
-              <button
-                className={`${primaryButtonClasses}`}
-                onClick={() => setSendReminderModalShow(true)}
-              >
-                <p className={buttonTextClasses}>send reminder</p>
-              </button>
+              {isAdmin() ? (
+                <button
+                  className={`${primaryButtonClasses}`}
+                  onClick={() => setSendReminderModalShow(true)}
+                >
+                  <p className={buttonTextClasses}>send reminder</p>
+                </button>
+              ) : null}
             </div>
           </div>
 
@@ -497,26 +507,31 @@ const CustomerDetails = () => {
                         </p>
                         <p className="">Collected by : {payment.collectedBy}</p>
                       </div>
-                      <div className="flex items-end justify-end gap-3 mt-2">
-                        <button
-                          className="bg-maroon flex rounded-lg px-3 py-1"
-                          onClick={() => editPaymentButtonClick(payment)}
-                        >
-                          <EditIcon className="text-white" fontSize="small" />
-                          <p className="text-white uppercase font-semibold ms-2 text-sm">
-                            edit
-                          </p>
-                        </button>
-                        <button
-                          className="bg-orange flex rounded-lg px-3 py-1"
-                          onClick={() => deletePaymentButtonClick(payment)}
-                        >
-                          <DeleteIcon className="text-white" fontSize="small" />
-                          <p className="text-white uppercase font-semibold ms-2 text-sm">
-                            delete
-                          </p>
-                        </button>
-                      </div>
+                      {isAdmin() ? (
+                        <div className="flex items-end justify-end gap-3 mt-2">
+                          <button
+                            className="bg-maroon flex rounded-lg px-3 py-1"
+                            onClick={() => editPaymentButtonClick(payment)}
+                          >
+                            <EditIcon className="text-white" fontSize="small" />
+                            <p className="text-white uppercase font-semibold ms-2 text-sm">
+                              edit
+                            </p>
+                          </button>
+                          <button
+                            className="bg-orange flex rounded-lg px-3 py-1"
+                            onClick={() => deletePaymentButtonClick(payment)}
+                          >
+                            <DeleteIcon
+                              className="text-white"
+                              fontSize="small"
+                            />
+                            <p className="text-white uppercase font-semibold ms-2 text-sm">
+                              delete
+                            </p>
+                          </button>
+                        </div>
+                      ) : null}
                     </div>
                   ))}
                 {displayEditPayment && (

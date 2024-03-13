@@ -56,10 +56,7 @@ const router = createBrowserRouter(
         }
       >
         <Route index element={<Home />} />
-        <Route
-          path="/customer-details/:id"
-          element={isAdmin() ? <CustomerDetails /> : <AccessDeniedPage />}
-        />
+        <Route path="/customer-details/:id" element={<CustomerDetails />} />
         <Route path="/account-settings" element={<AccountSettings />} />
         <Route path="/add-customer" element={<AddCustomer />} />
         <Route

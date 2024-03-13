@@ -19,7 +19,7 @@ export const sidebarItems = [
     name: "add customer",
     icon: "PersonAddIcon",
     path: "/add-customer",
-    adminAccessOnly: true,
+    adminAccessOnly: false,
   },
   {
     id: 5,

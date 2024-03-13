@@ -26,7 +26,7 @@ router.post(
   "/",
   [
     passport.authenticate("jwt", { session: false }),
-    checkPermission(["admin"]),
+    checkPermission(["admin", "collector"]),
     uploader.fields([
       { name: "NICFrontCopy", maxCount: 1 },
       { name: "NICRearCopy", maxCount: 1 },

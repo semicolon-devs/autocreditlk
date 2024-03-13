@@ -61,10 +61,7 @@ const router = createBrowserRouter(
           element={isAdmin() ? <CustomerDetails /> : <AccessDeniedPage />}
         />
         <Route path="/account-settings" element={<AccountSettings />} />
-        <Route
-          path="/add-customer"
-          element={isAdmin() ? <AddCustomer /> : <AccessDeniedPage />}
-        />
+        <Route path="/add-customer" element={<AddCustomer />} />
         <Route
           path="/add-existing-customer"
           element={isAdmin() ? <AddExistingCustomer /> : <AccessDeniedPage />}

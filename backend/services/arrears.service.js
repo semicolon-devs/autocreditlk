@@ -94,6 +94,7 @@ async function calculateArrears(customerID) {
         var startDate = moment(new Date(customer.startDate));
         var arriesDays = 0;
         var noOfArriesPayments = 0;
+
         switch (customer.billingCycle) {
           case "Daily":
             workingDays = await getWorkingDays(customer.collectorId);

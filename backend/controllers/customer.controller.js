@@ -113,6 +113,7 @@ exports.addCustomer = async (req, res) => {
       guarantorJob,
     })
       .then((result) => {
+        console.log("success");
         res.status(200).json({ result: result });
       })
       .catch((err) => {

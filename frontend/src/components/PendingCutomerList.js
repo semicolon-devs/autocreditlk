@@ -73,14 +73,14 @@ const PendingCustomerList = ({
                   </p>
                 </button>
               </div>
-              <div className="">
+              {/* <div className="">
                 <button
                   className="outline-none border-none"
                   onClick={() => handleDeletePendingUserClick(user)}
                 >
                   <CloseIcon className="text-maroon" />
                 </button>
-              </div>
+              </div> */}
             </div>
           ))
         ) : (

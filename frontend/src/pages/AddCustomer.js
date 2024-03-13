@@ -18,7 +18,7 @@ import Cookies from "universal-cookie";
 import BASE_URL from "../config/ApiConfig";
 
 const cookies = new Cookies();
-
+const userRole = JSON.parse(localStorage.getItem("userRole"));
 const AddCustomer = () => {
   const [loading, setLoading] = useState(false);
   const [collectorArr, setCollectorArr] = useState([]);

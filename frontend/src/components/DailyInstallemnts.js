@@ -10,9 +10,9 @@ const DailyInstallments = ({ installments, userData }) => {
   }
 
   const userInstallments = installments.filter(
-    (installment) => userData.name === installment.collectedBy
+    (installment) => userData._id === installment.collectorID
   );
-  console.log(userData.name)
+  console.log(userData.name);
   return (
     <>
       {userInstallments &&

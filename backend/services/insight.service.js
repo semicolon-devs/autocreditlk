@@ -63,11 +63,11 @@ const getInstallmentsForDate = async (date) => {
   for (const installment of installments) {
     const user = await User.findById(installment.collectedBy);
     installment.collectedBy = user.name;
-
     const customer = await Customer.findOne({
       customerID: installment.customerID,
     });
     installment._doc.customerName = customer.name;
+    installment._doc.collectorID = customer.collectorId;
 
     updatedList.push(installment._doc);
   }
@@ -85,7 +85,6 @@ const getInstallmentsForDate = async (date) => {
     customer._doc.collectorName = user.name;
     updatedNonPaidCustomers.push(customer._doc);
   }
-
   return {
     installments: updatedList,
     nonPaidCustomers: updatedNonPaidCustomers,

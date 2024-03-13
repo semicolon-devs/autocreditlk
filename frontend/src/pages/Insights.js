@@ -104,6 +104,7 @@ const Insights = () => {
     axios(axiosConfig)
       .then((response) => {
         setInstallments(response.data.installments);
+        console.log(response.data.installments);
         if (userData.role === "admin") {
           setDailyTotal(
             response.data.installments.reduce((total, installment) => {

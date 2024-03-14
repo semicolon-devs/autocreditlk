@@ -61,7 +61,6 @@ exports.updateProfile = async (req, res) => {
   // }
 
   // console.log(id, payload)
-
   // updating user by id
   User.findByIdAndUpdate(id, payload)
     .then((user) => {
@@ -71,6 +70,7 @@ exports.updateProfile = async (req, res) => {
       });
     })
     .catch((err) => {
+
       res.status(400).json({
         message: "updating user unsuccessfull !",
         error: err.message,

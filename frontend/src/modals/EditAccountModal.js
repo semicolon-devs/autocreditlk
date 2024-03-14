@@ -27,7 +27,7 @@ const EditAccountModal = ({ modalShow, setModalShow, user }) => {
     setLoading(true);
     const axiosConfig = {
       method: "POST",
-      url: `${BASE_URL}collector/update-profile/${user.userID}`,
+      url: `${BASE_URL}collector/update-profile/${user._id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -35,6 +35,7 @@ const EditAccountModal = ({ modalShow, setModalShow, user }) => {
         name: name,
         email: email,
         phone: mobileNo,
+        // password: password,
       },
     };
 
@@ -107,23 +108,27 @@ const EditAccountModal = ({ modalShow, setModalShow, user }) => {
                   name: user.name,
                   email: user.email,
                   mobileNo: user.phone,
+                  // password: "",
+                  // confirmPassword: "",
                 }}
                 validationSchema={Yup.object({
                   name: Yup.string().max(30, "Must be 30 characters or less"),
-                  // .required("Required"),
                   email: Yup.string().email("Invalid email address"),
-                  // .required("Required"),
                   mobileNo: Yup.string().matches(
                     /^[0-9]{10}$/,
                     "Must be a valid mobile number"
                   ),
-                  // .required("Required"),
+                  // password: Yup.string(),
+                  // confirmPassword: Yup.string()
+                  //   .oneOf([Yup.ref("password"), null], "Passwords must match")
+                  //   ,
                 })}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                   editAccountDetails(
                     values.name,
                     values.email,
-                    values.mobileNo
+                    values.mobileNo,
+                    values.password
                   );
                   setSubmitting(false);
                   resetForm({});
@@ -152,6 +157,18 @@ const EditAccountModal = ({ modalShow, setModalShow, user }) => {
                     label="Enter new mobile number :"
                     placeholder="Enter new user mobile number"
                   />
+                  {/* <TextInput
+                    name="password"
+                    type="password"
+                    label="Enter new password :"
+                    placeholder="Enter new password"
+                  />
+                  <TextInput
+                    name="confirmPassword"
+                    type="password"
+                    label="Re-enter password :"
+                    placeholder="confirm new password"
+                  /> */}
 
                   <button
                     className={`w-full flex justify-center items-center ${primaryButtonClasses}`}

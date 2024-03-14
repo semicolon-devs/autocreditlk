@@ -5,19 +5,23 @@ import SectionSubtitle from "../components/SectionSubtitle";
 
 import { CloseIcon } from "../Icons/Icon";
 import DeleteUserModal from "../modals/DeleteUserModal";
-import { EditIcon } from "../Icons/Icon";
+import { EditIcon, DeleteIcon } from "../Icons/Icon";
 import { ThreeDots } from "react-loader-spinner";
 
 import Cookies from "universal-cookie";
 
 import BASE_URL from "../config/ApiConfig";
+import EditAccountModal from "../modals/EditAccountModal";
 
 const cookies = new Cookies();
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
-  const [displayUser, setDisplayUser] = useState(null);
-  const [DeleteUserModalShow, setDeleteUserModalShow] = useState(false);
+  // const [displayUser, setDisplayUser] = useState(null);
+  const [editUserModalShow, setEditUserModalShow] = useState(false);
+  const [displayEditUser, setDisplayEditUser] = useState(null);
+  const [deleteUserModalShow, setDeleteUserModalShow] = useState(false);
+  const [displayDeleteUser, setDisplayDeleteUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const token = cookies.get("autoCreditCookie");
@@ -48,9 +52,22 @@ const UserList = () => {
     fetchCollectors();
   }, []);
 
-  const handleDeleteUserClick = (user) => {
-    setDisplayUser(user);
+  const editUserButtonClick = (user) => {
+    setDisplayEditUser(user);
+    setEditUserModalShow(true);
+  };
+
+  const deleteUserButtonClick = (user) => {
     setDeleteUserModalShow(true);
+    setDisplayDeleteUser(user);
+  };
+
+  const isAdmin = () => {
+    if (JSON.parse(localStorage.getItem("userRole")) === "admin") {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return (
@@ -71,6 +88,28 @@ const UserList = () => {
                 <p className="text-maroon ">{user.email}</p>
                 <p className="text-maroon leading-none">{user.phone}</p>
               </div>
+              {isAdmin() ? (
+                <div className="flex items-end justify-end gap-3 mt-2">
+                  <button
+                    className="bg-maroon flex rounded-lg px-3 py-1"
+                    onClick={() => editUserButtonClick(user)}
+                  >
+                    <EditIcon className="text-white" fontSize="small" />
+                    <p className="text-white uppercase font-semibold ms-2 text-sm">
+                      edit
+                    </p>
+                  </button>
+                  <button
+                    className="bg-orange flex rounded-lg px-3 py-1"
+                    onClick={() => deleteUserButtonClick(user)}
+                  >
+                    <DeleteIcon className="text-white" fontSize="small" />
+                    <p className="text-white uppercase font-semibold ms-2 text-sm">
+                      delete
+                    </p>
+                  </button>
+                </div>
+              ) : null}
             </div>
           ))
         ) : (
@@ -86,11 +125,20 @@ const UserList = () => {
           />
         )}
       </div>
-      {displayUser && (
+      {editUserModalShow && (
+        <EditAccountModal
+          modalShow={editUserModalShow}
+          setModalShow={setEditUserModalShow}
+          user={displayEditUser}
+        />
+      )}
+      {deleteUserModalShow && (
         <DeleteUserModal
-          modalShow={DeleteUserModalShow}
+          modalShow={deleteUserModalShow}
           setModalShow={setDeleteUserModalShow}
-          user={displayUser}
+          user={displayDeleteUser}
+          userList={users}
+          setUserList={setUsers}
         />
       )}
     </div>

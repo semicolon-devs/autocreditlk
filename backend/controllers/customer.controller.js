@@ -421,6 +421,7 @@ exports.updateCustomer = async (req, res) => {
     guarantorNIC,
     job,
     guarantorJob,
+    collectorId,
   } = req.body;
 
   const filter = { customerID: customerID };
@@ -438,6 +439,7 @@ exports.updateCustomer = async (req, res) => {
     guarantorNIC,
     job,
     guarantorJob,
+    collectorId,
   };
 
   Customer.findOneAndUpdate(filter, newCustomerDetails, { new: true })

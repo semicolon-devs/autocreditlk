@@ -7,10 +7,7 @@ import { ThreeDots } from "react-loader-spinner";
 
 import Cookies from "universal-cookie";
 
-import {
-  secondaryButtonClasses,
-  buttonTextClasses,
-} from "../data/Classes";
+import { secondaryButtonClasses, buttonTextClasses } from "../data/Classes";
 import { TextInputWithLabel as TextInput } from "../components/FormikElements";
 
 import BASE_URL from "../config/ApiConfig";
@@ -95,76 +92,76 @@ const ChangePasswordModal = ({ modalShow, setModalShow, user }) => {
           >
             <Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-3">
               <Dialog.Title className="text-2xl font-semibold mb-3 capitalize">
-                edit account details
+                Change Password
               </Dialog.Title>
               <Dialog.Description className="mb-3">
-                Only enter the feilds you wish to update
+                Enter New Password
               </Dialog.Description>
               <Formik
-          initialValues={{
-            password: "",
-            confirmPassword: "",
-          }}
-          validationSchema={Yup.object({
-            password: Yup.string()
-              .required("Required")
-              .min(8, "Your password is too short.")
-              .matches(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
-                "Password must contain at least one uppercase letter, one lowercase letter, one numeral, and one symbol."
-              ),
-            confirmPassword: Yup.string()
-              .required("Required")
-              .oneOf([Yup.ref("password")], "Passwords must match"),
-          })}
-          onSubmit={(values, { setSubmitting, resetForm }) => {
-            resetPassword(values.password);
-            setSubmitting(false);
-            resetForm({});
-          }}
-        >
-          <Form>
-            <TextInput
-              name="password"
-              type="password"
-              placeholder="Enter new password"
-            />
+                initialValues={{
+                  password: "",
+                  confirmPassword: "",
+                }}
+                validationSchema={Yup.object({
+                  password: Yup.string()
+                    .required("Required")
+                    .min(8, "Your password is too short.")
+                    .matches(
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+                      "Password must contain at least one uppercase letter, one lowercase letter, one numeral, and one symbol."
+                    ),
+                  confirmPassword: Yup.string()
+                    .required("Required")
+                    .oneOf([Yup.ref("password")], "Passwords must match"),
+                })}
+                onSubmit={(values, { setSubmitting, resetForm }) => {
+                  resetPassword(values.password);
+                  setSubmitting(false);
+                  resetForm({});
+                }}
+              >
+                <Form>
+                  <TextInput
+                    name="password"
+                    type="password"
+                    placeholder="Enter new password"
+                  />
 
-            <TextInput
-              name="confirmPassword"
-              type="password"
-              placeholder="Confirm password"
-            />
+                  <TextInput
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="Confirm password"
+                  />
 
-            <button
-              type="submit"
-              className="bg-maroon w-full rounded-lg px-4 py-2 flex items-center justify-center"
-            >
-              {loading ? (
-                <ThreeDots
-                  height="40"
-                  width="40"
-                  radius="9"
-                  color="white"
-                  ariaLabel="three-dots-loading"
-                  wrapperStyle={{}}
-                  wrapperClassName=""
-                  visible={true}
-                />
-              ) : (
-                <p className="text-white uppercase font-bold">
-                  change password
-                </p>
-              )}
-            </button>
+                  <button
+                    type="submit"
+                    className="bg-maroon w-full rounded-lg px-4 py-2 flex items-center justify-center"
+                  >
+                    {loading ? (
+                      <ThreeDots
+                        height="40"
+                        width="40"
+                        radius="9"
+                        color="white"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                      />
+                    ) : (
+                      <p className="text-white uppercase font-bold">
+                        change password
+                      </p>
+                    )}
+                  </button>
 
-            {message && (
-              <div className="w-full border border-orange rounded-lg mt-3 p-3">
-                <p className="text-orange">{message}</p>
-              </div>
-            )}
-          </Form>
-        </Formik>
+                  {message && (
+                    <div className="w-full border border-orange rounded-lg mt-3 p-3">
+                      <p className="text-orange">{message}</p>
+                    </div>
+                  )}
+                </Form>
+              </Formik>
               <button
                 className={`w-full mt-3 ${secondaryButtonClasses}`}
                 onClick={() => setModalShow(false)}

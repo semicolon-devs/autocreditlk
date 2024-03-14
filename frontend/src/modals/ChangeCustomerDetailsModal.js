@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment ,useEffect} from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
 import { Formik, Form } from "formik";
@@ -8,6 +8,7 @@ import { ThreeDots } from "react-loader-spinner";
 import {
   TextInputWithLabel as TextInput,
   TextAreaWithLabel as TextArea,
+  SelectWithLabel as Select,
 } from "../components/FormikElements";
 
 import Cookies from "universal-cookie";
@@ -18,9 +19,33 @@ const cookies = new Cookies();
 
 const ChangeCustomerDetailsModal = ({ modalShow, setModalShow, customer }) => {
   const [loading, setLoading] = useState(false);
+  const [collectorArr, setCollectorArr] = useState([]);
+  const [collectorIdArr, setCollectorIdArr] = useState([]);
 
   const token = cookies.get("autoCreditCookie");
+  useEffect(() => {
+    const fetchCollectors = async () => {
+      const axiosConfig = {
+        method: "get",
+        url: `${BASE_URL}collector/collectors`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
+      axios(axiosConfig)
+        .then((res) => {
+          setCollectorArr(res.data.collectors);
+          const IdArr = res.data.collectors.map((collector) => collector._id);
+          setCollectorIdArr(IdArr);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    fetchCollectors();
+  }, []);
   const changeCustomerDetails = async (values) => {
     const {
       name,
@@ -34,6 +59,7 @@ const ChangeCustomerDetailsModal = ({ modalShow, setModalShow, customer }) => {
       guarantorMobileNo,
       guarantorMobileNoTwo,
       guarantorNIC,
+      collectorId,
     } = values;
 
     setLoading(true);
@@ -50,6 +76,7 @@ const ChangeCustomerDetailsModal = ({ modalShow, setModalShow, customer }) => {
       guarantorMobile: guarantorMobileNo,
       guarantorMobileTwo: guarantorMobileNoTwo,
       guarantorNIC: guarantorNIC,
+      collectorId: collectorId,
     };
     // const formData = new FormData();
     // formData.append("name", name);
@@ -259,6 +286,18 @@ const ChangeCustomerDetailsModal = ({ modalShow, setModalShow, customer }) => {
                               label="Guarantor Mobile No. 2 :"
                               placeholder={customer.guarantorMobileTwo}
                             />
+                            <Select label="Collector Name" name="collectorId">
+                              <option value="">Select Collector</option>
+                              {collectorArr &&
+                                collectorArr.map((collector) => (
+                                  <option
+                                    value={collector._id}
+                                    key={collector._id}
+                                  >
+                                    {collector.name}
+                                  </option>
+                                ))}
+                            </Select>
                           </div>
                         </div>
                         <button

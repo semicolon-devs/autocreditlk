@@ -11,13 +11,12 @@ const {
   forgetPasswordRequest,
   getUserData,
   tempPasswordReset,
+  changePasswordByAdmin,
 } = require("../controllers/auth.controller");
 
 router.post(
   "/login",
-  [
-    passport.authenticate("local", { session: false }),
-  ],
+  [passport.authenticate("local", { session: false })],
   login
 );
 router.post("/forget-password-request", forgetPasswordRequest);
@@ -72,5 +71,13 @@ router.post(
   passwordResetToDefault
 );
 
+router.post(
+  "/password-change-by-admin/:id",
+  [
+    passport.authenticate("jwt", { session: false }),
+    checkPermission(["admin"]),
+  ],
+  changePasswordByAdmin
+);
 
 module.exports = router;

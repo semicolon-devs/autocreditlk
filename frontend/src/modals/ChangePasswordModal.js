@@ -8,7 +8,6 @@ import { ThreeDots } from "react-loader-spinner";
 import Cookies from "universal-cookie";
 
 import {
-  primaryButtonClasses,
   secondaryButtonClasses,
   buttonTextClasses,
 } from "../data/Classes";
@@ -18,28 +17,26 @@ import BASE_URL from "../config/ApiConfig";
 
 const cookies = new Cookies();
 
-const EditAccountModal = ({ modalShow, setModalShow, user }) => {
+const ChangePasswordModal = ({ modalShow, setModalShow, user }) => {
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const token = cookies.get("autoCreditCookie");
 
-  const editAccountDetails = (name, email, mobileNo) => {
+  const resetPassword = async (password) => {
     setLoading(true);
-    const axiosConfig = {
-      method: "POST",
-      url: `${BASE_URL}collector/update-profile/${user._id}`,
+    const config = {
+      method: "post",
+      url: `${BASE_URL}auth//password-change-by-admin/${user._id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
       data: {
-        name: name,
-        email: email,
-        phone: mobileNo,
-        // password: password,
+        newPassword: password,
       },
     };
 
-    axios(axiosConfig)
+    axios(config)
       .then((res) => {
         // alert(result.data.message);
         // console.log(res);
@@ -104,79 +101,70 @@ const EditAccountModal = ({ modalShow, setModalShow, user }) => {
                 Only enter the feilds you wish to update
               </Dialog.Description>
               <Formik
-                initialValues={{
-                  name: user.name,
-                  email: user.email,
-                  mobileNo: user.phone,
-                }}
-                validationSchema={Yup.object({
-                  name: Yup.string().max(30, "Must be 30 characters or less"),
-                  email: Yup.string().email("Invalid email address"),
-                  mobileNo: Yup.string().matches(
-                    /^[0-9]{10}$/,
-                    "Must be a valid mobile number"
-                  ),
-                 
-                })}
-                onSubmit={(values, { setSubmitting, resetForm }) => {
-                  editAccountDetails(
-                    values.name,
-                    values.email,
-                    values.mobileNo,
-                    values.password
-                  );
-                  setSubmitting(false);
-                  resetForm({});
-                }}
-              >
-                <Form className="">
-                  {user.role !== "admin" && (
-                    <TextInput
-                      name="name"
-                      type="text"
-                      label="Enter new name :"
-                      placeholder="Enter new user name"
-                    />
-                  )}
+          initialValues={{
+            password: "",
+            confirmPassword: "",
+          }}
+          validationSchema={Yup.object({
+            password: Yup.string()
+              .required("Required")
+              .min(8, "Your password is too short.")
+              .matches(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+                "Password must contain at least one uppercase letter, one lowercase letter, one numeral, and one symbol."
+              ),
+            confirmPassword: Yup.string()
+              .required("Required")
+              .oneOf([Yup.ref("password")], "Passwords must match"),
+          })}
+          onSubmit={(values, { setSubmitting, resetForm }) => {
+            resetPassword(values.password);
+            setSubmitting(false);
+            resetForm({});
+          }}
+        >
+          <Form>
+            <TextInput
+              name="password"
+              type="password"
+              placeholder="Enter new password"
+            />
 
-                  <TextInput
-                    name="email"
-                    type="email"
-                    label="Enter new email :"
-                    placeholder="Enter new user email"
-                  />
+            <TextInput
+              name="confirmPassword"
+              type="password"
+              placeholder="Confirm password"
+            />
 
-                  <TextInput
-                    name="mobileNo"
-                    type="text"
-                    label="Enter new mobile number :"
-                    placeholder="Enter new user mobile number"
-                  />
+            <button
+              type="submit"
+              className="bg-maroon w-full rounded-lg px-4 py-2 flex items-center justify-center"
+            >
+              {loading ? (
+                <ThreeDots
+                  height="40"
+                  width="40"
+                  radius="9"
+                  color="white"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={true}
+                />
+              ) : (
+                <p className="text-white uppercase font-bold">
+                  change password
+                </p>
+              )}
+            </button>
 
-                  
-                
-
-                  <button
-                    className={`w-full flex justify-center items-center ${primaryButtonClasses}`}
-                    type="submit"
-                  >
-                    {loading ? (
-                      <ThreeDots
-                        height="40"
-                        width="40"
-                        radius="9"
-                        color="white"
-                        ariaLabel="three-dots-loading"
-                        wrapperStyle={{}}
-                        wrapperClassName=""
-                        visible={true}
-                      />
-                    ) : (
-                      <p className={buttonTextClasses}>confirm changes</p>
-                    )}
-                  </button>
-                </Form>
-              </Formik>
+            {message && (
+              <div className="w-full border border-orange rounded-lg mt-3 p-3">
+                <p className="text-orange">{message}</p>
+              </div>
+            )}
+          </Form>
+        </Formik>
               <button
                 className={`w-full mt-3 ${secondaryButtonClasses}`}
                 onClick={() => setModalShow(false)}
@@ -191,4 +179,4 @@ const EditAccountModal = ({ modalShow, setModalShow, user }) => {
   );
 };
 
-export default EditAccountModal;
+export default ChangePasswordModal;

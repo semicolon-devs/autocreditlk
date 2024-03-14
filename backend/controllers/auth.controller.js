@@ -349,3 +349,45 @@ exports.passwordResetByAdmin = async (req, res) => {
       });
     });
 };
+
+
+exports.changePasswordByAdmin = async (req, res) => {
+  const password = req.body.newPassword;
+  bcrypt
+    .hash(password, 10)
+    .then((hashedPassword) => {
+      const user = {
+        _id: req.params.id,
+      };
+
+      const update = {
+        password: hashedPassword,
+      };
+
+      User.findOneAndUpdate(user, update)
+        .then((result) => {
+          if (!result) {
+            res.status(500).send({
+              message: "user password reset failed",
+            });
+          } else {
+            res.status(201).send({
+              message: "User Password reset Successfull",
+              result,
+            });
+          }
+        })
+        .catch((error) => {
+          res.status(500).send({
+            message: "Error resetting password",
+            // error,
+          });
+        });
+    })
+    .catch((e) => {
+      res.status(500).send({
+        message: "Password was not hashed successfully",
+        e,
+      });
+    });
+};

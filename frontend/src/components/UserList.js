@@ -12,6 +12,7 @@ import Cookies from "universal-cookie";
 
 import BASE_URL from "../config/ApiConfig";
 import EditAccountModal from "../modals/EditAccountModal";
+import ChangePasswordModal from "../modals/ChangePasswordModal";
 
 const cookies = new Cookies();
 
@@ -23,6 +24,8 @@ const UserList = () => {
   const [deleteUserModalShow, setDeleteUserModalShow] = useState(false);
   const [displayDeleteUser, setDisplayDeleteUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [editPasswordModalShow, setEditPasswordModalShow] = useState(false);
+  const [displayEditPasswordUser, setDisplayEditPasswordUser] = useState(null);
 
   const token = cookies.get("autoCreditCookie");
 
@@ -61,6 +64,11 @@ const UserList = () => {
     setDeleteUserModalShow(true);
     setDisplayDeleteUser(user);
   };
+
+  const changePasswordButtonClick = (user) => {
+    setEditPasswordModalShow(true);
+    setDisplayEditPasswordUser(user);
+  }
 
   const isAdmin = () => {
     if (JSON.parse(localStorage.getItem("userRole")) === "admin") {
@@ -108,6 +116,15 @@ const UserList = () => {
                       delete
                     </p>
                   </button>
+                  <button
+                    className="bg-green flex rounded-lg px-3 py-1"
+                    onClick={() => changePasswordButtonClick(user)}
+                  >
+                    <EditIcon className="text-white" fontSize="small" />
+                    <p className="text-white uppercase font-semibold ms-2 text-sm">
+                      change password
+                    </p>
+                  </button>
                 </div>
               ) : null}
             </div>
@@ -139,6 +156,13 @@ const UserList = () => {
           user={displayDeleteUser}
           userList={users}
           setUserList={setUsers}
+        />
+      )}
+      {editPasswordModalShow && (
+        <ChangePasswordModal
+          modalShow={editPasswordModalShow}
+          setModalShow={setEditPasswordModalShow}
+          user={displayEditPasswordUser}
         />
       )}
     </div>

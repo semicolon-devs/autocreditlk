@@ -25,12 +25,14 @@ import { CurrencyFormatter } from "../utils/CurrencyFormatter";
 import Cookies from "universal-cookie";
 
 import BASE_URL from "../config/ApiConfig";
+import PrintDetailsModal from "../modals/PrintDetailsModal";
 
 const cookies = new Cookies();
 
 const CustomerDetails = () => {
   const [changeCustomerDetailsModalShow, setChangeCustomerDetailsModalShow] =
     useState(false);
+  const [printDetailsModelShow, setPrintDetailsModelShow] = useState(false);
   const [changeLoanAmountModalShow, setChangeLoanAmountModalShow] =
     useState(false);
   const [deleteCustomerModalShow, setDeleteCustomerModalShow] = useState(false);
@@ -402,6 +404,14 @@ const CustomerDetails = () => {
                       customer={customer}
                     />
                   )}
+                  {printDetailsModelShow && (
+                    <PrintDetailsModal
+                      modalShow={printDetailsModelShow}
+                      setModalShow={setPrintDetailsModelShow}
+                      customer={customer}
+                      customer_paymets={customerPayments}
+                    />
+                  )}
                   {deleteCustomerModalShow && (
                     <DeleteCustomerModal
                       modalShow={deleteCustomerModalShow}
@@ -457,6 +467,12 @@ const CustomerDetails = () => {
           )}
           <div className="bg-white drop-shadow-lg rounded-lg p-3">
             <SectionSubtitle title="installment history" />
+            <button
+              className={`${secondaryButtonClasses}`}
+              onClick={() => setPrintDetailsModelShow(true)}
+            >
+              <p className={buttonTextClasses}>Print Details</p>
+            </button>
             {loading ? (
               <div className="w-full flex items-center justify-center">
                 <ThreeDots

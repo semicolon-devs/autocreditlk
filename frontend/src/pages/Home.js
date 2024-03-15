@@ -25,10 +25,15 @@ const Home = () => {
 
   const token = cookies.get("autoCreditCookie");
 
-  const [filter, setFilter] = React.useState("");
+  const [billingCycle, setBillingCycle] = React.useState("");
+  const [collector, setCollector] = React.useState([]);
 
-  const handleChange = (event) => {
-    setFilter(event.target.value);
+  const handleBillingFilter = (event) => {
+    setBillingCycle(event.target.value);
+  };
+
+  const handleCollectorFilter = (event) => {
+    setCollector(event.target.value);
   };
 
   // console.log(customers);
@@ -60,6 +65,30 @@ const Home = () => {
     getCustomers();
   }, []);
 
+  useEffect(() => {
+    const fetchCollectors = async () => {
+      const axiosConfig = {
+        method: "get",
+        url: `${BASE_URL}collector/collectors`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      axios(axiosConfig)
+        .then((res) => {
+          setCollector(res.data.collectors);
+          // const IdArr = res.data.collectors.map((collector) => collector._id);
+          // setCollectorIdArr(IdArr);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    fetchCollectors();
+  }, []);
+
   const filteredCustomers = customers.filter((customer) => {
     return (
       customer.customerID.includes(searchField) ||
@@ -69,13 +98,14 @@ const Home = () => {
   });
 
   const filtered = filteredCustomers.map((customer) => (
+    // <HomePageCard key={customer._id} customer={customer} />
     <HomePageCard key={customer._id} customer={customer} />
   ));
 
   return (
     <div className="bg-light">
       <div className="">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <div className="flex sm:max-w-xs lg:max-w-auto">
             <input
               type="string"
@@ -89,19 +119,44 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="flex justify-start items-center">
-            <Box sx={{ minWidth: 120 }}>
+          <div className="flex justify-center items-center">
+            <Box sx={{ minWidth: 220 }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Filter</InputLabel>
+                <InputLabel id="billingcycle-input-label">
+                  Billing Cycle
+                </InputLabel>
+                <Select
+                  labelId="billingcycle-label"
+                  id="billingcycle"
+                  value={billingCycle}
+                  label="Billing Cycle"
+                  onChange={handleBillingFilter}
+                >
+                  <MenuItem value="daily">Daily</MenuItem>
+                  <MenuItem value="weekly">Weekly</MenuItem>
+                  <MenuItem value="monthly">Monthly</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </div>
+
+          <div className="flex justify-start items-center">
+            <Box sx={{ minWidth: 220 }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Collector</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={filter}
-                  label="Filter"
-                  onChange={handleChange}
+                  value={collector}
+                  label="Collector"
+                  onChange={handleCollectorFilter}
                 >
-                  <MenuItem value={10}>Billing Cycle</MenuItem>
-                  <MenuItem value={20}>Collector</MenuItem>
+                  {collector &&
+                    collector.map((collector) => (
+                      <MenuItem value={collector._id} key={collector._id}>
+                        {collector.name}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Box>

@@ -15,6 +15,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { Menu } from "@headlessui/react";
 
 const cookies = new Cookies();
 
@@ -22,11 +23,12 @@ const Home = () => {
   const [searchField, setSearchField] = useState("");
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [collectorArr, setCollectorArr] = useState([]);
 
   const token = cookies.get("autoCreditCookie");
 
-  const [billingCycle, setBillingCycle] = React.useState("");
-  const [collector, setCollector] = React.useState([]);
+  const [billingCycle, setBillingCycle] = React.useState("all");
+  const [selectedCollector, setCollector] = React.useState("allCollectors");
 
   const handleBillingFilter = (event) => {
     setBillingCycle(event.target.value);
@@ -51,8 +53,8 @@ const Home = () => {
       };
       axios(axiosConfig)
         .then((response) => {
-          console.log(response.data.customers);
           setCustomers(response.data.customers);
+          console.log(response.data.customers);
         })
         .catch((err) => {
           console.log(err);
@@ -61,11 +63,6 @@ const Home = () => {
           setLoading(false);
         });
     };
-
-    getCustomers();
-  }, []);
-
-  useEffect(() => {
     const fetchCollectors = async () => {
       const axiosConfig = {
         method: "get",
@@ -77,24 +74,43 @@ const Home = () => {
 
       axios(axiosConfig)
         .then((res) => {
-          setCollector(res.data.collectors);
-          // const IdArr = res.data.collectors.map((collector) => collector._id);
-          // setCollectorIdArr(IdArr);
+          setCollectorArr(res.data.collectors);
+          const CollIdArr = res.data.collectors.map(
+            (collector) => collector._id
+          );
         })
         .catch((err) => {
           console.log(err);
         });
     };
-
     fetchCollectors();
+    getCustomers();
   }, []);
 
   const filteredCustomers = customers.filter((customer) => {
-    return (
-      customer.customerID.includes(searchField) ||
-      customer.name.toLowerCase().includes(searchField.toLowerCase()) ||
-      customer.NIC.toLowerCase().includes(searchField.toLowerCase())
-    );
+    if (selectedCollector === "allCollectors") {
+      if (billingCycle === "all") {
+        return (
+          customer.customerID.includes(searchField) ||
+          customer.name.toLowerCase().includes(searchField.toLowerCase()) ||
+          customer.NIC.toLowerCase().includes(searchField.toLowerCase())
+        );
+      } else {
+        return (
+          (customer.customerID.includes(searchField) ||
+            customer.name.toLowerCase().includes(searchField.toLowerCase()) ||
+            customer.NIC.toLowerCase().includes(searchField.toLowerCase())) &&
+          customer.billingCycle === billingCycle
+        );
+      }
+    } else {
+      return (
+        customer.collectorId === selectedCollector &&
+        (customer.customerID.includes(searchField) ||
+          customer.name.toLowerCase().includes(searchField.toLowerCase()) ||
+          customer.NIC.toLowerCase().includes(searchField.toLowerCase()))
+      );
+    }
   });
 
   const filtered = filteredCustomers.map((customer) => (
@@ -132,9 +148,10 @@ const Home = () => {
                   label="Billing Cycle"
                   onChange={handleBillingFilter}
                 >
-                  <MenuItem value="daily">Daily</MenuItem>
-                  <MenuItem value="weekly">Weekly</MenuItem>
-                  <MenuItem value="monthly">Monthly</MenuItem>
+                  <MenuItem value="Daily">Daily</MenuItem>
+                  <MenuItem value="Weekly">Weekly</MenuItem>
+                  <MenuItem value="Monthly">Monthly</MenuItem>
+                  <MenuItem value="all"> All</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -147,16 +164,17 @@ const Home = () => {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={collector}
+                  value={selectedCollector}
                   label="Collector"
                   onChange={handleCollectorFilter}
                 >
-                  {collector &&
-                    collector.map((collector) => (
+                  {collectorArr &&
+                    collectorArr.map((collector) => (
                       <MenuItem value={collector._id} key={collector._id}>
                         {collector.name}
                       </MenuItem>
                     ))}
+                  <MenuItem value="allCollectors"> All</MenuItem>
                 </Select>
               </FormControl>
             </Box>

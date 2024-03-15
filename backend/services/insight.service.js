@@ -68,6 +68,7 @@ const getInstallmentsForDate = async (date) => {
     });
     installment._doc.customerName = customer.name;
     installment._doc.collectorID = customer.collectorId;
+    installment._doc.billingCycle = customer.billingCycle;
 
     updatedList.push(installment._doc);
   }

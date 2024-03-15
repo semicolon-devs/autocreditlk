@@ -13,6 +13,12 @@ import DailyUnpaid from "../components/DailyUnpaid";
 import DailyUnpaidAdmin from "../components/DailyUnpaidAdmin";
 import Cookies from "universal-cookie";
 
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
 import BASE_URL from "../config/ApiConfig";
 
 const cookies = new Cookies();
@@ -33,7 +39,11 @@ const Insights = () => {
   const [totalUnPaid, setTotalUnpaid] = useState(0);
   const [collectors, setCollector] = useState(null);
 
+  const [billingCycle, setBillingCycle] = useState("all");
   const token = cookies.get("autoCreditCookie");
+  const handleBillingFilter = (event) => {
+    setBillingCycle(event.target.value);
+  };
 
   const getTotalUnpaid = () => {
     setLoading(true);
@@ -71,6 +81,7 @@ const Insights = () => {
     axios(axiosConfig)
       .then((response) => {
         setCollector(response.data.collectors);
+        console.log(response.data.collectors);
         const collectorsData = response.data.collectors;
         const matchingCollector = collectorsData.find(
           (collector) => collector.name === userData.name
@@ -134,10 +145,43 @@ const Insights = () => {
     getTotalUnpaid();
   }, [date]);
 
+  let filteredInstallments = installments;
+  let filteredNotPaid = notPaid;
+
+  if (billingCycle !== "all") {
+    filteredInstallments = installments.filter(
+      (installment) => installment.billingCycle === billingCycle
+    );
+    filteredNotPaid = notPaid.filter(
+      (customer) => customer.billingCycle === billingCycle
+    );
+  }
   return (
     <>
       <SectionTitle title="Insights" />
       <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5 flex justify-end sm:justify-between items-center">
+        <div className="flex justify-center items-center">
+          <Box sx={{ minWidth: 220 }}>
+            <FormControl fullWidth>
+              <InputLabel id="billingcycle-input-label">
+                Billing Cycle
+              </InputLabel>
+              <Select
+                labelId="billingcycle-label"
+                id="billingcycle"
+                value={billingCycle}
+                label="Billing Cycle"
+                onChange={handleBillingFilter}
+              >
+                <MenuItem value="Daily">Daily</MenuItem>
+                <MenuItem value="Weekly">Weekly</MenuItem>
+                <MenuItem value="Monthly">Monthly</MenuItem>
+                <MenuItem value="all"> All</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </div>
+
         <p className="text-xl hidden sm:block">Pick date</p>
         <div className="flex justify-end">
           <MUIDatePicker setDate={setDate} />
@@ -242,10 +286,10 @@ const Insights = () => {
               />
             </div>
           ) : userData.role === "admin" ? (
-            <DailyInstallmentAdmin installments={installments} />
+            <DailyInstallmentAdmin installments={filteredInstallments} />
           ) : (
             <DailyInstallments
-              installments={installments}
+              installments={filteredInstallments}
               userData={userData}
             />
           )}
@@ -276,9 +320,9 @@ const Insights = () => {
               />
             </div>
           ) : userData.role === "admin" ? (
-            <DailyUnpaidAdmin notPaid={notPaid} />
+            <DailyUnpaidAdmin notPaid={filteredNotPaid} />
           ) : (
-            <DailyUnpaid notPaid={notPaid} userData={userData} />
+            <DailyUnpaid notPaid={filteredNotPaid} userData={userData} />
           )}
         </div>
       </div>

@@ -28,14 +28,14 @@ const Home = () => {
   const token = cookies.get("autoCreditCookie");
 
   const [billingCycle, setBillingCycle] = React.useState("all");
-  const [selectedCollector, setCollector] = React.useState("allCollectors");
+  const [selectedCollector, setSelectedCollector] = React.useState("allCollectors");
 
   const handleBillingFilter = (event) => {
     setBillingCycle(event.target.value);
   };
 
   const handleCollectorFilter = (event) => {
-    setCollector(event.target.value);
+    setSelectedCollector(event.target.value);
   };
 
   // console.log(customers);
@@ -104,12 +104,22 @@ const Home = () => {
         );
       }
     } else {
-      return (
-        customer.collectorId === selectedCollector &&
-        (customer.customerID.includes(searchField) ||
-          customer.name.toLowerCase().includes(searchField.toLowerCase()) ||
-          customer.NIC.toLowerCase().includes(searchField.toLowerCase()))
-      );
+      if (billingCycle === "all") {
+        return (
+          customer.collectorId === selectedCollector &&
+          (customer.customerID.includes(searchField) ||
+            customer.name.toLowerCase().includes(searchField.toLowerCase()) ||
+            customer.NIC.toLowerCase().includes(searchField.toLowerCase()))
+        );
+      } else {
+        return (
+          customer.collectorId === selectedCollector &&
+          (customer.customerID.includes(searchField) ||
+            customer.name.toLowerCase().includes(searchField.toLowerCase()) ||
+            customer.NIC.toLowerCase().includes(searchField.toLowerCase())) &&
+          customer.billingCycle === billingCycle
+        );
+      }
     }
   });
 
@@ -117,6 +127,13 @@ const Home = () => {
     // <HomePageCard key={customer._id} customer={customer} />
     <HomePageCard key={customer._id} customer={customer} />
   ));
+  const isAdmin = () => {
+    if (JSON.parse(localStorage.getItem("userRole")) === "admin") {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <div className="bg-light">
@@ -156,7 +173,7 @@ const Home = () => {
               </FormControl>
             </Box>
           </div>
-
+          {isAdmin() ? (
           <div className="flex justify-start items-center">
             <Box sx={{ minWidth: 220 }}>
               <FormControl fullWidth>
@@ -179,7 +196,9 @@ const Home = () => {
               </FormControl>
             </Box>
           </div>
-
+          ) : (
+            ""
+          )}
           <div className="flex justify-end items-center">
             <div className="bg-white drop-shadow-lg rounded-md p-3 font-semibold sm:w-max w-full">
               <p className="">{customers.length} Customers</p>

@@ -79,6 +79,16 @@ const PrintDetailsModal = ({
                     <span className="font-semibold italic ">
                       {customer.name}
                     </span>
+                    <br />
+                    Installment amount :{" "}
+                    {customer.installmentAmount &&
+                      CurrencyFormatter(customer.installmentAmount)}{" "}
+                    LKR
+                    <br />
+                    Paid amount :{" "}
+                    {customer.paidAmount &&
+                      CurrencyFormatter(customer.paidAmount)}{" "}
+                    LKR
                   </Dialog.Description>
                   {loading ? (
                     <div className="w-full flex items-center justify-center">

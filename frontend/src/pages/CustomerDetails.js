@@ -422,6 +422,7 @@ const CustomerDetails = () => {
                 </>
               )
             )}
+            {console.log(customer)}
           </div>
           {message && (
             <div className="w-full border border-orange rounded-lg">
@@ -550,6 +551,7 @@ const CustomerDetails = () => {
                       ) : null}
                     </div>
                   ))}
+                {console.log(customerPayments)}
                 {displayEditPayment && (
                   <EditPaymentModal
                     modalShow={editPaymentModalShow}

@@ -9,7 +9,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-
+import {
+  buttonClasses,
+  buttonTextClasses,
+  primaryButtonClasses,
+  secondaryButtonClasses,
+} from "../data/Classes";
 import { CurrencyFormatter } from "../utils/CurrencyFormatter";
 import {
   TextInputWithLabel as TextInput,
@@ -31,6 +36,9 @@ const rows = [
   createData("Cupcake", 305, 3.73),
   createData("Gingerbread", 356, 16.0),
 ];
+const handlePrint = () => {
+  window.print();
+};
 
 const PrintDetailsModal = ({
   modalShow,
@@ -154,6 +162,14 @@ const PrintDetailsModal = ({
                       </Table>
                     </TableContainer>
                   )}
+                  <div className="flex items-center p-3">
+                    <button
+                      className={`mb-2 ${secondaryButtonClasses}`}
+                      onClick={handlePrint}
+                    >
+                      <p className={`${buttonTextClasses}`}>Print Details</p>
+                    </button>
+                  </div>
                 </Dialog.Panel>
               </div>
             </div>

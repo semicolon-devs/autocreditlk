@@ -409,7 +409,7 @@ const CustomerDetails = () => {
                       modalShow={printDetailsModelShow}
                       setModalShow={setPrintDetailsModelShow}
                       customer={customer}
-                      customer_paymets={customerPayments}
+                      customerPayments={customerPayments}
                     />
                   )}
                   {deleteCustomerModalShow && (
@@ -468,10 +468,10 @@ const CustomerDetails = () => {
           <div className="bg-white drop-shadow-lg rounded-lg p-3">
             <SectionSubtitle title="installment history" />
             <button
-              className={`${secondaryButtonClasses}`}
+              className={`mb-2 ${secondaryButtonClasses}`}
               onClick={() => setPrintDetailsModelShow(true)}
             >
-              <p className={buttonTextClasses}>Print Details</p>
+              <p className={`${buttonTextClasses}`}>Print Details</p>
             </button>
             {loading ? (
               <div className="w-full flex items-center justify-center">

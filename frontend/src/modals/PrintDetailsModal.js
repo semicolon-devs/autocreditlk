@@ -2,7 +2,15 @@ import { useState, Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Formik, Form } from "formik";
 import { ThreeDots } from "react-loader-spinner";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
+import { CurrencyFormatter } from "../utils/CurrencyFormatter";
 import {
   TextInputWithLabel as TextInput,
   TextAreaWithLabel as TextArea,
@@ -12,7 +20,24 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-const PrintDetailsModal = ({ modalShow, setModalShow, customer }) => {
+function createData(name, calories, fat) {
+  return { name, calories, fat };
+}
+
+const rows = [
+  createData("Frozen yoghurt", 159, 6.0),
+  createData("Ice cream sandwich", 2377, 4.3),
+  createData("Eclair", 262, 16.0),
+  createData("Cupcake", 305, 3.73),
+  createData("Gingerbread", 356, 16.0),
+];
+
+const PrintDetailsModal = ({
+  modalShow,
+  setModalShow,
+  customer,
+  customerPayments,
+}) => {
   const [loading, setLoading] = useState(false);
 
   return (
@@ -47,136 +72,78 @@ const PrintDetailsModal = ({ modalShow, setModalShow, customer }) => {
               <div className="flex min-h-full items-center justify-center p-4">
                 <Dialog.Panel className="w-full max-w-3xl rounded-lg bg-white p-3">
                   <Dialog.Title className="text-2xl font-semibold mb-3">
-                    Change Customer Details
+                    Print Customer Details
                   </Dialog.Title>
                   <Dialog.Description>
-                    Only enter fields of the customer,{" "}
+                    Installment history of the customer,{" "}
                     <span className="font-semibold italic ">
                       {customer.name}
-                    </span>{" "}
-                    you wish to update
+                    </span>
                   </Dialog.Description>
-                  <Formik
-                    initialValues={{
-                      name: customer.name,
-                      NIC: customer.NIC,
-                      email: customer.email,
-                      mobileNo: customer.phone,
-                      mobileNoTwo: customer.phoneTwo,
-                      address: customer.address,
-                      description: customer.description,
-                      guarantorName: customer.guarantor,
-                      guarantorMobileNo: customer.guarantorMobile,
-                      guarantorMobileNoTwo: customer.guarantorMobileTwo,
-                      guarantorNIC: customer.guarantorNIC,
-                    }}
-                  >
-                    <div className="mt-3">
-                      <Form>
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                          <div>
-                            <TextInput
-                              name="name"
-                              type="text"
-                              label="Name :"
-                              placeholder={customer.name}
-                            />
-
-                            <TextInput
-                              name="NIC"
-                              type="text"
-                              label="NIC :"
-                              placeholder={customer.NIC}
-                            />
-
-                            <TextInput
-                              name="email"
-                              type="text"
-                              label="Email :"
-                              placeholder={customer.email}
-                            />
-
-                            <TextInput
-                              name="mobileNo"
-                              type="text"
-                              label="Mobile No. :"
-                              placeholder={customer.phone}
-                            />
-
-                            <TextInput
-                              name="mobileNoTwo"
-                              type="text"
-                              label="Mobile No. 2 :"
-                              placeholder={customer.phoneTwo}
-                            />
-                            <TextInput
-                              name="address"
-                              type="text"
-                              label="Address :"
-                              placeholder={customer.address}
-                            />
-
-                            <TextArea
-                              name="description"
-                              type="text"
-                              label="Description :"
-                              placeholder={customer.description}
-                            />
-                          </div>
-                          <div>
-                            <TextInput
-                              name="guarantorName"
-                              type="text"
-                              label="Guarantor Name :"
-                              placeholder={customer.guarantor}
-                            />
-
-                            <TextInput
-                              name="guarantorNIC"
-                              type="text"
-                              label="Guarantor NIC :"
-                              placeholder={customer.guarantorNIC}
-                            />
-
-                            <TextInput
-                              name="guarantorMobileNo"
-                              type="text"
-                              label="Guarantor Mobile No. :"
-                              placeholder={customer.guarantorMobile}
-                            />
-
-                            <TextInput
-                              name="guarantorMobileNoTwo"
-                              type="text"
-                              label="Guarantor Mobile No. 2 :"
-                              placeholder={customer.guarantorMobileTwo}
-                            />
-                          </div>
-                        </div>
-                        <button
-                          type="submit"
-                          className="bg-maroon w-full rounded-lg px-4 py-2 mt-2 border-none outline-none flex items-center justify-center"
-                        >
-                          {loading ? (
-                            <ThreeDots
-                              height="40"
-                              width="40"
-                              radius="9"
-                              color="white"
-                              ariaLabel="three-dots-loading"
-                              wrapperStyle={{}}
-                              wrapperClassName=""
-                              visible={true}
-                            />
-                          ) : (
-                            <p className="text-white uppercase font-bold">
-                              change details
-                            </p>
-                          )}
-                        </button>
-                      </Form>
+                  {loading ? (
+                    <div className="w-full flex items-center justify-center">
+                      <ThreeDots
+                        height="40"
+                        width="40"
+                        radius="9"
+                        color="#808080"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                      />
                     </div>
-                  </Formik>
+                  ) : (
+                    <TableContainer component={Paper}>
+                      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Timestamp</TableCell>
+                            <TableCell align="right">Amount</TableCell>
+                            <TableCell align="right">Collected by</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {customerPayments.map((payment) => (
+                            <TableRow
+                              key={payment._id}
+                              sx={{
+                                "&:last-child td, &:last-child th": {
+                                  border: 0,
+                                },
+                              }}
+                            >
+                              <TableCell component="th" scope="row">
+                                {new Date(payment.paidDate).toLocaleDateString(
+                                  "en-GB",
+                                  {
+                                    year: "numeric",
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                    timeZone: "Asia/Colombo",
+                                  }
+                                )}{" "}
+                                {new Date(payment.paidDate).toLocaleTimeString(
+                                  "en-US",
+                                  {
+                                    timeZone: "Asia/Colombo",
+                                  }
+                                )}
+                              </TableCell>
+                              <TableCell align="right">
+                                {payment.amount &&
+                                  CurrencyFormatter(payment.amount)}{" "}
+                                LKR
+                              </TableCell>
+                              <TableCell align="right">
+                                {payment.collectedBy}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  )}
                 </Dialog.Panel>
               </div>
             </div>

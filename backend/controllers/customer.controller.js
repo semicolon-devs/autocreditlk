@@ -368,7 +368,6 @@ exports.getGuarantorIDs = async (req, res) => {
 
 exports.deleteCustomer = async (req, res) => {
   const customerID = req.params.id;
-  console.log("88888888888888888888888");
   const filter = { customerID: customerID };
 
   Customer.findOneAndDelete(filter)

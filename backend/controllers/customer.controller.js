@@ -265,7 +265,7 @@ exports.getCustomers = async (req, res) => {
   const isAdmin = req.user.role === "admin";
   let query = {
     $expr: { $lt: ["$paidAmount", "$loanAmount"] },
-    status: "approved",
+    status: { $ne: "pending" },
   };
   if (!isAdmin) {
     query = {

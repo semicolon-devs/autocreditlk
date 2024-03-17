@@ -49,13 +49,11 @@ const PendingCustomers = () => {
     <div className="w-full">
       <SectionTitle title="pending customers" />
       <div className="lg:grid-cols-1 gap-5">
-        <div className="bg-white w-full rounded-lg drop-shadow-lg p-3">
-          <PendingCustomerList
-            pendingCustomers={pendingCustomers}
-            setPendingCustomers={setPendingCustomers}
-            loading={loading}
-          />
-        </div>
+        <PendingCustomerList
+          pendingCustomers={pendingCustomers}
+          setPendingCustomers={setPendingCustomers}
+          loading={loading}
+        />
       </div>
     </div>
   );

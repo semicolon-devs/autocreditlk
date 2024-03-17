@@ -122,6 +122,9 @@ const CustomerSchema = new mongoose.Schema(
         type: Date,
       },
     ],
+    addedBy : {
+      type: String,
+    }
   },
   {
     timestamps: true,

@@ -28,6 +28,7 @@ exports.addCustomer = async (req, res) => {
       guarantorNIC,
       job,
       guarantorJob,
+      addedBy,
     } = req.body;
     const NICFrontCopy = req.files["NICFrontCopy"][0];
     const NICRearCopy = req.files["NICRearCopy"][0];
@@ -111,6 +112,7 @@ exports.addCustomer = async (req, res) => {
       guarantorAdditionalDocumentLink,
       job,
       guarantorJob,
+      addedBy: req.user.name,
     })
       .then((result) => {
         console.log("success");
@@ -561,7 +563,7 @@ exports.getPendingCustomers = async (req, res) => {
     const pendingCustomers = await Customer.find({ status: "pending" })
       .sort({ customerID: -1 })
       .select(
-        "customerID name NIC loanAmount paidAmount phone phoneTwo isSettled collectorId billingCycle installmentAmount"
+        "customerID name NIC loanAmount paidAmount phone phoneTwo isSettled collectorId billingCycle installmentAmount addedBy"
       );
 
     res.status(200).json({ customers: pendingCustomers });

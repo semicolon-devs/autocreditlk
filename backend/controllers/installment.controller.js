@@ -71,6 +71,7 @@ exports.addPayment = async (req, res) => {
             arrears: customer.arrears,
             amountPaid: amount,
             amountLeft: updatedCustomer.loanAmount - updatedCustomer.paidAmount,
+            collectorNo: user.phone,
           };
 
           await sendDailySMS(smsPayload);

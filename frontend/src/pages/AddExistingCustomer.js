@@ -180,7 +180,7 @@ const AddExistingCustomer = () => {
 
   const validationSchema = Yup.object({
     customerId: Yup.string()
-      .matches(/^(\d{4})$/, "Must be 4 digits")
+      .matches(/^\d+$/, "Must contain only digits")
       .required("Required"),
     name: Yup.string().required("Required"),
     NIC: Yup.string()

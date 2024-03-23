@@ -19,8 +19,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 import BASE_URL from "../config/ApiConfig";
-import CustomDatePicker from "../components/CustomDatePicker";
-// import MUIDateRangePicker from "../components/MUIDateRangePicker";
+import CustomDateModal from "../modals/CustomDateModal";
 
 const cookies = new Cookies();
 
@@ -161,9 +160,31 @@ const Insights = () => {
     <>
       <SectionTitle title="Insights" />
       <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5 flex justify-end sm:justify-between items-center">
+        <div className="flex justify-center items-center">
+          <Box sx={{ minWidth: 220 }}>
+            <FormControl fullWidth>
+              <InputLabel id="billingcycle-input-label">
+                Billing Cycle
+              </InputLabel>
+              <Select
+                labelId="billingcycle-label"
+                id="billingcycle"
+                value={billingCycle}
+                label="Billing Cycle"
+                onChange={handleBillingFilter}
+              >
+                <MenuItem value="Daily">Daily</MenuItem>
+                <MenuItem value="Weekly">Weekly</MenuItem>
+                <MenuItem value="Monthly">Monthly</MenuItem>
+                <MenuItem value="all"> All</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </div>
+
         <p className="text-xl hidden sm:block">Pick date</p>
         <div className="flex justify-end">
-          <CustomDatePicker />
+          <CustomDateModal />
         </div>
       </div>{" "}
       <div className="grid grid-cols-2 gap-5 ">
@@ -243,27 +264,6 @@ const Insights = () => {
       </div>
       <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5">
         <SectionSubtitle title="Daily installments" />
-        <div className="flex items-center">
-          <Box sx={{ minWidth: 220 }}>
-            <FormControl fullWidth>
-              <InputLabel id="billingcycle-input-label">
-                Billing Cycle
-              </InputLabel>
-              <Select
-                labelId="billingcycle-label"
-                id="billingcycle"
-                value={billingCycle}
-                label="Billing Cycle"
-                onChange={handleBillingFilter}
-              >
-                <MenuItem value="Daily">Daily</MenuItem>
-                <MenuItem value="Weekly">Weekly</MenuItem>
-                <MenuItem value="Monthly">Monthly</MenuItem>
-                <MenuItem value="all"> All</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
         <div className="hidden lg:grid lg:grid-cols-7 lg:border-y lg:border-grey lg:py-3 lg:my-3">
           <p className="font-semibold col-span-2">Customer name</p>
           <p className="font-semibold">Customer ID</p>

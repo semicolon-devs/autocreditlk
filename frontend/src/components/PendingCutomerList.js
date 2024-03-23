@@ -97,6 +97,13 @@ const PendingCustomerList = ({
                   >
                     <p className="text-white uppercase font-semibold">Delete</p>
                   </button>
+                  <a href={`/customer-details/${user.customerID.toString()}`}>
+                    <button className="bg-maroon hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg">
+                      <p className="text-white uppercase font-semibold">
+                        view details
+                      </p>
+                    </button>
+                  </a>
                 </div>
               </div>
             ))

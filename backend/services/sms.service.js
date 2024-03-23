@@ -68,6 +68,7 @@ async function sendDailySMS(payload) {
     customerId,
     customerName,
     collectorName,
+    collectorNo,
     amountPaid,
     amountLeft,
   } = payload;
@@ -82,7 +83,7 @@ Payment : ${amountPaid} LKR
 Arrears : ${arrears} LKR
 Remaining : ${amountLeft} LKR
 
-Contact Number - 075 6041 078
+Contact Number - ${collectorNo}
 
 `;
   return await sendOneSMS(to, message);

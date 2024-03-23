@@ -72,10 +72,10 @@ const router = createBrowserRouter(
           path="/sms-gateway"
           element={isAdmin() ? <SMSGateway /> : <AccessDeniedPage />}
         />
-        <Route
+        {/* <Route
           path="/reports"
           element={isAdmin() ? <ReportsPage /> : <AccessDeniedPage />}
-        />
+        /> */}
         <Route
           path="/settled-loans"
           element={isAdmin() ? <SetteledLoans /> : <AccessDeniedPage />}

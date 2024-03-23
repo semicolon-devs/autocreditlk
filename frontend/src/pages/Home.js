@@ -27,8 +27,8 @@ const Home = () => {
 
   const token = cookies.get("autoCreditCookie");
 
-  const [billingCycle, setBillingCycle] = React.useState("all");
-  const [selectedCollector, setSelectedCollector] = React.useState("allCollectors");
+  const [billingCycle, setBillingCycle] = useState("");
+  const [selectedCollector, setSelectedCollector] = useState("");
 
   const handleBillingFilter = (event) => {
     setBillingCycle(event.target.value);
@@ -88,8 +88,8 @@ const Home = () => {
   }, []);
 
   const filteredCustomers = customers.filter((customer) => {
-    if (selectedCollector === "allCollectors") {
-      if (billingCycle === "all") {
+    if (selectedCollector === "allCollectors" || selectedCollector === "") {
+      if (billingCycle === "all" || billingCycle === "") {
         return (
           customer.customerID.includes(searchField) ||
           customer.name.toLowerCase().includes(searchField.toLowerCase()) ||
@@ -174,28 +174,30 @@ const Home = () => {
             </Box>
           </div>
           {isAdmin() ? (
-          <div className="flex justify-start items-center">
-            <Box sx={{ minWidth: 220 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Collector</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={selectedCollector}
-                  label="Collector"
-                  onChange={handleCollectorFilter}
-                >
-                  {collectorArr &&
-                    collectorArr.map((collector) => (
-                      <MenuItem value={collector._id} key={collector._id}>
-                        {collector.name}
-                      </MenuItem>
-                    ))}
-                  <MenuItem value="allCollectors"> All</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-          </div>
+            <div className="flex justify-start items-center">
+              <Box sx={{ minWidth: 220 }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Collector
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={selectedCollector}
+                    label="Collector"
+                    onChange={handleCollectorFilter}
+                  >
+                    {collectorArr &&
+                      collectorArr.map((collector) => (
+                        <MenuItem value={collector._id} key={collector._id}>
+                          {collector.name}
+                        </MenuItem>
+                      ))}
+                    <MenuItem value="allCollectors"> All</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            </div>
           ) : (
             ""
           )}

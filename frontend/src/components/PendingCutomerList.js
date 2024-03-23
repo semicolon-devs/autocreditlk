@@ -7,6 +7,9 @@ import { ThreeDots } from "react-loader-spinner";
 import Cookies from "universal-cookie";
 import BASE_URL from "../config/ApiConfig";
 import DeleteCustomerModal from "../modals/DeleteCustomerModal";
+import { CurrencyFormatter } from "../utils/CurrencyFormatter";
+import { CallNow } from "../Icons/Icon";
+import { Link } from "react-router-dom";
 
 const cookies = new Cookies();
 const token = cookies.get("autoCreditCookie");
@@ -50,59 +53,74 @@ const PendingCustomerList = ({
   return (
     <div>
       <SectionSubtitle title="pending users" />
-      <div className="flex flex-col items-center justify-center">
-        {!loading ? (
-          pendingCustomers &&
-          pendingCustomers.map((user) => (
-            <div
-              className="bg-yellow w-full rounded-lg p-3 mb-3 flex justify-between items-center"
-              key={user._id}
-            >
-              <div className="">
-                <p className="text-maroon capitalize text-lg font-semibold leading-none">
-                  {user.name}
-                </p>
-                <p className="text-maroon ">{user.email}</p>
-                <p className="text-maroon leading-none">{user.phone}</p>
-                <button className="bg-red hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg">
-                  <p
-                    className="text-white uppercase font-semibold"
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
+        <div className="flex items-center justify-center gap-3">
+          {!loading ? (
+            pendingCustomers &&
+            pendingCustomers.map((user) => (
+              <div className="bg-white w-full drop-shadow-lg p-3 rounded-lg flex flex-col justify-between">
+                <div className="">
+                  <p className="font-bold mb-2 text-purple-950">
+                    {user.customerID}
+                  </p>
+                  <p className="font-bold text-xl">{user.name}</p>
+                  <p className="font-semibold">{user.NIC}</p>
+                  <p className="">
+                    Total -{" "}
+                    {user.loanAmount && CurrencyFormatter(user.loanAmount)} LKR
+                  </p>
+                  <p className="">
+                    customerID Mobile No. 1 - <CallNow />{" "}
+                    <a href={"tel:" + user.phone}>{user.phone}</a>
+                  </p>
+                  <p className="">Billing Cycle - {user.billingCycle}</p>
+                  <p className="">
+                    Installment amount -{" "}
+                    {user.installmentAmount &&
+                      CurrencyFormatter(user.installmentAmount)}{" "}
+                    LKR
+                  </p>
+                  <p className="font-semibold">Added By : {user.addedBy}</p>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    className="bg-green hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg"
                     onClick={() => handleApproveUserClick(user)}
                   >
-                    Approve
-                  </p>
-                </button>
+                    <p className="text-white uppercase font-semibold">
+                      Approve
+                    </p>
+                  </button>
+                  <button
+                    className="bg-red hover:bg-purple-800 mt-4 px-5 py-1 rounded-lg"
+                    onClick={() => handleDeletePendingUserClick(user)}
+                  >
+                    <p className="text-white uppercase font-semibold">Delete</p>
+                  </button>
+                </div>
               </div>
-              {/* <div className="">
-                <button
-                  className="outline-none border-none"
-                  onClick={() => handleDeletePendingUserClick(user)}
-                >
-                  <CloseIcon className="text-maroon" />
-                </button>
-              </div> */}
-            </div>
-          ))
-        ) : (
-          <ThreeDots
-            height="40"
-            width="40"
-            radius="9"
-            color="#808080"
-            ariaLabel="three-dots-loading"
-            wrapperStyle={{}}
-            wrapperClassName=""
-            visible={true}
+            ))
+          ) : (
+            <ThreeDots
+              height="40"
+              width="40"
+              radius="9"
+              color="#808080"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={true}
+            />
+          )}
+        </div>
+        {displayUser && (
+          <DeleteCustomerModal
+            modalShow={DeletePendingUserModalShow}
+            setModalShow={setDeletePendingUserModalShow}
+            customer={displayUser}
           />
         )}
       </div>
-      {displayUser && (
-        <DeleteCustomerModal
-          modalShow={DeletePendingUserModalShow}
-          setModalShow={setDeletePendingUserModalShow}
-          customer={displayUser}
-        />
-      )}
     </div>
   );
 };

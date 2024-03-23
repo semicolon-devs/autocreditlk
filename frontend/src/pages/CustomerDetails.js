@@ -432,26 +432,28 @@ const CustomerDetails = () => {
         </div>
         {/* </div> */}
         <div>
-          <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5">
-            <SectionSubtitle title="payments" />
-            <div className="flex items-center justify-start gap-3">
-              <button
-                className={secondaryButtonClasses}
-                onClick={() => setAddPaymentModalShow(true)}
-              >
-                <p className={buttonTextClasses}>add installment</p>
-              </button>
-              {isAdmin() ? (
-                <button
-                  className={`${primaryButtonClasses}`}
-                  onClick={() => setSendReminderModalShow(true)}
-                >
-                  <p className={buttonTextClasses}>send reminder</p>
-                </button>
-              ) : null}
-            </div>
-          </div>
+          {customer.status !== "pending" && (
+            <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5">
+              <SectionSubtitle title="payments" />
 
+              <div className="flex items-center justify-start gap-3">
+                <button
+                  className={secondaryButtonClasses}
+                  onClick={() => setAddPaymentModalShow(true)}
+                >
+                  <p className={buttonTextClasses}>add installment</p>
+                </button>
+                {isAdmin() ? (
+                  <button
+                    className={`${primaryButtonClasses}`}
+                    onClick={() => setSendReminderModalShow(true)}
+                  >
+                    <p className={buttonTextClasses}>send reminder</p>
+                  </button>
+                ) : null}
+              </div>
+            </div>
+          )}
           {addPaymentModalShow && (
             <AddPaymentModal
               modalShow={addPaymentModalShow}
@@ -466,6 +468,7 @@ const CustomerDetails = () => {
               customer={customer}
             />
           )}
+          {customer.status !== "pending" && (
           <div className="bg-white drop-shadow-lg rounded-lg p-3">
             <SectionSubtitle title="installment history" />
             <button
@@ -569,6 +572,7 @@ const CustomerDetails = () => {
               </div>
             )}
           </div>
+          )}
         </div>
       </div>
       <div className=" mt-5"></div>

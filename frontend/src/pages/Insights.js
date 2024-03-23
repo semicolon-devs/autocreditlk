@@ -4,7 +4,6 @@ import { ThreeDots } from "react-loader-spinner";
 
 import SectionTitle from "../components/SectionTitle";
 import SectionSubtitle from "../components/SectionSubtitle";
-import MUIDatePicker from "../components/MUIDatePicker";
 import { CurrencyFormatter } from "../utils/CurrencyFormatter";
 import CollectorDetails from "../components/CollectorDetails";
 import DailyInstallmentAdmin from "../components/DailyInstallementsAdmin";
@@ -20,6 +19,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 import BASE_URL from "../config/ApiConfig";
+import CustomDatePicker from "../components/CustomDatePicker";
+// import MUIDateRangePicker from "../components/MUIDateRangePicker";
 
 const cookies = new Cookies();
 
@@ -184,7 +185,7 @@ const Insights = () => {
 
         <p className="text-xl hidden sm:block">Pick date</p>
         <div className="flex justify-end">
-          <MUIDatePicker setDate={setDate} />
+          <CustomDatePicker />
         </div>
       </div>{" "}
       <div className="grid grid-cols-2 gap-5 ">

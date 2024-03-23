@@ -9,6 +9,9 @@ const {
   getCollectors,
   markWorkingDay,
   getCollectorsByDate,
+  markHolidays,
+  getWorkingDays,
+  getHolidays
 } = require("../controllers/user.controller");
 
 router.delete(
@@ -74,5 +77,24 @@ router.get(
   ],
   getCollectorsByDate
 );
+
+router.patch(
+  "/holidays/:id",
+  [
+    passport.authenticate("jwt", {
+      session: false,
+    }),
+    checkPermission(["admin"]),
+  ],
+  markHolidays
+);
+
+router.get("/holidays/:id", [
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  checkPermission(["admin", "collector"]),
+  getHolidays,
+]);
 
 module.exports = router;

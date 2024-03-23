@@ -6,6 +6,7 @@ const {
   parseMobileNumber,
 } = require("../utils/PhoneNumberValidation");
 const moment = require("moment-timezone");
+const { all } = require("../routes/user.route");
 
 exports.deleteUser = async (req, res) => {
   User.findById(req.params.id)
@@ -70,7 +71,6 @@ exports.updateProfile = async (req, res) => {
       });
     })
     .catch((err) => {
-
       res.status(400).json({
         message: "updating user unsuccessfull !",
         error: err.message,
@@ -143,7 +143,6 @@ exports.getCollectorsByDate = async (req, res) => {
       res.status(400).json({ message: err.message });
     });
 };
-
 exports.markWorkingDay = async (req, res) => {
   try {
     const isWorkingDay = req.body.isWorkingDay;
@@ -153,10 +152,10 @@ exports.markWorkingDay = async (req, res) => {
       const user = await User.findById(collectorId);
 
       if (!user) {
-        return {
+        return res.status(404).json({
           status: "Failed",
           message: "User not found",
-        };
+        });
       }
 
       const workingDays = user.workingDays || [];
@@ -176,13 +175,91 @@ exports.markWorkingDay = async (req, res) => {
         $set: { workingDays: updatedWorkingDays },
       });
     }
-    return {
+    // Sending the success response back to the client
+    return res.json({
       status: "Success",
-    };
+    });
   } catch (err) {
-    return {
+    // Sending the error response back to the client
+    return res.status(500).json({
       status: "Failed",
       message: err.message,
-    };
+    });
+  }
+};
+
+exports.markHolidays = async (req, res) => {
+  try {
+    const collectorId = req.params.id;
+    const holidays = req.body.holidays;
+
+    const user = await User.findById(collectorId);
+    const createdDate = moment(user.createdAt)
+      .startOf("day")
+      .utcOffset("+05:30");
+    const today = moment().startOf("day").utcOffset("+05:30");
+
+    const allDays = [];
+    let currentDate = createdDate.clone();
+    while (currentDate.isSameOrBefore(today)) {
+      const formattedDate = currentDate.format("YYYY-MM-DD");
+      if (!holidays.includes(formattedDate)) {
+        allDays.push(formattedDate);
+      }
+      currentDate.add(1, "day");
+    }
+    console.log(allDays);
+    const updatedWorkingDays = allDays;
+    await User.findByIdAndUpdate(collectorId, {
+      $set: { workingDays: updatedWorkingDays },
+    });
+    // Sending the response back to the client
+    return res.json({
+      status: "Success",
+      message: "Holidays marked successfully",
+    });
+  } catch (err) {
+    // Sending the error response back to the client
+    return res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
+exports.getHolidays = async (req, res) => {
+  try {
+    const collectorId = req.params.id;
+    const user = await User.findById(collectorId);
+
+    if (!user) {
+      return res.status(404).json({
+        status: "Failed",
+        message: "User not found",
+      });
+    }
+
+    const workingDays =
+      user.workingDays.map((day) => moment(day).format("YYYY-MM-DD")) || [];
+    const createdDate = moment(user.createdAt).startOf("day");
+    const today = moment().startOf("day");
+
+    const allDays = [];
+    let currentDate = createdDate.clone();
+    while (currentDate.isSameOrBefore(today)) {
+      const formattedDate = currentDate.format("YYYY-MM-DD");
+      allDays.push(formattedDate);
+      currentDate.add(1, "day");
+    }
+    holidays = allDays.filter((day) => !workingDays.includes(day));
+    return res.json({
+      status: "Success",
+      holidays: holidays,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
   }
 };

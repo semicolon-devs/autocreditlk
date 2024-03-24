@@ -11,7 +11,7 @@ import DailyInstallments from "../components/DailyInstallemnts";
 import DailyUnpaid from "../components/DailyUnpaid";
 import DailyUnpaidAdmin from "../components/DailyUnpaidAdmin";
 import Cookies from "universal-cookie";
-
+import MUIDatePicker from "../components/MUIDatePicker";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -19,8 +19,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 import BASE_URL from "../config/ApiConfig";
-import CustomDateModal from "../modals/CustomDateModal";
-import { buttonTextClasses, secondaryButtonClasses } from "../data/Classes";
 
 const cookies = new Cookies();
 
@@ -39,7 +37,6 @@ const Insights = () => {
   const [dailyInstallments, setDailyInstallments] = useState(0);
   const [totalUnPaid, setTotalUnpaid] = useState(0);
   const [collectors, setCollector] = useState(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [billingCycle, setBillingCycle] = useState("all");
   const token = cookies.get("autoCreditCookie");
@@ -162,43 +159,9 @@ const Insights = () => {
     <>
       <SectionTitle title="Insights" />
       <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5 flex justify-end sm:justify-between items-center">
-        <div className="flex justify-center items-center">
-          <Box sx={{ minWidth: 220 }}>
-            <FormControl fullWidth>
-              <InputLabel id="billingcycle-input-label">
-                Billing Cycle
-              </InputLabel>
-              <Select
-                labelId="billingcycle-label"
-                id="billingcycle"
-                value={billingCycle}
-                label="Billing Cycle"
-                onChange={handleBillingFilter}
-              >
-                <MenuItem value="Daily">Daily</MenuItem>
-                <MenuItem value="Weekly">Weekly</MenuItem>
-                <MenuItem value="Monthly">Monthly</MenuItem>
-                <MenuItem value="all"> All</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
-
-        {/* <p className="text-xl hidden sm:block">Pick date</p> */}
+        <p className="text-xl hidden sm:block">Pick date</p>
         <div className="flex justify-end">
-          {/* <CustomDateModal /> */}
-          <button
-            className={`mb-2 ${secondaryButtonClasses}`}
-            onClick={() => setShowDatePicker(true)}
-          >
-            <p className={`${buttonTextClasses}`}>Pick date</p>
-          </button>
-          {showDatePicker && (
-            <CustomDateModal
-              modalShow={showDatePicker}
-              setModalShow={setShowDatePicker}
-            />
-          )}
+          <MUIDatePicker setDate={setDate} />
         </div>
       </div>{" "}
       <div className="grid grid-cols-2 gap-5 ">
@@ -276,6 +239,25 @@ const Insights = () => {
           )}
         </div>
       </div>
+      <div className="flex pb-3 items-center">
+        <Box sx={{ minWidth: 220 }}>
+          <FormControl fullWidth>
+            <InputLabel id="billingcycle-input-label">Billing Cycle</InputLabel>
+            <Select
+              labelId="billingcycle-label"
+              id="billingcycle"
+              value={billingCycle}
+              label="Billing Cycle"
+              onChange={handleBillingFilter}
+            >
+              <MenuItem value="Daily">Daily</MenuItem>
+              <MenuItem value="Weekly">Weekly</MenuItem>
+              <MenuItem value="Monthly">Monthly</MenuItem>
+              <MenuItem value="all"> All</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </div>
       <div className="bg-white drop-shadow-lg rounded-lg p-3 mb-5">
         <SectionSubtitle title="Daily installments" />
         <div className="hidden lg:grid lg:grid-cols-7 lg:border-y lg:border-grey lg:py-3 lg:my-3">
@@ -285,6 +267,7 @@ const Insights = () => {
           <p className="font-semibold col-span-2">Installment date</p>
           <p className="font-semibold text-end">Installment amount</p>
         </div>
+
         <div className="overflow-y-auto max-h-96">
           {loading ? (
             <div className="w-full flex items-center justify-center">

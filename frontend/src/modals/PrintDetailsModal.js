@@ -9,6 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import html2PDF from "jspdf-html2canvas";
 import {
   buttonClasses,
   buttonTextClasses,
@@ -47,38 +48,38 @@ const PrintDetailsModal = ({
 }) => {
   const [loading, setLoading] = useState(false);
 
-  // const pdfRef = useRef();
-
   const handlePrint = () => {
-    // const input = pdfRef.current;
-    const capture = document.querySelector(".installments-modal");
+    const capture = document.getElementById("installmentsModal");
 
-    html2canvas(capture)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-        // const imgWidth = canvas.width;
-        // const imgHeight = canvas.height;
-        // const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-        // const imgX = (pdfWidth - imgWidth * ratio) / 2;
-        // const imgY = 30;
-        pdf.addImage(imgData, "PNG", pdfWidth, pdfHeight);
-        pdf.save("Installments.pdf");
-      })
-      .catch((error) => {
-        console.error("Error while generating PDF:", error);
-      });
+    html2canvas(capture).then((canvas) => {
+      const imgData = canvas.toDataURL("img/png");
+      const doc = new jsPDF("p", "mm", "a4");
+      const pdfWidth = doc.internal.pageSize.getWidth();
+      const pdfHeight = doc.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 30;
+      doc.addImage(
+        imgData,
+        "PNG",
+        imgX,
+        imgY,
+        imgWidth * ratio,
+        imgHeight * ratio
+      );
+      doc.save("installments.pdf");
+    });
   };
 
   return (
     <Transition
       show={modalShow}
       as={Fragment}
-      // ref={pdfRef}
-      className="installments-modal"
-      height={100}
+      // id="installmentsModal"
+      // height="600px"
+      // width="400px"
     >
       <Dialog
         open={modalShow}
@@ -107,7 +108,10 @@ const PrintDetailsModal = ({
             leaveTo="opacity-0 scale-95"
           >
             <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4">
+              <div
+                className="flex min-h-full items-center justify-center p-4"
+                id="installmentsModal"
+              >
                 <Dialog.Panel className="w-full max-w-3xl rounded-lg bg-white p-3">
                   <Dialog.Title className="text-2xl font-semibold mb-3">
                     Print Customer Details

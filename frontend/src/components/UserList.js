@@ -5,7 +5,7 @@ import SectionSubtitle from "../components/SectionSubtitle";
 
 import { CloseIcon } from "../Icons/Icon";
 import DeleteUserModal from "../modals/DeleteUserModal";
-import { EditIcon, DeleteIcon } from "../Icons/Icon";
+import { EditIcon, DeleteIcon, DateIcon } from "../Icons/Icon";
 import { ThreeDots } from "react-loader-spinner";
 
 import Cookies from "universal-cookie";
@@ -13,6 +13,9 @@ import Cookies from "universal-cookie";
 import BASE_URL from "../config/ApiConfig";
 import EditAccountModal from "../modals/EditAccountModal";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
+import { secondaryButtonClasses } from "../data/Classes";
+import Grid from "@mui/material/Grid";
+import CustomDateModal from "../modals/CustomDateModal";
 
 const cookies = new Cookies();
 
@@ -26,6 +29,7 @@ const UserList = () => {
   const [loading, setLoading] = useState(false);
   const [editPasswordModalShow, setEditPasswordModalShow] = useState(false);
   const [displayEditPasswordUser, setDisplayEditPasswordUser] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const token = cookies.get("autoCreditCookie");
 
@@ -68,7 +72,7 @@ const UserList = () => {
   const changePasswordButtonClick = (user) => {
     setEditPasswordModalShow(true);
     setDisplayEditPasswordUser(user);
-  }
+  };
 
   const isAdmin = () => {
     if (JSON.parse(localStorage.getItem("userRole")) === "admin") {
@@ -97,34 +101,64 @@ const UserList = () => {
                 <p className="text-maroon leading-none">{user.phone}</p>
               </div>
               {isAdmin() ? (
-                <div className="flex items-end justify-end gap-3 mt-2">
-                  <button
-                    className="bg-maroon flex rounded-lg px-3 py-1"
-                    onClick={() => editUserButtonClick(user)}
-                  >
-                    <EditIcon className="text-white" fontSize="small" />
-                    <p className="text-white uppercase font-semibold ms-2 text-sm">
-                      edit
-                    </p>
-                  </button>
-                  <button
-                    className="bg-orange flex rounded-lg px-3 py-1"
-                    onClick={() => deleteUserButtonClick(user)}
-                  >
-                    <DeleteIcon className="text-white" fontSize="small" />
-                    <p className="text-white uppercase font-semibold ms-2 text-sm">
-                      delete
-                    </p>
-                  </button>
-                  <button
-                    className="bg-green flex rounded-lg px-3 py-1"
+                <div className="flex items-end justify-end gap-2 mt-2 ml-5">
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <button
+                        className="bg-maroon flex rounded-lg px-3 py-1"
+                        onClick={() => editUserButtonClick(user)}
+                      >
+                        <EditIcon className="text-white" fontSize="small" />
+                        <p className="text-white uppercase font-semibold ms-2 text-sm">
+                          edit
+                        </p>
+                      </button>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <button
+                        className="bg-orange flex rounded-lg px-3 py-1"
+                        onClick={() => deleteUserButtonClick(user)}
+                      >
+                        <DeleteIcon className="text-white" fontSize="small" />
+                        <p className="text-white uppercase font-semibold ms-2 text-sm">
+                          delete
+                        </p>
+                      </button>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <button
+                        className="bg-green flex rounded-lg px-3 py-1"
+                        onClick={() => changePasswordButtonClick(user)}
+                      >
+                        <EditIcon className="text-white" fontSize="small" />
+                        <p className="text-white uppercase font-semibold ms-2 text-sm">
+                          change password
+                        </p>
+                      </button>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <button
+                        className="bg-green flex rounded-lg px-3 py-1"
+                        onClick={() => setShowDatePicker(true)}
+                      >
+                        <DateIcon className="text-white" fontSize="small" />
+                        <p className="text-white uppercase font-semibold ms-2 text-sm">
+                          Pick Date
+                        </p>
+                      </button>
+                    </Grid>
+                  </Grid>
+
+                  {/* <button
+                    className={`${secondaryButtonClasses}`}
+                    // className="bg-green flex rounded-lg px-3 py-1"
                     onClick={() => changePasswordButtonClick(user)}
                   >
                     <EditIcon className="text-white" fontSize="small" />
                     <p className="text-white uppercase font-semibold ms-2 text-sm">
                       change password
                     </p>
-                  </button>
+                  </button> */}
                 </div>
               ) : null}
             </div>
@@ -163,6 +197,12 @@ const UserList = () => {
           modalShow={editPasswordModalShow}
           setModalShow={setEditPasswordModalShow}
           user={displayEditPasswordUser}
+        />
+      )}
+      {showDatePicker && (
+        <CustomDateModal
+          modalShow={showDatePicker}
+          setModalShow={setShowDatePicker}
         />
       )}
     </div>

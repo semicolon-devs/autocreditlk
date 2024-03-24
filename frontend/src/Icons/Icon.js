@@ -25,6 +25,7 @@ import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import DateRangeIcon from "@mui/icons-material/DateRange";
 // import AddchartIcon from '@mui/icons-material/Addchart';
 
 export {
@@ -55,5 +56,5 @@ export {
   ArrowRightOutlinedIcon as ArrowIcon,
   CreditScoreIcon as SetteledLoanIcon,
   PendingActionsIcon as PendingCustomerIcon,
-  // AddchartIcon as CollectorIcon,
+  DateRangeIcon as DateIcon,
 };

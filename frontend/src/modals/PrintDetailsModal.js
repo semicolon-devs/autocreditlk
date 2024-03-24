@@ -47,23 +47,24 @@ const PrintDetailsModal = ({
 }) => {
   const [loading, setLoading] = useState(false);
 
-  const pdfRef = useRef();
+  // const pdfRef = useRef();
 
   const handlePrint = () => {
-    const input = pdfRef.current;
+    // const input = pdfRef.current;
+    const capture = document.querySelector(".installments-modal");
 
-    html2canvas(input)
+    html2canvas(capture)
       .then((canvas) => {
         const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4", true);
+        const pdf = new jsPDF("p", "mm", "a4");
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height;
-        const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-        const imgX = (pdfWidth - imgWidth * ratio) / 2;
-        const imgY = 30;
-        pdf.addImage(imgData, "PNG", imgX, imgY, imgWidth * ratio);
+        // const imgWidth = canvas.width;
+        // const imgHeight = canvas.height;
+        // const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+        // const imgX = (pdfWidth - imgWidth * ratio) / 2;
+        // const imgY = 30;
+        pdf.addImage(imgData, "PNG", pdfWidth, pdfHeight);
         pdf.save("Installments.pdf");
       })
       .catch((error) => {
@@ -72,7 +73,13 @@ const PrintDetailsModal = ({
   };
 
   return (
-    <Transition show={modalShow} as={Fragment} ref={pdfRef} height={100}>
+    <Transition
+      show={modalShow}
+      as={Fragment}
+      // ref={pdfRef}
+      className="installments-modal"
+      height={100}
+    >
       <Dialog
         open={modalShow}
         onClose={() => setModalShow(false)}

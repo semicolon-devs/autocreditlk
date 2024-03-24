@@ -30,6 +30,7 @@ const UserList = () => {
   const [editPasswordModalShow, setEditPasswordModalShow] = useState(false);
   const [displayEditPasswordUser, setDisplayEditPasswordUser] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const token = cookies.get("autoCreditCookie");
 
@@ -74,6 +75,11 @@ const UserList = () => {
     setDisplayEditPasswordUser(user);
   };
 
+  const markHolidaysButtonClick = (user) => {
+    setShowDatePicker(true);
+    setCurrentUser(user);
+  };
+
   const isAdmin = () => {
     if (JSON.parse(localStorage.getItem("userRole")) === "admin") {
       return true;
@@ -105,6 +111,28 @@ const UserList = () => {
                   <Grid container spacing={2}>
                     <Grid item xs={6}>
                       <button
+                        className="bg-green flex rounded-lg px-3 py-1"
+                        onClick={() => changePasswordButtonClick(user)}
+                      >
+                        <EditIcon className="text-white" fontSize="small" />
+                        <p className="text-white uppercase font-semibold ms-2 text-sm">
+                          change password
+                        </p>
+                      </button>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <button
+                        className="bg-blue flex rounded-lg px-3 py-1"
+                        onClick={() => markHolidaysButtonClick(user)}
+                      >
+                        <DateIcon className="text-white" fontSize="small" />
+                        <p className="text-white uppercase font-semibold ms-2 text-sm">
+                          Mark Holidays
+                        </p>
+                      </button>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <button
                         className="bg-maroon flex rounded-lg px-3 py-1"
                         onClick={() => editUserButtonClick(user)}
                       >
@@ -122,28 +150,6 @@ const UserList = () => {
                         <DeleteIcon className="text-white" fontSize="small" />
                         <p className="text-white uppercase font-semibold ms-2 text-sm">
                           delete
-                        </p>
-                      </button>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <button
-                        className="bg-green flex rounded-lg px-3 py-1"
-                        onClick={() => changePasswordButtonClick(user)}
-                      >
-                        <EditIcon className="text-white" fontSize="small" />
-                        <p className="text-white uppercase font-semibold ms-2 text-sm">
-                          change password
-                        </p>
-                      </button>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <button
-                        className="bg-green flex rounded-lg px-3 py-1"
-                        onClick={() => setShowDatePicker(true)}
-                      >
-                        <DateIcon className="text-white" fontSize="small" />
-                        <p className="text-white uppercase font-semibold ms-2 text-sm">
-                          Pick Date
                         </p>
                       </button>
                     </Grid>
@@ -203,6 +209,7 @@ const UserList = () => {
         <CustomDateModal
           modalShow={showDatePicker}
           setModalShow={setShowDatePicker}
+          user={currentUser}
         />
       )}
     </div>

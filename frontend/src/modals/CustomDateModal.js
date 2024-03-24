@@ -3,25 +3,76 @@ import { Dialog, Transition } from "@headlessui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ThreeDots } from "react-loader-spinner";
+import axios from "axios";
+import BASE_URL from "../config/ApiConfig";
+import Cookies from "universal-cookie";
 
-const CustomDatePicker = ({ modalShow, setModalShow }) => {
+const cookies = new Cookies();
+const token = cookies.get("autoCreditCookie");
+
+const CustomDatePicker = ({ modalShow, setModalShow, user }) => {
   const [startDate, setStartDate] = useState(new Date());
-  const [otherDates, setOtherDates] = useState([]);
+  const [holiDays, setholiDays] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const highlightImportantDates = (date) => {
     const formattedDate = date.toISOString().split("T")[0];
-    return otherDates.includes(formattedDate);
+    return holiDays.includes(formattedDate);
   };
 
   const handleDateChange = (date) => {
     const formattedDate = date.toISOString().split("T")[0];
-    if (!otherDates.includes(formattedDate)) {
-      setOtherDates([...otherDates, formattedDate]);
+    if (!holiDays.includes(formattedDate)) {
+      setholiDays([...holiDays, formattedDate]);
     } else {
-      setOtherDates(otherDates.filter((d) => d !== formattedDate));
+      setholiDays(holiDays.filter((d) => d !== formattedDate));
     }
   };
+
+  const handleConfirm = (user) => {
+    const axiosConfig = {
+      method: "patch",
+      url: `${BASE_URL}collector/holidays/${user._id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        holidays: holiDays,
+      },
+    };
+    axios(axiosConfig)
+      .then((res) => {
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    const fetchCollectors = async () => {
+      setLoading(true);
+      const axiosConfig = {
+        method: "get",
+        url: `${BASE_URL}collector/holidays/${user._id}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      axios(axiosConfig)
+        .then((res) => {
+          setholiDays(res.data.holidays);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+
+    fetchCollectors();
+  }, []);
 
   return (
     <Transition show={modalShow} as={Fragment} height={100}>
@@ -78,7 +129,7 @@ const CustomDatePicker = ({ modalShow, setModalShow }) => {
                         selected={startDate}
                         onChange={(date) => setStartDate(date)}
                         dateFormat="MM/dd/yyyy"
-                        highlightDates={otherDates.map(
+                        highlightDates={holiDays.map(
                           (dateString) => new Date(dateString)
                         )}
                         inline
@@ -86,6 +137,14 @@ const CustomDatePicker = ({ modalShow, setModalShow }) => {
                       />
                     </div>
                   )}
+                  <button
+                    className="bg-blue flex rounded-lg px-3 py-1"
+                    onClick={() => handleConfirm(user)}
+                  >
+                    <p className="text-white uppercase font-semibold ms-2 text-sm">
+                      confirm
+                    </p>
+                  </button>
                 </Dialog.Panel>
               </div>
             </div>
@@ -97,7 +156,7 @@ const CustomDatePicker = ({ modalShow, setModalShow }) => {
     //   selected={startDate}
     //   onChange={(date) => setStartDate(date)}
     //   dateFormat="MM/dd/yyyy"
-    //   highlightDates={otherDates.map((dateString) => new Date(dateString))}
+    //   highlightDates={holiDays.map((dateString) => new Date(dateString))}
     //   inline // Set inline to true to keep the calendar open
     //   onSelect={handleDateChange} // This event triggers when a date is selected
     // />

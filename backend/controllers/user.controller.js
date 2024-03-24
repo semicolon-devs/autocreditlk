@@ -192,7 +192,6 @@ exports.markHolidays = async (req, res) => {
   try {
     const collectorId = req.params.id;
     const holidays = req.body.holidays;
-
     const user = await User.findById(collectorId);
     const createdDate = moment(user.createdAt)
       .startOf("day")
@@ -208,7 +207,6 @@ exports.markHolidays = async (req, res) => {
       }
       currentDate.add(1, "day");
     }
-    console.log(allDays);
     const updatedWorkingDays = allDays;
     await User.findByIdAndUpdate(collectorId, {
       $set: { workingDays: updatedWorkingDays },

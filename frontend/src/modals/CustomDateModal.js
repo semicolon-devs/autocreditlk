@@ -41,8 +41,7 @@ const CustomDatePicker = ({ modalShow, setModalShow, user }) => {
       },
     };
     axios(axiosConfig)
-      .then((res) => {
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -139,7 +138,10 @@ const CustomDatePicker = ({ modalShow, setModalShow, user }) => {
                   )}
                   <button
                     className="bg-blue flex rounded-lg px-3 py-1"
-                    onClick={() => handleConfirm(user)}
+                    onClick={() => {
+                      handleConfirm(user);
+                      setModalShow(false);
+                    }}
                   >
                     <p className="text-white uppercase font-semibold ms-2 text-sm">
                       confirm

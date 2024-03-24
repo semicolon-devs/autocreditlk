@@ -20,6 +20,7 @@ import Select from "@mui/material/Select";
 
 import BASE_URL from "../config/ApiConfig";
 import CustomDateModal from "../modals/CustomDateModal";
+import { buttonTextClasses, secondaryButtonClasses } from "../data/Classes";
 
 const cookies = new Cookies();
 
@@ -38,6 +39,7 @@ const Insights = () => {
   const [dailyInstallments, setDailyInstallments] = useState(0);
   const [totalUnPaid, setTotalUnpaid] = useState(0);
   const [collectors, setCollector] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [billingCycle, setBillingCycle] = useState("all");
   const token = cookies.get("autoCreditCookie");
@@ -182,9 +184,21 @@ const Insights = () => {
           </Box>
         </div>
 
-        <p className="text-xl hidden sm:block">Pick date</p>
+        {/* <p className="text-xl hidden sm:block">Pick date</p> */}
         <div className="flex justify-end">
-          <CustomDateModal />
+          {/* <CustomDateModal /> */}
+          <button
+            className={`mb-2 ${secondaryButtonClasses}`}
+            onClick={() => setShowDatePicker(true)}
+          >
+            <p className={`${buttonTextClasses}`}>Pick date</p>
+          </button>
+          {showDatePicker && (
+            <CustomDateModal
+              modalShow={showDatePicker}
+              setModalShow={setShowDatePicker}
+            />
+          )}
         </div>
       </div>{" "}
       <div className="grid grid-cols-2 gap-5 ">

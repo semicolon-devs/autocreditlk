@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-import AlertModal from "./AlertModal";
+import DeleteAlertModal from "./DeleteAlertModal";
 
 import Cookies from "universal-cookie";
 
@@ -38,10 +38,9 @@ const DeleteCustomerModal = ({ modalShow, setModalShow, customer }) => {
   };
 
   return (
-    <AlertModal
+    <DeleteAlertModal
       modalShow={modalShow}
       setModalShow={setModalShow}
-      message={`Are you sure you want to remove ${customer.name} from the system ?`}
       primaryButtonText="remove"
       primaryButtonClick={removeButtonClick}
     />

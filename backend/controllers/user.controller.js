@@ -9,34 +9,38 @@ const moment = require("moment-timezone");
 const { all } = require("../routes/user.route");
 
 exports.deleteUser = async (req, res) => {
-  User.findById(req.params.id)
-    .then((user) => {
-      if (user.role == "admin") {
-        res.status(400).json({
-          message: "can not remove admin",
-        });
-      } else {
-        User.deleteOne({
-          email: user.email,
-        })
-          .then((result) => {
-            res.status(200).json({
-              message: "user Removed Successfully",
-            });
-          })
-          .catch((err) => {
-            res.status(400).json({
-              message: "removing user unsuccessfull !",
-              error: err.message,
-            });
-          });
-      }
-    })
-    .catch((err) => {
-      res.status(400).json({
-        message: err.message,
-      });
-    });
+  console.log("here");
+  res.status(200).json({
+    message: "Success",
+  });
+  // User.findById(req.params.id)
+  //   .then((user) => {
+  //     if (user.role == "admin") {
+  //       res.status(400).json({
+  //         message: "can not remove admin",
+  //       });
+  //     } else {
+  //       User.deleteOne({
+  //         email: user.email,
+  //       })
+  //         .then((result) => {
+  //           res.status(200).json({
+  //             message: "user Removed Successfully",
+  //           });
+  //         })
+  //         .catch((err) => {
+  //           res.status(400).json({
+  //             message: "removing user unsuccessfull !",
+  //             error: err.message,
+  //           });
+  //         });
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     res.status(400).json({
+  //       message: err.message,
+  //     });
+  //   });
 };
 
 exports.updateProfile = async (req, res) => {

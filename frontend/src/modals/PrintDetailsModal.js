@@ -27,6 +27,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
 const cookies = new Cookies();
+const today = new Date();
 
 function createData(name, calories, fat) {
   return { name, calories, fat };
@@ -59,15 +60,16 @@ const PrintDetailsModal = ({
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 30;
+      // const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgX = -105;
+      const imgY = 0;
       doc.addImage(
         imgData,
         "PNG",
         imgX,
         imgY,
-        imgWidth * ratio,
-        imgHeight * ratio
+        imgWidth * ratio * 2,
+        imgHeight * ratio * 2
       );
       doc.save("installments.pdf");
     });
@@ -122,15 +124,46 @@ const PrintDetailsModal = ({
                       {customer.name}
                     </span>
                     <br />
+                    Customer ID :{" "}
+                    <span className="font-semibold ">
+                      {customer.customerID}
+                    </span>{" "}
+                    <br />
                     Installment amount :{" "}
-                    {customer.installmentAmount &&
-                      CurrencyFormatter(customer.installmentAmount)}{" "}
-                    LKR
+                    <span className="font-semibold ">
+                      {customer.installmentAmount &&
+                        CurrencyFormatter(customer.installmentAmount)}{" "}
+                      LKR
+                    </span>
                     <br />
                     Paid amount :{" "}
-                    {customer.paidAmount &&
-                      CurrencyFormatter(customer.paidAmount)}{" "}
-                    LKR
+                    <span className="font-semibold ">
+                      {customer.paidAmount &&
+                        CurrencyFormatter(customer.paidAmount)}{" "}
+                      LKR
+                    </span>
+                    <br />
+                    Remaining amount :{" "}
+                    <span className="font-semibold  ">
+                      {customer.paidAmount &&
+                        CurrencyFormatter(
+                          customer.loanAmount - customer.paidAmount
+                        )}{" "}
+                      LKR
+                    </span>
+                    <br />
+                    Arrears as at{" "}
+                    {today.toLocaleDateString("en-GB", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      timeZone: "Asia/Colombo",
+                    })}
+                    {": "}
+                    <span className="font-semibold italic ">
+                      {customer.arrears && CurrencyFormatter(customer.arrears)}{" "}
+                      LKR
+                    </span>{" "}
                   </Dialog.Description>
                   {loading ? (
                     <div className="w-full flex items-center justify-center">
@@ -146,7 +179,7 @@ const PrintDetailsModal = ({
                       />
                     </div>
                   ) : (
-                    <TableContainer component={Paper}>
+                    <TableContainer component={Paper} sx={{ marginTop: 5 }}>
                       <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                           <TableRow>

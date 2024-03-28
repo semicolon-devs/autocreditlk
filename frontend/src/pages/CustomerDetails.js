@@ -474,6 +474,16 @@ const CustomerDetails = () => {
             >
               <p className={`${buttonTextClasses}`}>Print Details</p>
             </button>
+            {/* <PDFDownloadLink
+              document={<CustomPDF />}
+              fileName="somename.pdf"
+              style={{ color: "red", background: "blue", padding: "5" }}
+            >
+              {({ loading }) =>
+                loading ? "Loading document..." : "Download now!"
+              }
+            </PDFDownloadLink>
+             */}
             {loading ? (
               <div className="w-full flex items-center justify-center">
                 <ThreeDots

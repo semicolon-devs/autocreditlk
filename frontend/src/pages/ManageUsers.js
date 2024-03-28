@@ -25,6 +25,7 @@ const ManageUsers = () => {
         method: "get",
         url: `${BASE_URL}collector/pending-users`,
         headers: {
+          'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
         },
       };

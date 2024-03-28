@@ -21,6 +21,9 @@ const ForgotPasswordReset = () => {
     const config = {
       method: "post",
       url: `${BASE_URL}auth/forget-password-reset`,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
       data: {
         email: email,
         tempPassword: tempPassword,

@@ -48,6 +48,7 @@ const Home = () => {
         method: "get",
         url: `${BASE_URL}customers/all`,
         headers: {
+          'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
         },
       };
@@ -68,6 +69,7 @@ const Home = () => {
         method: "get",
         url: `${BASE_URL}collector/collectors`,
         headers: {
+          'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
         },
       };

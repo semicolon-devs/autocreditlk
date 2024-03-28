@@ -26,6 +26,7 @@ const PendingCustomers = () => {
         method: "get",
         url: `${BASE_URL}customers/pending`,
         headers: {
+          'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
         },
       };

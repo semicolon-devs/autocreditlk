@@ -30,6 +30,9 @@ const SignIn = () => {
     const config = {
       method: "post",
       url: `${BASE_URL}auth/login`,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
       data: {
         email: email,
         password: password,

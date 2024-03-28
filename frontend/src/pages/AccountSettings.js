@@ -39,6 +39,7 @@ const AccountSettings = () => {
       method: "post",
       url: `${BASE_URL}auth/account-password-reset`,
       headers: {
+        'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${token}`,
       },
       data: {

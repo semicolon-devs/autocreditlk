@@ -120,6 +120,7 @@ const AddCustomer = () => {
     try {
       const response = await axios.post(`${BASE_URL}customers`, formData, {
         headers: {
+          'Access-Control-Allow-Origin': '*',
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },

@@ -25,6 +25,7 @@ const SignInPasswordReset = () => {
       method: "post",
       url: `${BASE_URL}auth/signin-password-reset`,
       headers: {
+        'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${pendingUserToken}`,
       },
       data: {

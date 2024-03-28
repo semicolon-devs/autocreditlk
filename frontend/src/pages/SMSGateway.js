@@ -27,6 +27,7 @@ const SMSGateway = () => {
       method: "get",
       url: `${BASE_URL}sms/status`,
       headers: {
+        'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${token}`,
       },
     };

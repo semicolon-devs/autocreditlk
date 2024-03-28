@@ -44,6 +44,7 @@ const AddExistingCustomer = () => {
         method: "get",
         url: `${BASE_URL}collector/collectors`,
         headers: {
+          'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
         },
       };

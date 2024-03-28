@@ -23,6 +23,7 @@ const ReportsPage = () => {
       method: "GET",
       url: `${BASE_URL}report`,
       headers: {
+        'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${token}`,
       },
     };

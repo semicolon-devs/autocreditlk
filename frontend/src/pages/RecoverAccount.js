@@ -18,6 +18,9 @@ const RecoverAccount = () => {
     const config = {
       method: "post",
       url: `${BASE_URL}auth/forget-password-request`,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
       data: {
         email: email,
       },

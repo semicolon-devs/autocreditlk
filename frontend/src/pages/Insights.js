@@ -50,6 +50,7 @@ const Insights = () => {
       method: "GET",
       url: `${BASE_URL}customers/total-unpaid`,
       headers: {
+        'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${token}`,
       },
     };
@@ -74,6 +75,7 @@ const Insights = () => {
       method: "GET",
       url: `${BASE_URL}collector/collectors/${modifiedDate}`,
       headers: {
+        'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${token}`,
       },
     };
@@ -108,6 +110,7 @@ const Insights = () => {
       method: "GET",
       url: `${BASE_URL}installment/${modifiedDate}`,
       headers: {
+        'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${token}`,
       },
     };

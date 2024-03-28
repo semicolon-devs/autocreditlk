@@ -30,6 +30,7 @@ const SetteledLoans = () => {
         method: "get",
         url: `${BASE_URL}customers/settled`,
         headers: {
+          'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
         },
       };

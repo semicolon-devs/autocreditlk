@@ -67,6 +67,7 @@ const CustomerDetails = () => {
         method: "get",
         url: `${BASE_URL}customers/${id}`,
         headers: {
+          'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
         },
       };
